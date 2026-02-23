@@ -584,6 +584,31 @@ tr:last-child td:last-child { border-radius: 0 0 0.5rem 0; }
   line-height: 1.6;
 }
 
+/* Activity layout (text + photos side by side) */
+.activity-layout {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.activity-layout > div:first-child {
+  flex: 1;
+}
+
+.activity-photos {
+  flex-shrink: 0;
+  width: 40%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+/* Mobile-only inline photos (hidden on desktop) */
+.mobile-only-photo {
+  display: none;
+}
+
 /* Action button */
 .action-btn {
   display: inline-block;
@@ -679,6 +704,17 @@ tr:last-child td:last-child { border-radius: 0 0 0.5rem 0; }
   .cover-content h1 { font-size: 2rem; }
   .timeline { flex-wrap: wrap; }
   .timeline-item { flex: 0 0 33.33%; min-width: 0; }
+  .activity-layout { display: block; }
+  .activity-photos { display: none; }
+  .mobile-only-photo {
+    display: block;
+    margin-top: 0.5rem;
+  }
+  .mobile-only-photo img {
+    max-width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid var(--gray-200);
+  }
 }
 
 @media (max-width: 480px) {
@@ -735,10 +771,10 @@ tr:last-child td:last-child { border-radius: 0 0 0.5rem 0; }
             <span class="num">1</span>
             <div>
               <strong>AI 중점학교</strong>
-              <div style="font-size:0.8rem; color:var(--gray-600);">개요 · 교육과정 · 학생활동 · 융합동아리</div>
+              <div style="font-size:0.8rem; color:var(--gray-600);">개요 · 학생활동 · 융합동아리</div>
             </div>
           </li>
-          <li onclick="goToSlide(6)">
+          <li onclick="goToSlide(5)">
             <span class="num">2</span>
             <div>
               <strong>AI·디지털 활용 선도학교</strong>
@@ -752,7 +788,7 @@ tr:last-child td:last-child { border-radius: 0 0 0.5rem 0; }
               <div style="font-size:0.8rem; color:var(--gray-600);">심의 절차 및 일정 안내</div>
             </div>
           </li>
-          <li onclick="goToSlide(10)">
+          <li onclick="goToSlide(7)">
             <span class="num">4</span>
             <div>
               <strong>전문적 학습공동체</strong>
@@ -808,61 +844,8 @@ tr:last-child td:last-child { border-radius: 0 0 0.5rem 0; }
     </div>
   </div>
 
-  <!-- Slide 4: 교육과정 안내 -->
+  <!-- Slide 4: 학생 참여 활동 -->
   <div class="slide" data-slide="3">
-    <div class="browser-card">
-      <div class="browser-topbar">
-        <div class="dot red"></div>
-        <div class="dot yellow"></div>
-        <div class="dot green"></div>
-        <div class="title">AI 중점학교 — 교육과정</div>
-      </div>
-      <div class="browser-content">
-        <div class="section-divider">
-          <div class="section-icon">📖</div>
-          <div class="section-text">
-            <h2>교육과정 안내</h2>
-            <div class="section-sub">학년별 AI·SW 교과 편성</div>
-          </div>
-        </div>
-
-        <table>
-          <thead>
-            <tr>
-              <th>학년</th>
-              <th>1학기</th>
-              <th>2학기</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="grade-1">
-              <td><span class="badge green">1학년</span></td>
-              <td>정보</td>
-              <td>인공지능 기초</td>
-            </tr>
-            <tr class="grade-2">
-              <td><span class="badge blue">2학년</span></td>
-              <td>프로그래밍</td>
-              <td>소프트웨어와 생활</td>
-            </tr>
-            <tr class="grade-3">
-              <td><span class="badge purple">3학년</span></td>
-              <td>인공지능 수학 · 데이터 과학</td>
-              <td>정보 과학</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div class="info-box">
-          <strong>💡 포인트</strong><br>
-          1학년부터 3학년까지 체계적 AI·SW 교과 과정이 편성되어 있어, 각 과목 수업에서 AI 역량을 자연스럽게 연계할 수 있습니다.
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Slide 5: 학생 참여 활동 -->
-  <div class="slide" data-slide="4">
     <div class="browser-card">
       <div class="browser-topbar">
         <div class="dot red"></div>
@@ -879,61 +862,80 @@ tr:last-child td:last-child { border-radius: 0 0 0.5rem 0; }
           </div>
         </div>
 
-        <ul class="activity-list">
-          <li>
-            <span class="emoji">🧩</span>
-            <div class="details">
-              <strong>AI 융합과제 코너스톤 프로젝트</strong>
-              <span><span class="badge green">1·2·3학년</span> 연중 운영</span>
-            </div>
-          </li>
-          <li>
-            <span class="emoji">💻</span>
-            <div class="details">
-              <strong>AI/SW 융합 동아리</strong>
-              <span><span class="badge green">1·2학년</span> 연중 운영</span>
-            </div>
-          </li>
-          <li>
-            <span class="emoji">🚀</span>
-            <div class="details">
-              <strong>AI 스타트업 프로젝트</strong>
-              <span><span class="badge green">1·2학년</span> 연중 운영</span>
-            </div>
-          </li>
-          <li>
-            <span class="emoji">🎓</span>
-            <div class="details">
-              <strong>미래기술 진로 아카데미</strong>
-              <span><span class="badge blue">1·2·3학년</span> 연 2회</span>
-            </div>
-          </li>
-          <li>
-            <span class="emoji">☀️</span>
-            <div class="details">
-              <strong>여름방학 AI 융합 캠프 / 겨울방학 IT 기업 탐방</strong>
-              <span>방학 중 특별 프로그램</span>
-            </div>
-          </li>
-          <li>
-            <span class="emoji">🎨</span>
-            <div class="details">
-              <strong>생성형 AI 전시회 · VR 체험 프로그램</strong>
-              <span>학교 행사 연계</span>
-            </div>
-          </li>
-        </ul>
+        <div class="activity-layout">
+          <div style="flex:1;">
+            <ul class="activity-list">
+              <li>
+                <span class="emoji">🧩</span>
+                <div class="details">
+                  <strong>AI 융합과제 코너스톤 프로젝트</strong>
+                </div>
+              </li>
+              <li>
+                <span class="emoji">💻</span>
+                <div class="details">
+                  <strong>AI/SW 융합 동아리</strong>
+                </div>
+              </li>
+              <li>
+                <span class="emoji">🚀</span>
+                <div class="details">
+                  <strong>AI 스타트업 프로젝트</strong>
+                  <span>사회과 "나도 스타트업 창업자가 될꺼야" 행사 연계</span>
+                </div>
+              </li>
+              <li>
+                <span class="emoji">☀️</span>
+                <div class="details">
+                  <strong><a href="https://drive.google.com/file/d/1ORgmQz-qxqYzEKShWEBd0yWJTnkMvKSc/view?usp=sharing" target="_blank" style="color:inherit; text-decoration:underline; text-underline-offset:3px;">여름방학 AI 융합 캠프</a></strong>
+                  <span>방학 중 특별 프로그램</span>
+                  <div class="mobile-only-photo">
+                    <img src="2.png" alt="여름방학 AI 융합 캠프">
+                  </div>
+                </div>
+              </li>
+              <li>
+                <span class="emoji">❄️</span>
+                <div class="details">
+                  <strong><a href="https://drive.google.com/file/d/11mvjc2P2mEvAPzyX6DJcdKgyEGfjk5pG/view?usp=sharing" target="_blank" style="color:inherit; text-decoration:underline; text-underline-offset:3px;">겨울방학 IT 기업 탐방</a></strong>
+                  <span>방학 중 특별 프로그램</span>
+                  <div class="mobile-only-photo">
+                    <img src="1.png" alt="겨울방학 IT 기업 탐방">
+                  </div>
+                </div>
+              </li>
+              <li>
+                <span class="emoji">🎨</span>
+                <div class="details">
+                  <strong><a href="https://2025-1kijunmusicfestival.netlify.app/" target="_blank" style="color:inherit; text-decoration:underline; text-underline-offset:3px;">생성형 AI 전시회 (Suno 음악 생성)</a></strong>
+                  <span>· VR 체험 프로그램</span>
+                </div>
+              </li>
+            </ul>
 
-        <div class="info-box" style="margin-top: 16px;">
-          <strong>🙏 선생님께 부탁드립니다</strong><br>
-          수업 시간에 관련 활동을 안내해 주시고, 학생들의 참여를 독려해 주세요!
+            <div class="info-box" style="margin-top: 1rem;">
+              <strong>🙏 선생님께 부탁드립니다</strong><br>
+              수업 시간에 관련 활동을 안내해 주시고, 학생들의 참여를 독려해 주세요!
+            </div>
+          </div>
+
+          <div class="activity-photos">
+            <div>
+              <img src="2.png" alt="여름방학 AI 융합 캠프" style="width:100%; border-radius:0.7rem; border:1px solid var(--gray-200);">
+              <div style="text-align:center; font-size:0.8rem; color:var(--gray-600); margin-top:0.3rem;">여름방학 AI 융합 캠프</div>
+            </div>
+            <div>
+              <img src="1.png" alt="겨울방학 IT 기업 탐방" style="width:100%; border-radius:0.7rem; border:1px solid var(--gray-200);">
+              <div style="text-align:center; font-size:0.8rem; color:var(--gray-600); margin-top:0.3rem;">겨울방학 IT 기업 탐방</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Slide 6: AI 기반 융합 동아리 -->
-  <div class="slide" data-slide="5">
+  <!-- Slide 5: AI 기반 융합 동아리 -->
+  <div class="slide" data-slide="4">
     <div class="browser-card">
       <div class="browser-topbar">
         <div class="dot red"></div>
@@ -986,8 +988,8 @@ tr:last-child td:last-child { border-radius: 0 0 0.5rem 0; }
     </div>
   </div>
 
-  <!-- Slide 7: 선도학교 개요 -->
-  <div class="slide" data-slide="6">
+  <!-- Slide 6: 선도학교 개요 -->
+  <div class="slide" data-slide="5">
     <div class="browser-card">
       <div class="browser-topbar">
         <div class="dot red"></div>
@@ -1006,14 +1008,14 @@ tr:last-child td:last-child { border-radius: 0 0 0.5rem 0; }
 
         <div class="grid-2">
           <div class="card-item">
-            <div class="icon">👩‍🎓</div>
-            <h4>대상</h4>
-            <p>1·2·3학년 <strong>649명</strong>, 27학급</p>
-          </div>
-          <div class="card-item">
             <div class="icon">🎯</div>
             <h4>목표</h4>
             <p>AI·디지털 기반 교육자료 활용 수업 혁신</p>
+          </div>
+          <div class="card-item">
+            <div class="icon">💰</div>
+            <h4>예산</h4>
+            <p>연간 <strong>3,500만원</strong></p>
           </div>
         </div>
 
@@ -1040,8 +1042,8 @@ tr:last-child td:last-child { border-radius: 0 0 0.5rem 0; }
     </div>
   </div>
 
-  <!-- Slide 8: 교사 참여 과제 -->
-  <div class="slide" data-slide="7">
+  <!-- Slide 7: 교사 참여 과제 -->
+  <div class="slide" data-slide="6">
     <div class="browser-card">
       <div class="browser-topbar">
         <div class="dot red"></div>
@@ -1080,6 +1082,78 @@ tr:last-child td:last-child { border-radius: 0 0 0.5rem 0; }
           <div class="task-num" style="color: #e65100;">과제 4</div>
           <h4>효과성 연구 참여</h4>
           <p>AI·디지털 활용 교육의 효과성 연구에 참여합니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 8: 전문적 학습공동체 -->
+  <div class="slide" data-slide="7">
+    <div class="browser-card">
+      <div class="browser-topbar">
+        <div class="dot red"></div>
+        <div class="dot yellow"></div>
+        <div class="dot green"></div>
+        <div class="title">전문적 학습공동체</div>
+      </div>
+      <div class="browser-content">
+        <div class="section-divider">
+          <div class="section-icon">👩‍🏫</div>
+          <div class="section-text">
+            <h2>전문적 학습공동체 안내</h2>
+            <div class="section-sub">AI·디지털 에듀테크 활용 학습공동체 운영</div>
+          </div>
+        </div>
+
+        <ul class="activity-list">
+          <li>
+            <span class="emoji">📢</span>
+            <div class="details">
+              <strong>AI·디지털 에듀테크 관련 정보 및 사례 공유</strong>
+              <span>선도학교 중심 운영</span>
+            </div>
+          </li>
+          <li>
+            <span class="emoji">🤖</span>
+            <div class="details">
+              <strong>최신 AI 기술 활용 방법 학습 및 연구</strong>
+              <span>클로드 코딩 · 오픈클로 · 생성형 AI · 개인 업무 자동화 등</span>
+            </div>
+          </li>
+          <li>
+            <span class="emoji">🔄</span>
+            <div class="details">
+              <strong>빠르게 발전하는 기술에 대응하는 교육 방법 탐구</strong>
+            </div>
+          </li>
+          <li>
+            <span class="emoji">📊</span>
+            <div class="details">
+              <strong>학교 데이터 활용 방안 탐구</strong>
+            </div>
+          </li>
+        </ul>
+
+        <h3 style="margin-top: 1.2rem;">💡 이미 만들어진 활용 예시</h3>
+        <div class="grid-2">
+          <div class="card-item" style="text-align:center;">
+            <div class="icon">📱</div>
+            <h4>자습실 활용 어플</h4>
+            <p>학생 자습실 관리 시스템</p>
+            <a href="https://kijunseaton.netlify.app" target="_blank" class="action-btn" style="font-size:0.9rem; padding:0.5rem 1.2rem; background:var(--green-dark);">사이트 방문</a>
+          </div>
+          <div class="card-item" style="text-align:center;">
+            <div class="icon">🏫</div>
+            <h4>학교 플랫폼</h4>
+            <p>생활기록부 작성 도우미 · 분반 도우미 · 선택과목 도우미 등</p>
+            <a href="https://spacekijun.lovable.app" target="_blank" class="action-btn" style="font-size:0.9rem; padding:0.5rem 1.2rem; background:var(--green-dark);">사이트 방문</a>
+          </div>
+        </div>
+
+        <div class="deadline-callout" style="margin-top: 1.2rem;">
+          <div class="deadline-icon">✋</div>
+          <div class="deadline-date">참여 희망 신청: 3월 2주차까지</div>
+          <div class="deadline-desc">관심 있는 선생님의 많은 참여 부탁드립니다!</div>
         </div>
       </div>
     </div>
@@ -1193,80 +1267,8 @@ tr:last-child td:last-child { border-radius: 0 0 0.5rem 0; }
     </div>
   </div>
 
-  <!-- Slide 11: 전문적 학습공동체 -->
+  <!-- Slide 11: 마무리 -->
   <div class="slide" data-slide="10">
-    <div class="browser-card">
-      <div class="browser-topbar">
-        <div class="dot red"></div>
-        <div class="dot yellow"></div>
-        <div class="dot green"></div>
-        <div class="title">전문적 학습공동체</div>
-      </div>
-      <div class="browser-content">
-        <div class="section-divider">
-          <div class="section-icon">👩‍🏫</div>
-          <div class="section-text">
-            <h2>전문적 학습공동체 안내</h2>
-            <div class="section-sub">AI·디지털 에듀테크 활용 학습공동체 운영</div>
-          </div>
-        </div>
-
-        <ul class="activity-list">
-          <li>
-            <span class="emoji">📢</span>
-            <div class="details">
-              <strong>AI·디지털 에듀테크 관련 정보 및 사례 공유</strong>
-              <span>선도학교 중심 운영</span>
-            </div>
-          </li>
-          <li>
-            <span class="emoji">🤖</span>
-            <div class="details">
-              <strong>최신 AI 기술 활용 방법 학습 및 연구</strong>
-              <span>클로드 코딩 · 오픈클로 · 생성형 AI · 개인 업무 자동화 등</span>
-            </div>
-          </li>
-          <li>
-            <span class="emoji">🔄</span>
-            <div class="details">
-              <strong>빠르게 발전하는 기술에 대응하는 교육 방법 탐구</strong>
-            </div>
-          </li>
-          <li>
-            <span class="emoji">📊</span>
-            <div class="details">
-              <strong>학교 데이터 활용 방안 탐구</strong>
-            </div>
-          </li>
-        </ul>
-
-        <h3 style="margin-top: 1.2rem;">💡 이미 만들어진 활용 예시</h3>
-        <div class="grid-2">
-          <div class="card-item" style="text-align:center;">
-            <div class="icon">📱</div>
-            <h4>자습실 활용 어플</h4>
-            <p>학생 자습실 관리 시스템</p>
-            <a href="https://kijunseaton.netlify.app" target="_blank" class="action-btn" style="font-size:0.9rem; padding:0.5rem 1.2rem; background:var(--green-dark);">사이트 방문</a>
-          </div>
-          <div class="card-item" style="text-align:center;">
-            <div class="icon">🏫</div>
-            <h4>학교 플랫폼</h4>
-            <p>생활기록부 작성 도우미 · 분반 도우미 · 선택과목 도우미 등</p>
-            <a href="https://spacekijun.lovable.app" target="_blank" class="action-btn" style="font-size:0.9rem; padding:0.5rem 1.2rem; background:var(--green-dark);">사이트 방문</a>
-          </div>
-        </div>
-
-        <div class="deadline-callout" style="margin-top: 1.2rem;">
-          <div class="deadline-icon">✋</div>
-          <div class="deadline-date">참여 희망 신청: 3월 2주차까지</div>
-          <div class="deadline-desc">관심 있는 선생님의 많은 참여 부탁드립니다!</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Slide 12: 마무리 -->
-  <div class="slide" data-slide="11">
     <div class="browser-card">
       <div class="browser-topbar">
         <div class="dot red"></div>
