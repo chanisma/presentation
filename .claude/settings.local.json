@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(echo No PDF library found:*)",
+      "Bash(tail:*)",
+      "Bash(python:*)"
+    ]
+  }
+}
