@@ -3,7 +3,16 @@
     "allow": [
       "Bash(echo No PDF library found:*)",
       "Bash(tail:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(start:*)",
+      "WebFetch(domain:www.youtube.com)",
+      "WebSearch",
+      "WebFetch(domain:noembed.com)",
+      "Bash(pip install:*)",
+      "Bash(where python:*)",
+      "Bash(pip:*)",
+      "Bash(\"C:\\\\ProgramData\\\\anaconda3\\\\python.exe\":*)",
+      "Bash(PYTHONIOENCODING=utf-8 \"C:\\\\ProgramData\\\\anaconda3\\\\python.exe\":*)"
     ]
   }
 }

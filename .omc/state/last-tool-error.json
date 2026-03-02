@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"\\\"C:\\\\ProgramData\\\\anaconda3\\\\python.exe\\\" \\\"C:\\\\Users\\\\chani\\\\presentation\\\\프로그래밍\\\\오리엔테이션\\\\create_survey.py\\\" 2>&1\",\"timeout\":300000,\"description\":\"Run Google Forms creation script with A...",
+  "error": "Exit code 1\nPlease visit this URL to authorize this application: https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=491214877392-hi80a9e9t6klb9h8adnisl1i9h0fs9qo.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A52455%2F&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fforms.body&state=YTbnnARR7NRFcrU95gqZhytzhrITnN&code_challenge=1gZb_M6_mvf0sCCOrzG3C6lv35fR2zX7LOl9mC-Ruwg&code_challenge_method=S256&access_type=offline\r\n�� ���� �Ϸ�: 171oCM4s-WVrtLabvFdwsoDmZD6p...",
+  "timestamp": "2026-03-02T12:03:49.505Z",
+  "retry_count": 6
+}
