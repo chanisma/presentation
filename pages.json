@@ -59,6 +59,25 @@
           "gradient": "linear-gradient(90deg, #1565c0, #42a5f5)"
         }
       ]
+    },
+    {
+      "name": "정보",
+      "icon": "📐",
+      "color": "purple",
+      "pages": [
+        {
+          "title": "정보 수업 오리엔테이션",
+          "path": "정보/오리엔테이션/index.html",
+          "emoji": "📐",
+          "description": "파이썬 프로그래밍, 인공지능, 피지컬컴퓨팅을 아우르는 정보 수업 안내. 학기 일정, 실습 활동, 평가 방법을 포함합니다.",
+          "tags": [
+            { "label": "파이썬", "color": "purple" },
+            { "label": "인공지능", "color": "blue" },
+            { "label": "피지컬컴퓨팅", "color": "orange" }
+          ],
+          "gradient": "linear-gradient(90deg, #6200ea, #9c27b0)"
+        }
+      ]
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1772443390389,
+  "lastScanned": 1772543991085,
   "projectRoot": "C:\\Users\\chani\\presentation",
   "techStack": {
     "languages": [],
@@ -31,61 +31,42 @@
     }
   },
   "customNotes": [],
-  "directoryMap": {},
+  "directoryMap": {
+    "인공지능과피지컬컴퓨팅": {
+      "path": "인공지능과피지컬컴퓨팅",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1772543990977,
+      "keyFiles": []
+    },
+    "정보": {
+      "path": "정보",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1772543990981,
+      "keyFiles": []
+    },
+    "정보화부": {
+      "path": "정보화부",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1772543990982,
+      "keyFiles": []
+    },
+    "프로그래밍": {
+      "path": "프로그래밍",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1772543990984,
+      "keyFiles": []
+    }
+  },
   "hotPaths": [
     {
-      "path": "인공지능과피지컬컴퓨팅\\오리엔테이션\\index.html",
-      "accessCount": 26,
-      "lastAccessed": 1772522833021,
-      "type": "file"
-    },
-    {
-      "path": "프로그래밍\\오리엔테이션\\index.html",
-      "accessCount": 23,
-      "lastAccessed": 1772515982895,
-      "type": "file"
-    },
-    {
-      "path": "programming-orientation.html",
-      "accessCount": 6,
-      "lastAccessed": 1772450484636,
-      "type": "file"
-    },
-    {
-      "path": "index.html",
-      "accessCount": 4,
-      "lastAccessed": 1772515456296,
-      "type": "file"
-    },
-    {
-      "path": "pages.json",
-      "accessCount": 4,
-      "lastAccessed": 1772515679234,
-      "type": "file"
-    },
-    {
-      "path": "프로그래밍\\오리엔테이션\\create_survey.py",
-      "accessCount": 3,
-      "lastAccessed": 1772515991002,
-      "type": "file"
-    },
-    {
-      "path": "프로그래밍\\오리엔테이션\\create-survey.gs",
-      "accessCount": 2,
-      "lastAccessed": 1772515991661,
-      "type": "file"
-    },
-    {
-      "path": "인공지능과피지컬컴퓨팅\\오리엔테이션\\create_survey.py",
-      "accessCount": 1,
-      "lastAccessed": 1772516043710,
-      "type": "file"
-    },
-    {
-      "path": "인공지능과피지컬컴퓨팅\\오리엔테이션\\create-survey.gs",
-      "accessCount": 1,
-      "lastAccessed": 1772516057272,
-      "type": "file"
+      "path": "정보\\오리엔테이션\\index.html",
+      "accessCount": 61,
+      "lastAccessed": 1772545758989,
+      "type": "directory"
     }
   ],
   "userDirectives": []
