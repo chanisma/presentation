@@ -34,9 +34,15 @@
   "directoryMap": {},
   "hotPaths": [
     {
+      "path": "인공지능과피지컬컴퓨팅\\오리엔테이션\\index.html",
+      "accessCount": 26,
+      "lastAccessed": 1772522833021,
+      "type": "file"
+    },
+    {
       "path": "프로그래밍\\오리엔테이션\\index.html",
-      "accessCount": 21,
-      "lastAccessed": 1772453166949,
+      "accessCount": 23,
+      "lastAccessed": 1772515982895,
       "type": "file"
     },
     {
@@ -46,21 +52,39 @@
       "type": "file"
     },
     {
+      "path": "index.html",
+      "accessCount": 4,
+      "lastAccessed": 1772515456296,
+      "type": "file"
+    },
+    {
+      "path": "pages.json",
+      "accessCount": 4,
+      "lastAccessed": 1772515679234,
+      "type": "file"
+    },
+    {
       "path": "프로그래밍\\오리엔테이션\\create_survey.py",
-      "accessCount": 2,
-      "lastAccessed": 1772453054994,
+      "accessCount": 3,
+      "lastAccessed": 1772515991002,
       "type": "file"
     },
     {
       "path": "프로그래밍\\오리엔테이션\\create-survey.gs",
-      "accessCount": 1,
-      "lastAccessed": 1772452508799,
+      "accessCount": 2,
+      "lastAccessed": 1772515991661,
       "type": "file"
     },
     {
-      "path": "index.html",
+      "path": "인공지능과피지컬컴퓨팅\\오리엔테이션\\create_survey.py",
       "accessCount": 1,
-      "lastAccessed": 1772453438647,
+      "lastAccessed": 1772516043710,
+      "type": "file"
+    },
+    {
+      "path": "인공지능과피지컬컴퓨팅\\오리엔테이션\\create-survey.gs",
+      "accessCount": 1,
+      "lastAccessed": 1772516057272,
       "type": "file"
     }
   ],

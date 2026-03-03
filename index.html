@@ -212,68 +212,86 @@ html, body {
 
 <div class="container">
 
-  <div class="header">
-    <h1>수업 자료 관리</h1>
-    <p>과목별 수업 프레젠테이션 모음</p>
+  <div class="header" id="header"></div>
+  <div id="content"></div>
+  <div class="footer" id="footer"></div>
+
+<script>
+const COLOR_MAP = {
+  blue:   { bg: 'var(--blue-light)',   text: 'var(--blue-dark)' },
+  green:  { bg: 'var(--green-light)',  text: 'var(--green-dark)' },
+  purple: { bg: 'var(--purple-light)', text: '#6200ea' },
+  orange: { bg: 'var(--orange-light)', text: '#e65100' },
+};
+
+function renderHeader(data) {
+  const totalPages = data.subjects.reduce((sum, s) => sum + s.pages.length, 0);
+  return `
+    <h1>${data.title}</h1>
+    <p>${data.description}</p>
     <div class="badge-row">
-      <span class="stat">과목 <span class="num">2</span></span>
-      <span class="stat">자료 <span class="num">2</span></span>
-      <span class="stat">2026학년도</span>
+      <span class="stat">과목 <span class="num">${data.subjects.length}</span></span>
+      <span class="stat">자료 <span class="num">${totalPages}</span></span>
+      <span class="stat">${data.year}</span>
     </div>
-  </div>
+  `;
+}
 
-  <!-- 프로그래밍 -->
-  <div class="subject-section">
-    <div class="subject-header">
-      <div class="subject-icon" style="background: var(--blue-light);">💻</div>
-      <h2>프로그래밍</h2>
-      <span class="count">1개 자료</span>
-    </div>
-    <div class="card-grid">
-      <a class="card" href="프로그래밍/오리엔테이션/index.html">
-        <div class="card-color" style="background: linear-gradient(90deg, var(--blue), var(--purple));"></div>
-        <div class="card-body">
-          <div class="card-emoji">🚀</div>
-          <h3>프로그래밍 수업 오리엔테이션</h3>
-          <p class="card-desc">데이터 연구 · 웹 언어 · 바이브 코딩으로 여는 나의 첫 프로그래밍. 수업 소개, 트랙 안내, 평가 기준, 학기 일정을 포함합니다.</p>
-          <div class="card-meta">
-            <span class="card-tag blue">데이터 연구</span>
-            <span class="card-tag purple">웹 언어</span>
-            <span class="card-tag orange">바이브 코딩</span>
-            <span class="card-arrow">→</span>
-          </div>
+function renderCard(page) {
+  const tags = page.tags.map(t =>
+    `<span class="card-tag" style="background:${COLOR_MAP[t.color]?.bg};color:${COLOR_MAP[t.color]?.text}">${t.label}</span>`
+  ).join('');
+
+  return `
+    <a class="card" href="${page.path}">
+      <div class="card-color" style="background:${page.gradient}"></div>
+      <div class="card-body">
+        <div class="card-emoji">${page.emoji}</div>
+        <h3>${page.title}</h3>
+        <p class="card-desc">${page.description}</p>
+        <div class="card-meta">
+          ${tags}
+          <span class="card-arrow">\u2192</span>
         </div>
-      </a>
-    </div>
-  </div>
+      </div>
+    </a>
+  `;
+}
 
-  <!-- 정보화부 -->
-  <div class="subject-section">
-    <div class="subject-header">
-      <div class="subject-icon" style="background: var(--green-light);">🏫</div>
-      <h2>정보화부</h2>
-      <span class="count">1개 자료</span>
-    </div>
-    <div class="card-grid">
-      <a class="card" href="정보화부/학교사업안내/index.html">
-        <div class="card-color" style="background: linear-gradient(90deg, var(--green), #28c840);"></div>
-        <div class="card-body">
-          <div class="card-emoji">📋</div>
-          <h3>2026 정보화부 학교 사업 안내</h3>
-          <p class="card-desc">정보화부 학교 사업 계획 및 주요 프로젝트 안내. 동아리 활동, 연간 일정, 주요 사업 내용을 포함합니다.</p>
-          <div class="card-meta">
-            <span class="card-tag green">학교사업</span>
-            <span class="card-tag blue">정보화부</span>
-            <span class="card-arrow">→</span>
-          </div>
-        </div>
-      </a>
-    </div>
-  </div>
+function renderSubject(subject) {
+  const iconBg = COLOR_MAP[subject.color]?.bg || 'var(--gray-100)';
+  const cards = subject.pages.map(renderCard).join('');
+  const count = subject.pages.length;
 
-  <div class="footer">
-    전주기전여자고등학교 · 2026학년도 수업 자료
-  </div>
+  return `
+    <div class="subject-section">
+      <div class="subject-header">
+        <div class="subject-icon" style="background:${iconBg}">${subject.icon}</div>
+        <h2>${subject.name}</h2>
+        <span class="count">${count}개 자료</span>
+      </div>
+      <div class="card-grid">${cards}</div>
+    </div>
+  `;
+}
+
+async function init() {
+  try {
+    const res = await fetch('pages.json');
+    const data = await res.json();
+
+    document.getElementById('header').innerHTML = renderHeader(data);
+    document.getElementById('content').innerHTML = data.subjects.map(renderSubject).join('');
+    document.getElementById('footer').textContent = `${data.school} \u00B7 ${data.year} 수업 자료`;
+    document.title = data.title;
+  } catch (e) {
+    document.getElementById('content').innerHTML =
+      '<p style="text-align:center;color:#757575;padding:3rem;">pages.json을 불러올 수 없습니다.</p>';
+  }
+}
+
+init();
+</script>
 
 </div>
 

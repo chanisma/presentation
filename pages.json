@@ -1,0 +1,64 @@
+{
+  "title": "수업 자료 관리",
+  "description": "과목별 수업 프레젠테이션 모음",
+  "school": "전주기전여자고등학교",
+  "year": "2026학년도",
+  "subjects": [
+    {
+      "name": "프로그래밍",
+      "icon": "💻",
+      "color": "blue",
+      "pages": [
+        {
+          "title": "프로그래밍 수업 오리엔테이션",
+          "path": "프로그래밍/오리엔테이션/index.html",
+          "emoji": "🚀",
+          "description": "데이터 연구 · 웹 언어 · 바이브 코딩으로 여는 나의 첫 프로그래밍. 수업 소개, 트랙 안내, 평가 기준, 학기 일정을 포함합니다.",
+          "tags": [
+            { "label": "데이터 연구", "color": "blue" },
+            { "label": "웹 언어", "color": "purple" },
+            { "label": "바이브 코딩", "color": "orange" }
+          ],
+          "gradient": "linear-gradient(90deg, #2196f3, #7c4dff)"
+        }
+      ]
+    },
+    {
+      "name": "정보화부",
+      "icon": "🏫",
+      "color": "green",
+      "pages": [
+        {
+          "title": "2026 정보화부 학교 사업 안내",
+          "path": "정보화부/학교사업안내/index.html",
+          "emoji": "📋",
+          "description": "정보화부 학교 사업 계획 및 주요 프로젝트 안내. 동아리 활동, 연간 일정, 주요 사업 내용을 포함합니다.",
+          "tags": [
+            { "label": "학교사업", "color": "green" },
+            { "label": "정보화부", "color": "blue" }
+          ],
+          "gradient": "linear-gradient(90deg, #3aaa5c, #28c840)"
+        }
+      ]
+    },
+    {
+      "name": "인공지능과피지컬컴퓨팅",
+      "icon": "🤖",
+      "color": "blue",
+      "pages": [
+        {
+          "title": "인공지능과 피지컬컴퓨팅 오리엔테이션",
+          "path": "인공지능과피지컬컴퓨팅/오리엔테이션/index.html",
+          "emoji": "🤖",
+          "description": "AI의 시각적 분류 능력과 로봇 제어 피지컬컴퓨팅 실습 수업 안내. 학기 일정, 실습 활동, 사용 도구, 평가 방법을 포함합니다.",
+          "tags": [
+            { "label": "인공지능", "color": "blue" },
+            { "label": "시각 분류", "color": "purple" },
+            { "label": "피지컬컴퓨팅", "color": "orange" }
+          ],
+          "gradient": "linear-gradient(90deg, #1565c0, #42a5f5)"
+        }
+      ]
+    }
+  ]
+}
