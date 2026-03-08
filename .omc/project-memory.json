@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1772543991085,
+  "lastScanned": 1772971746442,
   "projectRoot": "C:\\Users\\chani\\presentation",
   "techStack": {
     "languages": [],
@@ -36,43 +36,61 @@
       "path": "인공지능과피지컬컴퓨팅",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1772543990977,
+      "lastAccessed": 1772971746388,
       "keyFiles": []
     },
     "정보": {
       "path": "정보",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1772543990981,
+      "lastAccessed": 1772971746389,
       "keyFiles": []
     },
     "정보화부": {
       "path": "정보화부",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1772543990982,
+      "lastAccessed": 1772971746390,
       "keyFiles": []
     },
     "프로그래밍": {
       "path": "프로그래밍",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1772543990984,
+      "lastAccessed": 1772971746391,
       "keyFiles": []
     }
   },
   "hotPaths": [
     {
-      "path": "정보\\오리엔테이션\\index.html",
-      "accessCount": 79,
-      "lastAccessed": 1772548898885,
-      "type": "directory"
+      "path": "프로그래밍\\2차시-웹은어떻게만들어질까\\index.html",
+      "accessCount": 17,
+      "lastAccessed": 1772978998003,
+      "type": "file"
     },
     {
-      "path": "인공지능과피지컬컴퓨팅\\오리엔테이션\\index.html",
+      "path": "pages.json",
       "accessCount": 2,
-      "lastAccessed": 1772579858643,
-      "type": "directory"
+      "lastAccessed": 1772975114201,
+      "type": "file"
+    },
+    {
+      "path": "프로그래밍\\2차시-웹은어떻게만들어질까\\수업설계.md",
+      "accessCount": 2,
+      "lastAccessed": 1772976431709,
+      "type": "file"
+    },
+    {
+      "path": "프로그래밍\\오리엔테이션\\index.html",
+      "accessCount": 1,
+      "lastAccessed": 1772973665274,
+      "type": "file"
+    },
+    {
+      "path": "프로그래밍\\2차시-웹은어떻게만들어질까\\create-activity-form.js",
+      "accessCount": 1,
+      "lastAccessed": 1772977354930,
+      "type": "file"
     }
   ],
   "userDirectives": []

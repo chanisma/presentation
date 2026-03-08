@@ -20,6 +20,18 @@
             { "label": "바이브 코딩", "color": "orange" }
           ],
           "gradient": "linear-gradient(90deg, #2196f3, #7c4dff)"
+        },
+        {
+          "title": "2차시 - 웹은 어떻게 만들어질까?",
+          "path": "프로그래밍/2차시-웹은어떻게만들어질까/index.html",
+          "emoji": "🌐",
+          "description": "인터넷과 웹의 차이, 클라이언트-서버 원리, HTML/CSS/JS 역할, 웹사이트 구조 분석 활동을 통해 웹의 기초를 이해합니다.",
+          "tags": [
+            { "label": "웹 원리", "color": "blue" },
+            { "label": "클라이언트-서버", "color": "orange" },
+            { "label": "구조 분석", "color": "purple" }
+          ],
+          "gradient": "linear-gradient(90deg, #1565c0, #42a5f5)"
         }
       ]
     },

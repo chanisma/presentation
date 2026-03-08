@@ -1,7 +1,7 @@
 {
-  "tool_name": "WebFetch",
-  "tool_input_preview": "{\"url\":\"https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=HKiEtvF6ftQ&format=json\",\"prompt\":\"Return the full JSON response including title and author_name\"}",
-  "error": "Claude Code is unable to fetch from www.youtube.com",
-  "timestamp": "2026-03-03T05:37:29.896Z",
-  "retry_count": 4
+  "tool_name": "mcp__claude-in-chrome__switch_browser",
+  "tool_input_preview": "{}",
+  "error": "No browser responded within the timeout. Make sure Chrome is open with the Claude extension installed, then try again.",
+  "timestamp": "2026-03-08T13:46:57.748Z",
+  "retry_count": 1
 }
