@@ -32,6 +32,30 @@
             { "label": "구조 분석", "color": "purple" }
           ],
           "gradient": "linear-gradient(90deg, #1565c0, #42a5f5)"
+        },
+        {
+          "title": "3차시 - HTML 태그의 이해",
+          "path": "프로그래밍/3차시-웹개발을위한프로그래밍기초/index.html",
+          "emoji": "🏗️",
+          "description": "HTML의 역할과 태그의 개념, 기본 문서 구조, 텍스트/목록 태그를 배우고 오류 찾기와 프로필 페이지 실습을 합니다.",
+          "tags": [
+            { "label": "HTML", "color": "blue" },
+            { "label": "태그", "color": "purple" },
+            { "label": "실습", "color": "orange" }
+          ],
+          "gradient": "linear-gradient(90deg, #1565c0, #2196f3)"
+        },
+        {
+          "title": "4차시 - HTML 태그의 활용",
+          "path": "프로그래밍/4차시-HTML태그의활용/index.html",
+          "emoji": "🔧",
+          "description": "태그의 속성, 이미지/링크/div 태그, 블록과 인라인, class/id 속성을 배우고 프로필 페이지 확장 실습을 합니다.",
+          "tags": [
+            { "label": "속성", "color": "blue" },
+            { "label": "이미지·링크", "color": "purple" },
+            { "label": "실습", "color": "orange" }
+          ],
+          "gradient": "linear-gradient(90deg, #1565c0, #42a5f5)"
         }
       ]
     },
@@ -69,6 +93,30 @@
             { "label": "피지컬컴퓨팅", "color": "orange" }
           ],
           "gradient": "linear-gradient(90deg, #1565c0, #42a5f5)"
+        },
+        {
+          "title": "CNN 시각화 - 이미지가 처리되는 과정",
+          "path": "인공지능과피지컬컴퓨팅/cnn-시각화/index.html",
+          "emoji": "🧠",
+          "description": "CNN(합성곱 신경망)이 이미지를 처리하는 전체 과정을 인터랙티브하게 시각화합니다. 컨볼루션, ReLU, 풀링, Flatten, 완전연결층, 출력까지 단계별로 확인할 수 있습니다.",
+          "tags": [
+            { "label": "CNN", "color": "blue" },
+            { "label": "시각화", "color": "purple" },
+            { "label": "인터랙티브", "color": "orange" }
+          ],
+          "gradient": "linear-gradient(90deg, #1565c0, #9c27b0)"
+        },
+        {
+          "title": "CNN - 이미지를 이해하는 인공지능의 원리",
+          "path": "인공지능과피지컬컴퓨팅/cnn-프레젠테이션/index.html",
+          "emoji": "📊",
+          "description": "CNN(합성곱 신경망)의 각 단계를 시각적으로 설명하는 수업용 프레젠테이션. 입력, 컨볼루션, ReLU, 풀링, Flatten, 완전연결층, Softmax, 역전파까지 단계별로 이해합니다.",
+          "tags": [
+            { "label": "CNN", "color": "blue" },
+            { "label": "이미지 분류", "color": "purple" },
+            { "label": "프레젠테이션", "color": "orange" }
+          ],
+          "gradient": "linear-gradient(90deg, #1565c0, #7c4dff)"
         }
       ]
     },
@@ -88,6 +136,18 @@
             { "label": "피지컬컴퓨팅", "color": "orange" }
           ],
           "gradient": "linear-gradient(90deg, #6200ea, #9c27b0)"
+        },
+        {
+          "title": "인공지능 시대",
+          "path": "정보/인공지능-시대/index.html",
+          "emoji": "🤖",
+          "description": "AI 발전 역사(튜링 테스트~AGI), 알파고의 사회적 충격, 영상 시청 및 생각 나누기 활동을 포함한 정보 1차시 수업 자료입니다.",
+          "tags": [
+            { "label": "인공지능", "color": "green" },
+            { "label": "알파고", "color": "blue" },
+            { "label": "1차시", "color": "orange" }
+          ],
+          "gradient": "linear-gradient(90deg, #2d8a49, #43b867)"
         }
       ]
     }

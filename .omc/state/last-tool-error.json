@@ -1,7 +1,7 @@
 {
-  "tool_name": "mcp__claude-in-chrome__switch_browser",
-  "tool_input_preview": "{}",
-  "error": "No browser responded within the timeout. Make sure Chrome is open with the Claude extension installed, then try again.",
-  "timestamp": "2026-03-08T13:46:57.748Z",
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd \\\"C:/Users/chani/presentation\\\" && python -c \\\"import json; data=json.load(open('pages.json','r',encoding='utf-8')); prog=[s for s in data['subjects'] if s['name']=='프로그래밍'][0]; [print(...",
+  "error": "Exit code 49\nPython",
+  "timestamp": "2026-03-10T16:47:51.668Z",
   "retry_count": 1
 }

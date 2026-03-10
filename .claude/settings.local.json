@@ -17,7 +17,14 @@
       "Bash(py:*)",
       "Bash(/c/Users/chani/AppData/Local/Microsoft/WindowsApps/python3:*)",
       "Bash(node:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "WebFetch(domain:playground.tensorflow.org)",
+      "WebFetch(domain:teachablemachine.withgoogle.com)",
+      "WebFetch(domain:poloclub.github.io)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:docs.google.com)",
+      "Bash(/c/ProgramData/anaconda3/python.exe:*)"
     ]
   }
 }
