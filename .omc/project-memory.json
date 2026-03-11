@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1773146385386,
+  "lastScanned": 1773240697261,
   "projectRoot": "C:\\Users\\chani\\presentation",
   "techStack": {
     "languages": [],
@@ -36,96 +36,42 @@
       "path": "인공지능과피지컬컴퓨팅",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1773146385343,
+      "lastAccessed": 1773240697210,
       "keyFiles": []
     },
     "정보": {
       "path": "정보",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1773146385344,
+      "lastAccessed": 1773240697213,
       "keyFiles": []
     },
     "정보화부": {
       "path": "정보화부",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1773146385344,
+      "lastAccessed": 1773240697213,
       "keyFiles": []
     },
     "프로그래밍": {
       "path": "프로그래밍",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1773146385345,
+      "lastAccessed": 1773240697214,
       "keyFiles": []
     }
   },
   "hotPaths": [
     {
-      "path": "프로그래밍\\3차시-웹개발을위한프로그래밍기초\\index.html",
-      "accessCount": 43,
-      "lastAccessed": 1773185887397,
-      "type": "file"
-    },
-    {
-      "path": "인공지능과피지컬컴퓨팅\\cnn-프레젠테이션\\index.html",
-      "accessCount": 41,
-      "lastAccessed": 1773150923567,
-      "type": "file"
-    },
-    {
-      "path": "인공지능과피지컬컴퓨팅\\cnn-시각화\\index.html",
-      "accessCount": 15,
-      "lastAccessed": 1773151382019,
-      "type": "file"
-    },
-    {
-      "path": "정보\\인공지능-시대\\index.html",
-      "accessCount": 8,
-      "lastAccessed": 1773153391574,
-      "type": "file"
-    },
-    {
-      "path": "pages.json",
-      "accessCount": 8,
-      "lastAccessed": 1773158650854,
-      "type": "file"
-    },
-    {
-      "path": "인공지능과피지컬컴퓨팅\\오리엔테이션\\index.html",
-      "accessCount": 7,
-      "lastAccessed": 1773146705960,
-      "type": "file"
-    },
-    {
-      "path": "정보\\오리엔테이션\\index.html",
-      "accessCount": 2,
-      "lastAccessed": 1773151731789,
-      "type": "file"
-    },
-    {
-      "path": "정보\\인공지능-시대\\create-form.js",
-      "accessCount": 1,
-      "lastAccessed": 1773153120752,
-      "type": "file"
-    },
-    {
-      "path": "프로그래밍\\2차시-웹은어떻게만들어질까\\index.html",
-      "accessCount": 1,
-      "lastAccessed": 1773155059595,
-      "type": "file"
-    },
-    {
-      "path": "프로그래밍\\3차시-웹개발을위한프로그래밍기초\\코드제출폼-AppsScript.js",
-      "accessCount": 1,
-      "lastAccessed": 1773157842009,
+      "path": "인공지능과피지컬컴퓨팅\\MNIST-숫자인식\\index.html",
+      "accessCount": 25,
+      "lastAccessed": 1773241246280,
       "type": "file"
     },
     {
       "path": "프로그래밍\\4차시-HTML태그의활용\\index.html",
-      "accessCount": 1,
-      "lastAccessed": 1773158631243,
+      "accessCount": 3,
+      "lastAccessed": 1773242890926,
       "type": "file"
     }
   ],

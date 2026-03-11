@@ -117,6 +117,18 @@
             { "label": "프레젠테이션", "color": "orange" }
           ],
           "gradient": "linear-gradient(90deg, #1565c0, #7c4dff)"
+        },
+        {
+          "title": "MNIST로 배우는 숫자 인식 AI",
+          "path": "인공지능과피지컬컴퓨팅/MNIST-숫자인식/index.html",
+          "emoji": "🔢",
+          "description": "MNIST 데이터셋과 CNN을 활용한 숫자 인식 AI 체험 수업. CNN 시각화 관찰, 직접 숫자 그려 인식시키기, 파이썬 코드로 모델 학습시키기 활동을 포함합니다.",
+          "tags": [
+            { "label": "MNIST", "color": "blue" },
+            { "label": "숫자 인식", "color": "purple" },
+            { "label": "딥러닝 체험", "color": "orange" }
+          ],
+          "gradient": "linear-gradient(90deg, #1565c0, #00897b)"
         }
       ]
     },

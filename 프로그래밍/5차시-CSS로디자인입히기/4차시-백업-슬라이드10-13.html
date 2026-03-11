@@ -1,0 +1,209 @@
+<!--
+  4차시 HTML 태그의 활용 - 페이지 10~13 백업
+  (data-slide 9~12)
+
+  5차시 프레젠테이션 제작 시 활용할 콘텐츠입니다.
+  원본: 프로그래밍/4차시-HTML태그의활용/index.html
+-->
+
+<!-- ========== 페이지 10: 블록 vs 인라인 (data-slide 9) ========== -->
+<!-- Slide 10: 블록 vs 인라인 -->
+<div class="slide" data-slide="9">
+  <div class="browser-card">
+    <div class="browser-topbar">
+      <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+      <div class="title">#HTML #태그의 특징</div>
+    </div>
+    <div class="browser-content">
+      <div style="margin-bottom:0.5rem;">
+        <span class="badge blue">HTML</span><span class="badge purple">태그의 특징</span>
+      </div>
+      <h2>블록 레벨 vs 인라인 레벨</h2>
+      <div class="compare-grid" style="margin-top:0.5rem;">
+        <div class="compare-card block">
+          <h3>📦 블록 레벨 (Block)</h3>
+          <ul>
+            <li>항상 <strong>새로운 줄</strong>에서 시작</li>
+            <li><strong>가로 너비 전체</strong>를 차지</li>
+            <li>수직으로 쌓임, 크기 조정 가능</li>
+          </ul>
+          <div style="margin-top:0.5rem;">
+            <span class="badge blue">&lt;div&gt;</span>
+            <span class="badge blue">&lt;p&gt;</span>
+            <span class="badge blue">&lt;h1&gt;</span>
+            <span class="badge blue">&lt;ul&gt;</span>
+          </div>
+        </div>
+        <div class="compare-card inline">
+          <h3>📝 인라인 레벨 (Inline)</h3>
+          <ul>
+            <li>텍스트 흐름 <strong>중간에 삽입</strong></li>
+            <li><strong>줄 바꿈 없음</strong>, 나란히 배치</li>
+            <li>내용 크기에 맞게 고정됨</li>
+          </ul>
+          <div style="margin-top:0.5rem;">
+            <span class="badge orange">&lt;a&gt;</span>
+            <span class="badge orange">&lt;img&gt;</span>
+            <span class="badge orange">&lt;strong&gt;</span>
+            <span class="badge orange">&lt;span&gt;</span>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:0.9rem;font-weight:600;margin-top:0.8rem;margin-bottom:0.4rem;">실제 렌더링 비교</p>
+      <div class="code-result-split">
+        <div>
+          <p style="font-size:0.8rem;color:var(--gray-600);margin-bottom:0.3rem;">블록 요소: 위아래로 쌓임 (벽돌)</p>
+          <div style="background:#f5f9ff;padding:0.6rem;border-radius:0.4rem;border:1px solid #90caf9;">
+            <div class="demo-block">&lt;div&gt; 첫 번째</div>
+            <div class="demo-block">&lt;p&gt; 두 번째</div>
+            <div class="demo-block">&lt;h2&gt; 세 번째</div>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:0.8rem;color:var(--gray-600);margin-bottom:0.3rem;">인라인 요소: 옆으로 나란히 (글자)</p>
+          <div style="background:#fff9f5;padding:0.6rem;border-radius:0.4rem;border:1px solid #ffcc80;line-height:2.2;">
+            텍스트 <span class="demo-inline">&lt;a&gt;</span> 사이에 <span class="demo-inline">&lt;strong&gt;</span> 들어가고 <span class="demo-inline">&lt;span&gt;</span> 줄바꿈 없이 나란히
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 페이지 11: class, id 속성 (data-slide 10) ========== -->
+<!-- Slide 11: class, id -->
+<div class="slide" data-slide="10">
+  <div class="browser-card">
+    <div class="browser-topbar">
+      <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+      <div class="title">#HTML #class, id 속성</div>
+    </div>
+    <div class="browser-content">
+      <div style="margin-bottom:0.5rem;">
+        <span class="badge blue">HTML</span><span class="badge green">class, id</span>
+      </div>
+      <h2>식별자 속성: class와 id</h2>
+      <p style="margin-bottom:0.8rem;">특정 요소를 구분하여 활용하기 위해 <strong>이름을 지정</strong>하는 속성</p>
+      <div class="compare-grid">
+        <div class="card-item" style="border-left:4px solid #1565c0;padding:1.2rem;">
+          <h3 style="color:#1565c0;font-size:1.1rem;">id — 유일한 이름</h3>
+          <p style="font-size:0.9rem;">특정 요소를 <strong>정확하게 구분</strong>하기 위한 식별자</p>
+          <div class="code-block" style="font-size:0.8rem;">
+<span class="tag">&lt;div</span> <span class="attr">id</span>=<span class="value">"header"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+          </div>
+          <p style="font-size:0.8rem;color:var(--gray-600);">→ 페이지에 하나만 사용</p>
+        </div>
+        <div class="card-item" style="border-left:4px solid #e65100;padding:1.2rem;">
+          <h3 style="color:#e65100;font-size:1.1rem;">class — 그룹 이름</h3>
+          <p style="font-size:0.9rem;">같은 속성을 적용하기 위한 식별자</p>
+          <div class="code-block" style="font-size:0.8rem;">
+<span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="value">"btn"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/button&gt;</span>
+          </div>
+          <p style="font-size:0.8rem;color:var(--gray-600);">→ 여러 요소에 같은 이름 가능</p>
+        </div>
+      </div>
+      <p style="font-size:0.9rem;font-weight:600;margin-top:0.8rem;margin-bottom:0.3rem;">다음 시간 맛보기: CSS로 class에 스타일 적용하면?</p>
+      <div class="css-preview">
+        <div class="css-before">
+          <div class="css-before-label">CSS 적용 전</div>
+          <div style="padding:0.5rem;">
+            <button style="font-family:'Noto Sans KR',sans-serif;padding:0.3rem 0.8rem;font-size:0.85rem;border:1px solid #ccc;background:white;cursor:default;">클릭</button>
+            <button style="font-family:'Noto Sans KR',sans-serif;padding:0.3rem 0.8rem;font-size:0.85rem;border:1px solid #ccc;background:white;cursor:default;margin-left:0.3rem;">버튼</button>
+          </div>
+        </div>
+        <div class="css-after">
+          <div class="css-after-label">CSS 적용 후</div>
+          <div style="padding:0.5rem;">
+            <button style="font-family:'Noto Sans KR',sans-serif;padding:0.4rem 1rem;font-size:0.85rem;border:none;background:var(--dark);color:white;border-radius:0.4rem;cursor:default;font-weight:600;">클릭</button>
+            <button style="font-family:'Noto Sans KR',sans-serif;padding:0.4rem 1rem;font-size:0.85rem;border:none;background:var(--dark);color:white;border-radius:0.4rem;cursor:default;font-weight:600;margin-left:0.3rem;">버튼</button>
+          </div>
+          <div class="code-block" style="font-size:0.75rem;margin-top:0.3rem;padding:0.5rem 0.8rem;">
+<span style="color:#d7ba7d;">.btn</span> { <span class="attr">background</span>: <span class="value">blue</span>; <span class="attr">color</span>: <span class="value">white</span>; }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 페이지 12: 이 외의 태그들 (data-slide 11) ========== -->
+<!-- Slide 12: 그 외 태그들 -->
+<div class="slide" data-slide="11">
+  <div class="browser-card">
+    <div class="browser-topbar">
+      <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+      <div class="title">#HTML #이 외의 태그들</div>
+    </div>
+    <div class="browser-content" style="display:flex;align-items:center;justify-content:center;">
+      <div style="width:100%;max-width:800px;">
+        <div class="section-divider">
+          <div class="section-icon">🔍</div>
+          <div class="section-text">
+            <h2>이 외의 태그들</h2>
+            <span class="section-sub">더 많은 태그를 알아보고 싶다면?</span>
+          </div>
+        </div>
+        <div class="card-item" style="padding:1.5rem;margin-bottom:1rem;">
+          <p style="font-size:1.05rem;line-height:1.8;">
+            수업 시간에 다룬 태그 이외에도 수없이 많은 태그들이 존재합니다.<br>
+            <code style="font-family:Consolas,monospace;background:#f0f4f8;padding:0.1rem 0.3rem;border-radius:0.2rem;">&lt;button&gt;</code>, <code style="font-family:Consolas,monospace;background:#f0f4f8;padding:0.1rem 0.3rem;border-radius:0.2rem;">&lt;input&gt;</code> 등 유용한 태그들이 많으나, 당장 사용되지 않을 내용이거나 CSS나 JS에서 처리할 수 있기 때문에 다루지 않았습니다.
+          </p>
+        </div>
+        <div class="highlight-box">
+          <div class="big-text">태그에 대해 더 궁금하다면?</div>
+          <div class="small-text" style="margin-top:0.5rem;">태그의 기본적인 사용법을 토대로 조금만 읽어보면 사용 가능합니다</div>
+          <div style="margin-top:1rem;">
+            <a href="https://www.w3schools.com/tags" target="_blank" class="link-btn">📚 W3Schools 태그 레퍼런스 →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 페이지 13: 프로젝트 진행 (data-slide 12) ========== -->
+<!-- Slide 13: 프로젝트 진행 -->
+<div class="slide" data-slide="12">
+  <div class="browser-card">
+    <div class="browser-topbar">
+      <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+      <div class="title">프로젝트 진행</div>
+    </div>
+    <div class="browser-content">
+      <div class="section-divider">
+        <div class="section-icon">🚀</div>
+        <div class="section-text">
+          <h2>프로젝트 진행</h2>
+          <span class="section-sub">오늘 배운 HTML을 활용하여 직접 만들어 봅시다</span>
+        </div>
+      </div>
+      <div class="task-box" style="border-left-color:#1565c0;">
+        <div class="task-num">1</div>
+        <div class="task-text">
+          <h4>뼈대 세우기</h4>
+          <p>오늘 배운 HTML을 활용하여 지난 시간에 기획한 페이지의 뼈대 세우기</p>
+        </div>
+      </div>
+      <div class="task-box" style="border-left-color:#e65100;">
+        <div class="task-num">2</div>
+        <div class="task-text">
+          <h4>콘텐츠 넣기</h4>
+          <p>뼈대를 세우면서 해당 페이지에 들어갈 내용(글, 이미지 등)도 넣기</p>
+        </div>
+      </div>
+      <div class="task-box" style="border-left-color:#7b1fa2;">
+        <div class="task-num">3</div>
+        <div class="task-text">
+          <h4>div로 구분하기</h4>
+          <p>특히, <code style="font-family:Consolas,monospace;background:#f0f4f8;padding:0.1rem 0.3rem;border-radius:0.2rem;">&lt;div&gt;</code>를 사용하여 박스별로 구분하기</p>
+        </div>
+      </div>
+      <div class="info-box orange" style="margin-top:1rem;">
+        ⚠️ 웹 페이지에 출력되는 결과는 디자인 한 것처럼 배치되지 않는게 <strong>정상</strong>입니다! 배치나 글자 크기 등에는 크게 신경 쓰지 않아도 됩니다.
+      </div>
+      <div class="info-box green" style="margin-top:0.5rem;">
+        ⏰ 시간이 남으면 지난 시간에 작업하던 피그마 디자인 계속해서 진행하세요.
+      </div>
+    </div>
+  </div>
+</div>
