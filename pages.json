@@ -74,6 +74,18 @@
             { "label": "정보화부", "color": "blue" }
           ],
           "gradient": "linear-gradient(90deg, #3aaa5c, #28c840)"
+        },
+        {
+          "title": "2026 정보화부 학교사업 안내 (학부모용)",
+          "path": "정보화부/학교사업안내-학부모/index.html",
+          "emoji": "👨‍👩‍👧",
+          "description": "학부모 대상 정보화부 사업 안내. AI 중점학교, 디지털 선도학교, 융합 동아리 등 학생이 얻는 경험과 기회를 중심으로 소개합니다.",
+          "tags": [
+            { "label": "학부모", "color": "orange" },
+            { "label": "AI교육", "color": "blue" },
+            { "label": "Warm Pink", "color": "purple" }
+          ],
+          "gradient": "linear-gradient(90deg, #E33529, #F4CED3)"
         }
       ]
     },

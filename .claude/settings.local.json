@@ -25,7 +25,14 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:docs.google.com)",
       "Bash(/c/ProgramData/anaconda3/python.exe:*)",
-      "WebFetch(domain:storage.googleapis.com)"
+      "WebFetch(domain:storage.googleapis.com)",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_click",
+      "Bash(npx http-server:*)",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_evaluate",
+      "mcp__plugin_playwright_playwright__browser_run_code",
+      "Bash(cp:*)"
     ]
   }
 }

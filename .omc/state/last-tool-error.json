@@ -1,7 +1,7 @@
 {
-  "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"node -e \\\"const fs=require('fs'); const m=JSON.parse(fs.readFileSync('C:/Users/chani/presentation/인공지능과피지컬컴퓨팅/MNIST-숫자인식/model/model.json','utf8')); console.log('Format:', m.format); conso...",
-  "error": "Exit code 1\nFormat: layers-model\nClass: undefined\n[eval]:1\r\nconst fs=require('fs'); const m=JSON.parse(fs.readFileSync('C:/Users/chani/presentation/인공지능과피지컬컴퓨팅/MNIST-숫자인식/model/model.json','utf8')); console.log('Format:', m.format); console.log('Class:', m.modelTopology.class_name); const layers=m.modelTopology.config.layers; layers.forEach(l => console.log(' -', l.class_name, l.config.name, JSON.stringify(l.config.batch_input_shape||''))); console.log('Weights:', m.weightsManifest[0].paths); co...",
-  "timestamp": "2026-03-11T11:43:31.584Z",
+  "tool_name": "mcp__plugin_playwright_playwright__browser_evaluate",
+  "tool_input_preview": "{\"expression\":\"\\n// Try to skip the preloader by hiding it and showing main content\\nconst preloader = document.querySelector('.preloader') || document.querySelector('[class*=\\\"preloader\\\"]');\\nif (pr...",
+  "error": "### Result\n[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"function\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  }\n]",
+  "timestamp": "2026-03-14T01:17:27.655Z",
   "retry_count": 1
 }
