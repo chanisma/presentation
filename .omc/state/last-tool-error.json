@@ -1,7 +1,7 @@
 {
-  "tool_name": "mcp__plugin_playwright_playwright__browser_evaluate",
-  "tool_input_preview": "{\"expression\":\"\\n// Try to skip the preloader by hiding it and showing main content\\nconst preloader = document.querySelector('.preloader') || document.querySelector('[class*=\\\"preloader\\\"]');\\nif (pr...",
-  "error": "### Result\n[\n  {\n    \"expected\": \"string\",\n    \"code\": \"invalid_type\",\n    \"path\": [\n      \"function\"\n    ],\n    \"message\": \"Invalid input: expected string, received undefined\"\n  }\n]",
-  "timestamp": "2026-03-14T01:17:27.655Z",
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"notebooklm use f2344d89-aa02-439f-97bf-08dfc43760b3 2>&1 && notebooklm source add \\\"C:/Users/chani/presentation/인공지능과피지컬컴퓨팅/MNIST-숫자인식/MNIST_숫자인식_실습.ipynb\\\" --json 2>&1\",\"description\":\"Set...",
+  "error": "Exit code 1\n+-----------------------------------------------------------------------------+\r\n| ID                         | Title                     | Owner | Created    |\r\n|----------------------------+---------------------------+-------+------------|\r\n| f2344d89-aa02-439f-97bf-0�� | CNN���� ���� MNIST      | Owner | 2026-03-15 |\r\n|                            | �ձ۾� ���� �ν�          |       |            |\r\n+-----------------------------------------------------------------------------+\r\n{\r\n  \"...",
+  "timestamp": "2026-03-14T16:19:59.713Z",
   "retry_count": 1
 }

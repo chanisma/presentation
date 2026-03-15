@@ -145,6 +145,25 @@
       ]
     },
     {
+      "name": "AI전문적학습동아리",
+      "icon": "🤝",
+      "color": "green",
+      "pages": [
+        {
+          "title": "Claude Code & Presentation Builder 환경 설치 가이드",
+          "path": "AI전문적학습동아리/클로드코드-환경설치/index.html",
+          "emoji": "🛠️",
+          "description": "프로그래밍 경험이 없는 교사를 위한 Claude Code 및 Presentation Builder 스킬 설치 가이드. VSCode, Git, GitHub Desktop, Claude Code 설치부터 첫 프레젠테이션 생성까지 단계별로 안내합니다.",
+          "tags": [
+            { "label": "Claude Code", "color": "green" },
+            { "label": "환경설치", "color": "blue" },
+            { "label": "AI도구", "color": "orange" }
+          ],
+          "gradient": "linear-gradient(90deg, #3aaa5c, #43b867)"
+        }
+      ]
+    },
+    {
       "name": "정보",
       "icon": "📐",
       "color": "purple",

@@ -1,0 +1,7 @@
+{
+  "tool_name": "mcp__plugin_playwright_playwright__browser_navigate",
+  "tool_input_preview": "{\"url\":\"file:///C:/Users/chani/presentation/정보화부/학교사업안내/index.html\"}",
+  "error": "### Error\nError: Access to \"file:\" URL is blocked. Allowed protocols: http:, https:, about:, data:. Attempted URL: file:///C:/Users/chani/presentation/정보화부/학교사업안내/index.html",
+  "timestamp": "2026-03-15T01:24:19.190Z",
+  "retry_count": 1
+}

@@ -1,0 +1,2 @@
+[      -1ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8765/%EC%A0%95%EB%B3%B4%ED%99%94%EB%B6%80/%ED%95%99%EA%B5%90%EC%82%AC%EC%97%85%EC%95%88%EB%82%B4-%ED%95%99%EB%B6%80%EB%AA%A8/index.html:0
+[      40ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8765/favicon.ico:0

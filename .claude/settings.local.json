@@ -32,7 +32,25 @@
       "mcp__plugin_playwright_playwright__browser_navigate",
       "mcp__plugin_playwright_playwright__browser_evaluate",
       "mcp__plugin_playwright_playwright__browser_run_code",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "Bash(npx skills:*)",
+      "Bash(notebooklm status:*)",
+      "Bash(notebooklm use:*)",
+      "Bash(C:/ProgramData/anaconda3/python.exe \"C:/Users/chani/presentation/인공지능과피지컬컴퓨팅/MNIST-숫자인식/convert_nb.py\" 2>&1)",
+      "Bash(notebooklm source:*)",
+      "Bash(PYTHONIOENCODING=utf-8 notebooklm source list --notebook f2344d89-aa02-439f-97bf-08dfc43760b3 --json 2>&1)",
+      "Bash(PYTHONIOENCODING=utf-8 notebooklm generate slide-deck --notebook f2344d89-aa02-439f-97bf-08dfc43760b3 --format detailed --json 2>&1)",
+      "Bash(PYTHONIOENCODING=utf-8 notebooklm generate report --notebook f2344d89-aa02-439f-97bf-08dfc43760b3 --format study-guide --append \"한국어로 작성. 고등학생 대상 인공지능 수업용. CNN과 MNIST 손글씨 인식 중심으로 정리.\" --json 2>&1)",
+      "Bash(PYTHONIOENCODING=utf-8 notebooklm generate mind-map --notebook f2344d89-aa02-439f-97bf-08dfc43760b3 --json 2>&1)",
+      "Bash(PYTHONIOENCODING=utf-8 notebooklm download mind-map \"C:/Users/chani/presentation/인공지능과피지컬컴퓨팅/MNIST-숫자인식/MNIST_마인드맵.json\" -n f2344d89-aa02-439f-97bf-08dfc43760b3 --json 2>&1)",
+      "Bash(PYTHONIOENCODING=utf-8 notebooklm ask \"이 수업의 핵심 학습 목표 3가지와 CNN 모델의 구조를 단계별로 설명해줘. 발표 자료용으로 간결하게.\" --notebook f2344d89-aa02-439f-97bf-08dfc43760b3 --json 2>&1)",
+      "Bash(PYTHONIOENCODING=utf-8 notebooklm ask \"학생들이 자주 어려워하는 개념 3가지와 각각의 쉬운 설명을 알려줘. 그리고 이 실습에서 99% 정확도가 가능한 이유를 설명해줘.\" --notebook f2344d89-aa02-439f-97bf-08dfc43760b3 -c ba5ed131-6de7-4b19-a526-4e9c9e4e7409 2>&1)",
+      "Bash(PYTHONIOENCODING=utf-8 notebooklm download report \"C:/Users/chani/presentation/인공지능과피지컬컴퓨팅/MNIST-숫자인식/MNIST_학습가이드.md\" -a 8288468c-ada3-40de-a164-182eb3b57e8c -n f2344d89-aa02-439f-97bf-08dfc43760b3 2>&1)",
+      "Bash(PYTHONIOENCODING=utf-8 notebooklm artifact list --notebook f2344d89-aa02-439f-97bf-08dfc43760b3 --json 2>&1 | python3 -c \"import json,sys; a=json.load\\(sys.stdin\\)['artifacts']; [print\\(x['title'][:30], '->', x['status']\\) for x in a]\")",
+      "Bash(PYTHONIOENCODING=utf-8 notebooklm artifact list --notebook f2344d89-aa02-439f-97bf-08dfc43760b3 --json 2>&1)",
+      "Bash(PYTHONIOENCODING=utf-8 notebooklm artifact wait 4e07b604-c002-45b3-8741-c13149e77213 -n f2344d89-aa02-439f-97bf-08dfc43760b3 --timeout 600 2>&1)",
+      "Bash(netstat -ano)",
+      "Bash(xargs -I{} taskkill /F /PID {})"
     ]
   }
 }
