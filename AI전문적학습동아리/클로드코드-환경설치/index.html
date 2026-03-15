@@ -405,15 +405,15 @@ p  { font-size: 1rem; line-height: 1.7; color: var(--gray-800); }
           <li onclick="goToSlide(4)">
             <span class="num">3</span>
             <div>
-              <strong>Claude Code 설치</strong>
-              <div style="font-size:0.82rem; color:var(--gray-600);">AI 코딩 도우미 설치 및 실행</div>
+              <strong>Git &amp; GitHub Desktop 설치</strong>
+              <div style="font-size:0.82rem; color:var(--gray-600);">버전 관리 도구 및 저장소 설정</div>
             </div>
           </li>
           <li onclick="goToSlide(5)">
             <span class="num">4</span>
             <div>
-              <strong>Git &amp; GitHub Desktop 설치</strong>
-              <div style="font-size:0.82rem; color:var(--gray-600);">버전 관리 도구 및 저장소 설정</div>
+              <strong>Claude Code 설치</strong>
+              <div style="font-size:0.82rem; color:var(--gray-600);">AI 코딩 도우미 설치 및 실행</div>
             </div>
           </li>
           <li onclick="goToSlide(7)">
@@ -453,18 +453,18 @@ p  { font-size: 1rem; line-height: 1.7; color: var(--gray-800); }
             </div>
           </div>
           <div class="prog-card">
-            <div class="prog-icon">🤖</div>
-            <div class="prog-info">
-              <h4>Claude Code</h4>
-              <p>AI 코딩 도우미. 발표 자료를 자동으로 만들어 주는 핵심 도구입니다.</p>
-              <span class="badge blue">2순위</span>
-            </div>
-          </div>
-          <div class="prog-card">
             <div class="prog-icon">🌿</div>
             <div class="prog-info">
               <h4>Git</h4>
               <p>파일 버전 관리 도구. Claude Code가 파일을 저장하는 데 필요합니다.</p>
+              <span class="badge blue">2순위</span>
+            </div>
+          </div>
+          <div class="prog-card">
+            <div class="prog-icon">🤖</div>
+            <div class="prog-info">
+              <h4>Claude Code</h4>
+              <p>AI 코딩 도우미. 발표 자료를 자동으로 만들어 주는 핵심 도구입니다.</p>
               <span class="badge orange">3순위</span>
             </div>
           </div>
@@ -479,7 +479,7 @@ p  { font-size: 1rem; line-height: 1.7; color: var(--gray-800); }
         </div>
         <div class="info-box">
           ✅ <strong>설치 순서가 중요합니다!</strong>
-          VSCode → Claude Code → Git → GitHub Desktop → Presentation Builder 순서로 진행하세요.
+          VSCode → Git → Claude Code → GitHub Desktop → Presentation Builder 순서로 진행하세요.
         </div>
       </div>
     </div>
@@ -543,12 +543,66 @@ p  { font-size: 1rem; line-height: 1.7; color: var(--gray-800); }
     </div>
   </div>
 
-  <!-- ═══ SLIDE 5: Claude Code 설치 ═══ -->
+  <!-- ═══ SLIDE 5: Git & GitHub Desktop ═══ -->
   <div class="slide" data-slide="4">
     <div class="browser-card">
       <div class="browser-topbar">
         <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
-        <div class="tab-title">2단계 — Claude Code 설치</div>
+        <div class="tab-title">2단계 — Git &amp; GitHub Desktop 설치</div>
+      </div>
+      <div class="browser-content">
+        <div class="sec-div">
+          <div class="sec-icon">🌿</div>
+          <div class="sec-title-wrap">
+            <h2>Git &amp; GitHub Desktop 설치</h2>
+            <div class="sec-sub">파일을 저장하고 관리하는 도구 — Claude Code가 작업 파일을 저장할 때 필요합니다</div>
+          </div>
+        </div>
+        <div class="two-col">
+          <div>
+            <h3 style="margin-bottom: 0.7rem;">🌿 Git 설치</h3>
+            <div class="step-box">
+              <div class="step-num">STEP 1 — Git 다운로드</div>
+              <h4>아래 주소 접속 후 다운로드</h4>
+              <div class="code-block">https://git-scm.com/install/windows</div>
+              <p><strong>"Click here to download"</strong> 클릭</p>
+            </div>
+            <div class="step-box blue">
+              <div class="step-num">STEP 2 — 설치 진행</div>
+              <h4>설치 중 에디터 선택 화면에서</h4>
+              <p><strong>"Use Visual Studio Code as Git's default editor"</strong> 선택<br>
+              나머지는 모두 <strong>Next(다음)</strong> 클릭</p>
+            </div>
+          </div>
+          <div>
+            <h3 style="margin-bottom: 0.7rem;">🐙 GitHub Desktop 설치</h3>
+            <div class="step-box orange">
+              <div class="step-num">STEP 3 — GitHub Desktop 다운로드</div>
+              <h4>아래 주소 접속 후 다운로드</h4>
+              <div class="code-block">https://desktop.github.com/download/</div>
+            </div>
+            <div class="step-box purple">
+              <div class="step-num">STEP 4 — 설치 및 로그인</div>
+              <h4>GitHub 계정으로 로그인</h4>
+              <p>GitHub 계정이 없으면 <strong>github.com</strong>에서 먼저 가입합니다.<br>
+              가입 후 GitHub Desktop에서 로그인하면 됩니다.</p>
+            </div>
+            <div class="info-box" style="margin-top: 0.5rem;">
+              💡 GitHub는 작업 파일을 인터넷에 저장하는 공간입니다.<br>
+              구글 드라이브와 비슷한 개념이에요.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 6: Claude Code 설치 ═══ -->
+  <div class="slide" data-slide="5">
+    <div class="browser-card">
+      <div class="browser-topbar">
+        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+        <div class="tab-title">3단계 — Claude Code 설치</div>
       </div>
       <div class="browser-content">
         <div class="sec-div">
@@ -592,60 +646,6 @@ p  { font-size: 1rem; line-height: 1.7; color: var(--gray-800); }
             </div>
             <div class="info-box" style="margin-top: 0.5rem;">
               🔑 <strong>로그인</strong>: Claude 계정이 필요합니다. claude.ai에서 먼저 가입해 주세요.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ═══ SLIDE 6: Git & GitHub Desktop ═══ -->
-  <div class="slide" data-slide="5">
-    <div class="browser-card">
-      <div class="browser-topbar">
-        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
-        <div class="tab-title">3단계 — Git &amp; GitHub Desktop 설치</div>
-      </div>
-      <div class="browser-content">
-        <div class="sec-div">
-          <div class="sec-icon">🌿</div>
-          <div class="sec-title-wrap">
-            <h2>Git &amp; GitHub Desktop 설치</h2>
-            <div class="sec-sub">파일을 저장하고 관리하는 도구 — Claude Code가 작업 파일을 저장할 때 필요합니다</div>
-          </div>
-        </div>
-        <div class="two-col">
-          <div>
-            <h3 style="margin-bottom: 0.7rem;">🌿 Git 설치</h3>
-            <div class="step-box">
-              <div class="step-num">STEP 1 — Git 다운로드</div>
-              <h4>아래 주소 접속 후 다운로드</h4>
-              <div class="code-block">https://git-scm.com/install/windows</div>
-              <p><strong>"Click here to download"</strong> 클릭</p>
-            </div>
-            <div class="step-box blue">
-              <div class="step-num">STEP 2 — 설치 진행</div>
-              <h4>설치 중 에디터 선택 화면에서</h4>
-              <p><strong>"Use Visual Studio Code as Git's default editor"</strong> 선택<br>
-              나머지는 모두 <strong>Next(다음)</strong> 클릭</p>
-            </div>
-          </div>
-          <div>
-            <h3 style="margin-bottom: 0.7rem;">🐙 GitHub Desktop 설치</h3>
-            <div class="step-box orange">
-              <div class="step-num">STEP 3 — GitHub Desktop 다운로드</div>
-              <h4>아래 주소 접속 후 다운로드</h4>
-              <div class="code-block">https://desktop.github.com/download/</div>
-            </div>
-            <div class="step-box purple">
-              <div class="step-num">STEP 4 — 설치 및 로그인</div>
-              <h4>GitHub 계정으로 로그인</h4>
-              <p>GitHub 계정이 없으면 <strong>github.com</strong>에서 먼저 가입합니다.<br>
-              가입 후 GitHub Desktop에서 로그인하면 됩니다.</p>
-            </div>
-            <div class="info-box" style="margin-top: 0.5rem;">
-              💡 GitHub는 작업 파일을 인터넷에 저장하는 공간입니다.<br>
-              구글 드라이브와 비슷한 개념이에요.
             </div>
           </div>
         </div>
