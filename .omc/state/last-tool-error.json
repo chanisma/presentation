@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"notebooklm use f2344d89-aa02-439f-97bf-08dfc43760b3 2>&1 && notebooklm source add \\\"C:/Users/chani/presentation/인공지능과피지컬컴퓨팅/MNIST-숫자인식/MNIST_숫자인식_실습.ipynb\\\" --json 2>&1\",\"description\":\"Set...",
-  "error": "Exit code 1\n+-----------------------------------------------------------------------------+\r\n| ID                         | Title                     | Owner | Created    |\r\n|----------------------------+---------------------------+-------+------------|\r\n| f2344d89-aa02-439f-97bf-0�� | CNN���� ���� MNIST      | Owner | 2026-03-15 |\r\n|                            | �ձ۾� ���� �ν�          |       |            |\r\n+-----------------------------------------------------------------------------+\r\n{\r\n  \"...",
-  "timestamp": "2026-03-14T16:19:59.713Z",
+  "tool_input_preview": "{\"command\":\"gws slides presentations.batchUpdate --params '{\\\"presentationId\\\":\\\"1OlgzjGKyts5TZ9jyYL-Is1vG1B_qzO2XWYim3aKjmlk\\\"}' --json '{\\n  \\\"requests\\\": [\\n    {\\n      \\\"deleteObject\\\": {\\n      ...",
+  "error": "Exit code 3\n{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"error: unrecognized subcommand 'presentations.batchUpdate'\\n\\n  tip: a similar subcommand exists: 'presentations'\\n\\nUsage: gws [OPTIONS] <COMMAND>\\n\\nFor more information, try '--help'.\\n\",\n    \"reason\": \"validationError\"\n  }\n}",
+  "timestamp": "2026-03-15T12:38:12.060Z",
   "retry_count": 1
 }

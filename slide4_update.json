@@ -1,0 +1,365 @@
+{
+  "requests": [
+    {
+      "deleteObject": {
+        "objectId": "g2c3bd9fbbdb_0_35"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "bubble_robot_1",
+        "shapeType": "WEDGE_ROUND_RECTANGLE_CALLOUT",
+        "elementProperties": {
+          "pageObjectId": "g2c3bd9fbbdb_0_6",
+          "size": {
+            "width": {
+              "magnitude": 3800000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 1050000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 5150000,
+            "translateY": 200000,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "bubble_robot_1",
+        "text": "🏭 제조 · 조립\n공장 라인 조립, 용접, 포장 등\n반복적인 제조 작업 대체",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateShapeProperties": {
+        "objectId": "bubble_robot_1",
+        "fields": "shapeBackgroundFill",
+        "shapeProperties": {
+          "shapeBackgroundFill": {
+            "solidFill": {
+              "color": {
+                "rgbColor": {
+                  "red": 1.0,
+                  "green": 0.87,
+                  "blue": 0.7
+                }
+              },
+              "alpha": 1.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "bubble_robot_1",
+        "textRange": {
+          "type": "FIXED_RANGE",
+          "startIndex": 0,
+          "endIndex": 9
+        },
+        "style": {
+          "bold": true,
+          "fontSize": {
+            "magnitude": 16,
+            "unit": "PT"
+          }
+        },
+        "fields": "bold,fontSize"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "bubble_robot_1",
+        "textRange": {
+          "type": "FIXED_RANGE",
+          "startIndex": 10,
+          "endIndex": 42
+        },
+        "style": {
+          "bold": false,
+          "fontSize": {
+            "magnitude": 13,
+            "unit": "PT"
+          }
+        },
+        "fields": "bold,fontSize"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "bubble_robot_2",
+        "shapeType": "WEDGE_ROUND_RECTANGLE_CALLOUT",
+        "elementProperties": {
+          "pageObjectId": "g2c3bd9fbbdb_0_6",
+          "size": {
+            "width": {
+              "magnitude": 3800000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 1050000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 5150000,
+            "translateY": 1400000,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "bubble_robot_2",
+        "text": "🚒 위험 · 재난 대응\n소방, 폭발물 처리, 재난 현장 등\n인간이 투입되기 위험한 작업 대체",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateShapeProperties": {
+        "objectId": "bubble_robot_2",
+        "fields": "shapeBackgroundFill",
+        "shapeProperties": {
+          "shapeBackgroundFill": {
+            "solidFill": {
+              "color": {
+                "rgbColor": {
+                  "red": 1.0,
+                  "green": 0.75,
+                  "blue": 0.75
+                }
+              },
+              "alpha": 1.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "bubble_robot_2",
+        "textRange": {
+          "type": "FIXED_RANGE",
+          "startIndex": 0,
+          "endIndex": 12
+        },
+        "style": {
+          "bold": true,
+          "fontSize": {
+            "magnitude": 16,
+            "unit": "PT"
+          }
+        },
+        "fields": "bold,fontSize"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "bubble_robot_2",
+        "textRange": {
+          "type": "FIXED_RANGE",
+          "startIndex": 13,
+          "endIndex": 51
+        },
+        "style": {
+          "bold": false,
+          "fontSize": {
+            "magnitude": 13,
+            "unit": "PT"
+          }
+        },
+        "fields": "bold,fontSize"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "bubble_robot_3",
+        "shapeType": "WEDGE_ROUND_RECTANGLE_CALLOUT",
+        "elementProperties": {
+          "pageObjectId": "g2c3bd9fbbdb_0_6",
+          "size": {
+            "width": {
+              "magnitude": 3800000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 1050000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 5150000,
+            "translateY": 2600000,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "bubble_robot_3",
+        "text": "📦 물류 · 배달\n창고 자동화, 상품 분류,\n택배 배달 등 물류 전반 대체",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateShapeProperties": {
+        "objectId": "bubble_robot_3",
+        "fields": "shapeBackgroundFill",
+        "shapeProperties": {
+          "shapeBackgroundFill": {
+            "solidFill": {
+              "color": {
+                "rgbColor": {
+                  "red": 0.75,
+                  "green": 0.87,
+                  "blue": 1.0
+                }
+              },
+              "alpha": 1.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "bubble_robot_3",
+        "textRange": {
+          "type": "FIXED_RANGE",
+          "startIndex": 0,
+          "endIndex": 9
+        },
+        "style": {
+          "bold": true,
+          "fontSize": {
+            "magnitude": 16,
+            "unit": "PT"
+          }
+        },
+        "fields": "bold,fontSize"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "bubble_robot_3",
+        "textRange": {
+          "type": "FIXED_RANGE",
+          "startIndex": 10,
+          "endIndex": 41
+        },
+        "style": {
+          "bold": false,
+          "fontSize": {
+            "magnitude": 13,
+            "unit": "PT"
+          }
+        },
+        "fields": "bold,fontSize"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "bubble_robot_4",
+        "shapeType": "WEDGE_ROUND_RECTANGLE_CALLOUT",
+        "elementProperties": {
+          "pageObjectId": "g2c3bd9fbbdb_0_6",
+          "size": {
+            "width": {
+              "magnitude": 3800000,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 1050000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 5150000,
+            "translateY": 3800000,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "bubble_robot_4",
+        "text": "🏥 의료 · 돌봄\n수술 보조, 노인·환자 케어,\n재활 훈련 지원 업무 대체",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateShapeProperties": {
+        "objectId": "bubble_robot_4",
+        "fields": "shapeBackgroundFill",
+        "shapeProperties": {
+          "shapeBackgroundFill": {
+            "solidFill": {
+              "color": {
+                "rgbColor": {
+                  "red": 0.8,
+                  "green": 0.95,
+                  "blue": 0.8
+                }
+              },
+              "alpha": 1.0
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "bubble_robot_4",
+        "textRange": {
+          "type": "FIXED_RANGE",
+          "startIndex": 0,
+          "endIndex": 9
+        },
+        "style": {
+          "bold": true,
+          "fontSize": {
+            "magnitude": 16,
+            "unit": "PT"
+          }
+        },
+        "fields": "bold,fontSize"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "bubble_robot_4",
+        "textRange": {
+          "type": "FIXED_RANGE",
+          "startIndex": 10,
+          "endIndex": 41
+        },
+        "style": {
+          "bold": false,
+          "fontSize": {
+            "magnitude": 13,
+            "unit": "PT"
+          }
+        },
+        "fields": "bold,fontSize"
+      }
+    }
+  ]
+}

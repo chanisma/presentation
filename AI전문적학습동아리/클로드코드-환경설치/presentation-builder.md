@@ -6,7 +6,7 @@ allowed-tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep", "WebFetch", "As
 # Presentation Builder - 한국 교육용 프레젠테이션 생성기
 
 단일 HTML 파일로 아름다운 프레젠테이션을 생성하는 스킬입니다.
-브라우저 윈도우 크롬 스타일의 카드 기반 디자인을 사용하며, 반응형이고 터치/키보드 네비게이션을 지원합니다.
+브라우저 윈도우 크롬 스타일의 카드 기반 디자인을 사용하며, 반응형이고 터치/키보드/마우스 휠/프레젠터 클리커 네비게이션을 지원합니다.
 
 ---
 
@@ -34,7 +34,7 @@ allowed-tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep", "WebFetch", "As
 **디자인 스타일 (30가지 모던 스타일):**
 
 사용자에게 프레젠테이션 분위기/목적을 물어보고, 아래 추천 매트릭스를 참고하여 스타일을 제안하세요.
-스타일이 선택되면 반드시 `references/styles.md`를 읽어서 해당 스타일의 상세 스펙(배경, 컬러, 폰트, 레이아웃, 시그니처 요소)을 적용합니다.
+스타일이 선택되면 반드시 `.claude/commands/references/styles.md`를 읽어서 해당 스타일의 상세 스펙(배경, 컬러, 폰트, 레이아웃, 시그니처 요소)을 적용합니다.
 
 | 프레젠테이션 목적 | 추천 스타일 |
 |-------------------|------------|
@@ -112,6 +112,8 @@ allowed-tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep", "WebFetch", "As
 | 네비 위치 | `bottom`, `top`, `hidden` | `bottom` |
 | 프로그레스바 | `top`, `bottom`, `hidden` | `top` |
 | 키보드 네비게이션 | `on`, `off` | `on` |
+| 프레젠터 클리커 | `on`, `off` | `on` |
+| 마우스 휠 네비게이션 | `on`, `off` | `on` |
 | 터치 스와이프 | `on`, `off` | `on` |
 | 슬라이드 번호 표시 | `on`, `off` | `on` |
 
@@ -135,7 +137,7 @@ allowed-tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep", "WebFetch", "As
 
 사용자가 1단계에서 디자인 스타일을 선택한 경우, 아래 워크플로우를 따릅니다:
 
-1. **스펙 로딩**: `references/styles.md`에서 선택된 스타일의 상세 스펙을 Read로 읽기
+1. **스펙 로딩**: `.claude/commands/references/styles.md`에서 선택된 스타일의 상세 스펙을 Read로 읽기
 2. **배경 적용**: 스타일의 Background 스펙을 `body` 및 `.slide` 배경에 적용
 3. **컬러 매핑**: 스타일의 Colors를 CSS 변수로 변환
    ```css
@@ -474,12 +476,38 @@ p:  1rem / line-height 1.7
 필수 기능:
 - 이전/다음 슬라이드 버튼 (SVG 아이콘: Material Icons chevron_left/chevron_right)
 - 키보드: 좌우 화살표, Space, Home, End
+- 프레젠터 클리커: PageDown(다음), PageUp(이전) — 로지텍 등 대부분의 무선 클리커 호환
+- 마우스 휠: deltaY > 0 → 다음, deltaY < 0 → 이전. 600ms 디바운스로 과도한 연속 이동 방지. `{ passive: false }`로 등록하여 `e.preventDefault()` 호출
 - 터치 스와이프 (50px 임계값)
 - 프로그레스바 업데이트
 - 슬라이드 카운터 업데이트 (input 필드로 직접 페이지 번호 입력하여 이동 가능)
 - goToSlide(index) 함수 (목차 클릭용)
 - 버튼 disabled 상태 관리
 - 페이지 번호 입력 점프: slideInput에 focus → select → 번호 입력 → Enter로 이동, Escape로 취소, blur 시에도 이동 처리, keydown에서 stopPropagation으로 좌우 화살표 충돌 방지
+
+**키보드/클리커 이벤트 핸들러 예시:**
+```javascript
+document.addEventListener('keydown', (e) => {
+  if (e.target === slideInput) return;
+  if (['ArrowRight', 'ArrowDown', ' ', 'PageDown'].includes(e.key)) {
+    e.preventDefault(); nextSlide();
+  } else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) {
+    e.preventDefault(); prevSlide();
+  } else if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+  else if (e.key === 'End')  { e.preventDefault(); goToSlide(totalSlides - 1); }
+});
+
+// 마우스 휠 (디바운스 600ms)
+let wheelLocked = false;
+document.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  if (wheelLocked) return;
+  wheelLocked = true;
+  if (e.deltaY > 0) nextSlide();
+  else if (e.deltaY < 0) prevSlide();
+  setTimeout(() => { wheelLocked = false; }, 600);
+}, { passive: false });
+```
 
 선택 기능 (설정에 따라):
 - 자동 재생 (setInterval + 일시정지/재개)
@@ -493,7 +521,7 @@ p:  1rem / line-height 1.7
 ## 5단계: 생성 워크플로우
 
 1. **설정 수집**: 위 1단계에 따라 사용자 설정 확인 (디자인 스타일 포함)
-2. **스타일 스펙 로딩**: 스타일 선택 시 `references/styles.md`를 Read로 읽어 해당 스타일의 상세 스펙 확인
+2. **스타일 스펙 로딩**: 스타일 선택 시 `.claude/commands/references/styles.md`를 Read로 읽어 해당 스타일의 상세 스펙 확인
 3. **구조 설계**: 슬라이드 순서와 각 슬라이드의 컴포넌트 구성을 정하고 사용자에게 간략히 공유
 4. **HTML 생성**: 단일 파일로 완전한 프레젠테이션 생성 (선택된 스타일의 배경, 컬러, 폰트, 레이아웃, 시그니처 요소 반영)
 5. **폴더 생성 & 파일 저장**: 아래 디렉토리 규칙에 따라 저장
@@ -683,6 +711,7 @@ function startAutoPlay(ms) {
 
 - `overflow: hidden`이 body에 설정되므로 슬라이드 내용이 넘치지 않게 조절
 - browser-content에 `overflow-y: auto`가 있어 내용이 많으면 스크롤 가능하지만, 가능하면 한 화면에 맞추는 것이 좋음
+- 네비 바가 `position: fixed; bottom: 0`으로 고정되므로, `.slide` 또는 `.browser-content`에 `padding-bottom: 3rem` 이상을 확보하여 마지막 콘텐츠가 네비 바에 가려지지 않도록 할 것
 - QR 코드 이미지는 사용자가 직접 제공하거나, placeholder 이미지를 사용
 - 실제 이미지가 필요한 경우 `<img src="placeholder.png">` + 안내 주석
 - CSS 변수를 활용하므로 나중에 색상 변경이 쉬움

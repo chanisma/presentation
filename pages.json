@@ -191,6 +191,19 @@
             { "label": "1차시", "color": "orange" }
           ],
           "gradient": "linear-gradient(90deg, #2d8a49, #43b867)"
+        },
+        {
+          "title": "알고리즘과 프로그래밍",
+          "path": "정보/알고리즘과프로그래밍/index.html",
+          "emoji": "🗼",
+          "description": "하노이의 탑 활동으로 시작하는 알고리즘 수업. 알고리즘의 정의·3가지 구조·해결 가능한 문제의 4조건을 라이트봇·코드컴뱃 체험과 함께 학습합니다.",
+          "tags": [
+            { "label": "알고리즘", "color": "purple" },
+            { "label": "하노이의탑", "color": "blue" },
+            { "label": "라이트봇", "color": "orange" },
+            { "label": "코드컴뱃", "color": "green" }
+          ],
+          "gradient": "linear-gradient(90deg, #1a237e, #3f51b5)"
         }
       ]
     }

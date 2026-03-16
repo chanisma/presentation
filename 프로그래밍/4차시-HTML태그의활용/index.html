@@ -423,24 +423,38 @@ p  { font-size: 1.05rem; line-height: 1.7; color: var(--gray-800); }
 .nav-bar {
   position: fixed; bottom: 0; left: 0; right: 0;
   display: flex; align-items: center; justify-content: center;
-  gap: 1rem; padding: 0.8rem 1.5rem;
+  gap: 0.5rem; padding: 0.35rem 1.5rem;
   background: rgba(255,255,255,0.95);
   backdrop-filter: blur(10px);
   border-top: 1px solid var(--gray-200); z-index: 999;
+  font-size: 14px;
 }
 .nav-btn {
   display: flex; align-items: center; justify-content: center;
-  width: 2.6rem; height: 2.6rem;
-  border: 1px solid var(--gray-200); border-radius: 0.5rem;
+  width: 1.8rem; height: 1.8rem;
+  border: 1.5px solid var(--gray-200); border-radius: 50%;
   background: var(--white); cursor: pointer;
-  font-size: 1.1rem; color: var(--gray-700); transition: all 0.2s;
+  font-size: 0; color: var(--gray-700); transition: all 0.2s;
+  padding: 0; line-height: 1;
 }
-.nav-btn:hover:not(:disabled) { border-color: var(--main); color: var(--main); background: var(--light); }
+.nav-btn svg { width: 0.55rem; height: 0.55rem; fill: currentColor; display: block; }
+.nav-btn:hover:not(:disabled) { border-color: var(--main); background: var(--main); }
+.nav-btn:hover:not(:disabled) svg { fill: var(--white); }
 .nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 .nav-counter {
-  font-size: 0.85rem; font-weight: 600; color: var(--gray-600);
-  min-width: 5rem; text-align: center;
+  font-size: 13px; font-weight: 700; color: var(--gray-600);
+  min-width: 3rem; text-align: center;
+  display: flex; align-items: center; gap: 0.15rem; line-height: 1;
 }
+.slide-input {
+  width: 1.4rem; text-align: center; border: none;
+  border-bottom: 1.5px solid transparent;
+  background: transparent; font-size: 13px; font-weight: 700;
+  color: inherit; font-family: inherit; padding: 0; outline: none;
+  cursor: pointer; transition: border-color 0.2s; line-height: 1;
+}
+.slide-input:hover { border-bottom-color: var(--main); }
+.slide-input:focus { border-bottom-color: var(--main); background: var(--light); border-radius: 4px; }
 
 @media (max-width: 1024px) {
   html, body { font-size: clamp(13px, 1.8vw, 18px); }
@@ -454,7 +468,6 @@ p  { font-size: 1.05rem; line-height: 1.7; color: var(--gray-800); }
 }
 @media (max-width: 480px) {
   html, body { font-size: clamp(13px, 3.5vw, 16px); }
-  .nav-btn { width: 2.2rem; height: 2.2rem; }
 }
 </style>
 </head>
@@ -728,7 +741,7 @@ p  { font-size: 1.05rem; line-height: 1.7; color: var(--gray-800); }
       <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
       <div class="title">실습</div>
     </div>
-    <div class="browser-content">
+    <div class="browser-content" style="display:flex;flex-direction:column;justify-content:center;">
       <div class="section-divider">
         <div class="section-icon">🔨</div>
         <div class="section-text">
@@ -736,30 +749,23 @@ p  { font-size: 1.05rem; line-height: 1.7; color: var(--gray-800); }
           <span class="section-sub">지난 시간에 만든 페이지에 이미지, 링크, 구조를 추가합시다</span>
         </div>
       </div>
-      <div class="compare-grid">
-        <div>
+      <div class="compare-grid" style="margin-bottom:1rem;">
+        <div style="display:flex;flex-direction:column;gap:0.6rem;">
           <div class="step-card">
             <div class="step-header"><div class="step-num">1</div><span class="step-title">&lt;div&gt;로 구획 나누기</span></div>
             <div class="step-desc">소개, 특징, 링크 등 섹션별로 &lt;div&gt;로 감싸서 구분하기</div>
-            <button class="hint-toggle" onclick="toggleHint(this)" style="margin-left:2rem;margin-top:0.2rem;font-size:0.75rem;padding:0.2rem 0.5rem;">💡 힌트</button>
-            <div class="hint-content"><div class="code-block" style="font-size:0.75rem;margin:0.2rem 0 0 2rem;padding:0.4rem 0.6rem;"><span class="tag">&lt;div&gt;</span><br>&nbsp;&nbsp;<span class="tag">&lt;h2&gt;</span>소개<span class="tag">&lt;/h2&gt;</span><br>&nbsp;&nbsp;<span class="tag">&lt;p&gt;</span>내용...<span class="tag">&lt;/p&gt;</span><br><span class="tag">&lt;/div&gt;</span></div></div>
           </div>
           <div class="step-card">
             <div class="step-header"><div class="step-num">2</div><span class="step-title">&lt;img&gt;로 이미지 넣기</span></div>
-            <div class="step-desc">프로필 사진이나 관심사 관련 이미지 추가</div>
             <div class="step-code">&lt;img src="사진.jpg" alt="설명" width="200"&gt;</div>
           </div>
           <div class="step-card">
             <div class="step-header"><div class="step-num">3</div><span class="step-title">&lt;a&gt;로 링크 연결하기</span></div>
-            <div class="step-desc">좋아하는 사이트, 영상, SNS 등 링크 추가</div>
             <div class="step-code">&lt;a href="주소" target="_blank"&gt;이름&lt;/a&gt;</div>
           </div>
           <div class="challenge-box">
             <h4>🏆 도전 과제</h4>
-            <p>이미지에 링크를 걸어보세요! &lt;a&gt; 안에 &lt;img&gt;를 넣으면 이미지를 클릭하면 다른 사이트로 이동합니다.</p>
-          </div>
-          <div class="info-box orange" style="margin-top:0.5rem;padding:0.6rem 0.8rem;font-size:0.85rem;">
-            💡 이미지 파일이 없다면?<br>같은 폴더에 저장하거나, 인터넷 이미지 주소(URL)를 사용하세요!
+            <p>&lt;a&gt; 안에 &lt;img&gt;를 넣어 이미지를 클릭하면 다른 사이트로 이동하도록 만들어보세요!</p>
           </div>
         </div>
         <div>
@@ -781,8 +787,10 @@ p  { font-size: 1.05rem; line-height: 1.7; color: var(--gray-800); }
               </div>
             </div>
           </div>
-          <p style="font-size:0.78rem;color:var(--gray-600);margin-top:0.4rem;text-align:center;">div로 각 섹션이 나뉘어져 있는 것에 주목하세요!</p>
         </div>
+      </div>
+      <div style="text-align:center;margin-top:0.8rem;">
+        <a href="https://forms.gle/REPLACE_THIS_URL" target="_blank" class="link-btn" style="font-size:0.95rem;">📝 코드 제출하기</a>
       </div>
     </div>
   </div>
@@ -882,9 +890,15 @@ p  { font-size: 1.05rem; line-height: 1.7; color: var(--gray-800); }
 
 <!-- Navigation -->
 <div class="nav-bar">
-  <button class="nav-btn" id="prevBtn" onclick="prevSlide()" disabled>◀</button>
-  <span class="nav-counter" id="navCounter">1 / 10</span>
-  <button class="nav-btn" id="nextBtn" onclick="nextSlide()">▶</button>
+  <button class="nav-btn" id="prevBtn" onclick="prevSlide()" disabled aria-label="이전">
+    <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+  </button>
+  <span class="nav-counter">
+    <input type="text" class="slide-input" id="slideInput" value="1" aria-label="슬라이드 번호 입력"> / <span id="totalSlides">10</span>
+  </span>
+  <button class="nav-btn" id="nextBtn" onclick="nextSlide()" aria-label="다음">
+    <svg viewBox="0 0 24 24"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+  </button>
 </div>
 
 <script>
@@ -892,9 +906,12 @@ const slides = document.querySelectorAll('.slide');
 const totalSlides = slides.length;
 let currentSlide = 0;
 
+const slideInput = document.getElementById('slideInput');
+document.getElementById('totalSlides').textContent = totalSlides;
+
 function updateSlide() {
   slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
-  document.getElementById('navCounter').textContent = (currentSlide + 1) + ' / ' + totalSlides;
+  slideInput.value = currentSlide + 1;
   document.getElementById('prevBtn').disabled = currentSlide === 0;
   document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
   document.getElementById('progressBar').style.width = ((currentSlide + 1) / totalSlides * 100) + '%';
@@ -903,6 +920,18 @@ function updateSlide() {
 function nextSlide() { if (currentSlide < totalSlides - 1) { currentSlide++; updateSlide(); } }
 function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlide(); } }
 function goToSlide(index) { if (index >= 0 && index < totalSlides) { currentSlide = index; updateSlide(); } }
+
+// 슬라이드 번호 직접 입력
+slideInput.addEventListener('focus', function() { this.select(); });
+slideInput.addEventListener('keydown', function(e) {
+  e.stopPropagation();
+  if (e.key === 'Enter') { const n = parseInt(this.value) - 1; goToSlide(isNaN(n) ? currentSlide : Math.max(0, Math.min(n, totalSlides - 1))); this.blur(); }
+  if (e.key === 'Escape') { this.value = currentSlide + 1; this.blur(); }
+});
+slideInput.addEventListener('blur', function() {
+  const n = parseInt(this.value) - 1;
+  goToSlide(isNaN(n) ? currentSlide : Math.max(0, Math.min(n, totalSlides - 1)));
+});
 
 document.addEventListener('keydown', function(e) {
   if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }

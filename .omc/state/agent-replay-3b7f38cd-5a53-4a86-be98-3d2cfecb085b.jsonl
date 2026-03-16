@@ -1,0 +1,3 @@
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"find-skills"}
+{"t":0,"agent":"system","event":"skill_invoked","skill_name":"pptx"}
+{"t":0,"agent":"aa9a5fb","agent_type":"unknown","event":"agent_stop","success":true}

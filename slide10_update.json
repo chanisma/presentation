@@ -1,0 +1,386 @@
+{
+  "requests": [
+    {
+      "deleteObject": {
+        "objectId": "g2c3bd9fbbdb_0_245"
+      }
+    },
+    {
+      "deleteObject": {
+        "objectId": "g37898d34f89_0_30"
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "q_box_1",
+        "shapeType": "ROUND_RECTANGLE",
+        "elementProperties": {
+          "pageObjectId": "g2c3bd9fbbdb_0_226",
+          "size": {
+            "width": {
+              "magnitude": 8229600,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 1100000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 457200,
+            "translateY": 950000,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "q_box_1",
+        "text": "①  내가 AI로 해결하고 싶은 문제는?",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateShapeProperties": {
+        "objectId": "q_box_1",
+        "fields": "shapeBackgroundFill,outline",
+        "shapeProperties": {
+          "shapeBackgroundFill": {
+            "solidFill": {
+              "color": {
+                "rgbColor": {
+                  "red": 0.91,
+                  "green": 0.95,
+                  "blue": 1.0
+                }
+              },
+              "alpha": 1.0
+            }
+          },
+          "outline": {
+            "outlineFill": {
+              "solidFill": {
+                "color": {
+                  "rgbColor": {
+                    "red": 0.24,
+                    "green": 0.52,
+                    "blue": 0.87
+                  }
+                }
+              }
+            },
+            "weight": {
+              "magnitude": 27000,
+              "unit": "EMU"
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "q_box_1",
+        "textRange": {
+          "type": "FIXED_RANGE",
+          "startIndex": 0,
+          "endIndex": 2
+        },
+        "style": {
+          "bold": true,
+          "fontSize": {
+            "magnitude": 28,
+            "unit": "PT"
+          },
+          "foregroundColor": {
+            "opaqueColor": {
+              "rgbColor": {
+                "red": 0.24,
+                "green": 0.52,
+                "blue": 0.87
+              }
+            }
+          }
+        },
+        "fields": "bold,fontSize,foregroundColor"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "q_box_1",
+        "textRange": {
+          "type": "FIXED_RANGE",
+          "startIndex": 2,
+          "endIndex": 22
+        },
+        "style": {
+          "bold": true,
+          "fontSize": {
+            "magnitude": 22,
+            "unit": "PT"
+          }
+        },
+        "fields": "bold,fontSize"
+      }
+    },
+    {
+      "updateShapeProperties": {
+        "objectId": "q_box_1",
+        "fields": "contentAlignment",
+        "shapeProperties": {
+          "contentAlignment": "MIDDLE"
+        }
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "q_box_2",
+        "shapeType": "ROUND_RECTANGLE",
+        "elementProperties": {
+          "pageObjectId": "g2c3bd9fbbdb_0_226",
+          "size": {
+            "width": {
+              "magnitude": 8229600,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 1100000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 457200,
+            "translateY": 2250000,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "q_box_2",
+        "text": "②  그 AI가 잘 작동하려면 어떤 데이터가 필요할까?",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateShapeProperties": {
+        "objectId": "q_box_2",
+        "fields": "shapeBackgroundFill,outline",
+        "shapeProperties": {
+          "shapeBackgroundFill": {
+            "solidFill": {
+              "color": {
+                "rgbColor": {
+                  "red": 0.95,
+                  "green": 1.0,
+                  "blue": 0.91
+                }
+              },
+              "alpha": 1.0
+            }
+          },
+          "outline": {
+            "outlineFill": {
+              "solidFill": {
+                "color": {
+                  "rgbColor": {
+                    "red": 0.18,
+                    "green": 0.65,
+                    "blue": 0.33
+                  }
+                }
+              }
+            },
+            "weight": {
+              "magnitude": 27000,
+              "unit": "EMU"
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "q_box_2",
+        "textRange": {
+          "type": "FIXED_RANGE",
+          "startIndex": 0,
+          "endIndex": 2
+        },
+        "style": {
+          "bold": true,
+          "fontSize": {
+            "magnitude": 28,
+            "unit": "PT"
+          },
+          "foregroundColor": {
+            "opaqueColor": {
+              "rgbColor": {
+                "red": 0.18,
+                "green": 0.65,
+                "blue": 0.33
+              }
+            }
+          }
+        },
+        "fields": "bold,fontSize,foregroundColor"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "q_box_2",
+        "textRange": {
+          "type": "FIXED_RANGE",
+          "startIndex": 2,
+          "endIndex": 30
+        },
+        "style": {
+          "bold": true,
+          "fontSize": {
+            "magnitude": 22,
+            "unit": "PT"
+          }
+        },
+        "fields": "bold,fontSize"
+      }
+    },
+    {
+      "updateShapeProperties": {
+        "objectId": "q_box_2",
+        "fields": "contentAlignment",
+        "shapeProperties": {
+          "contentAlignment": "MIDDLE"
+        }
+      }
+    },
+    {
+      "createShape": {
+        "objectId": "q_box_3",
+        "shapeType": "ROUND_RECTANGLE",
+        "elementProperties": {
+          "pageObjectId": "g2c3bd9fbbdb_0_226",
+          "size": {
+            "width": {
+              "magnitude": 8229600,
+              "unit": "EMU"
+            },
+            "height": {
+              "magnitude": 1100000,
+              "unit": "EMU"
+            }
+          },
+          "transform": {
+            "scaleX": 1,
+            "scaleY": 1,
+            "translateX": 457200,
+            "translateY": 3550000,
+            "unit": "EMU"
+          }
+        }
+      }
+    },
+    {
+      "insertText": {
+        "objectId": "q_box_3",
+        "text": "③  AI가 '잘 학습했다'는 걸 어떻게 확인할 수 있을까?",
+        "insertionIndex": 0
+      }
+    },
+    {
+      "updateShapeProperties": {
+        "objectId": "q_box_3",
+        "fields": "shapeBackgroundFill,outline",
+        "shapeProperties": {
+          "shapeBackgroundFill": {
+            "solidFill": {
+              "color": {
+                "rgbColor": {
+                  "red": 1.0,
+                  "green": 0.95,
+                  "blue": 0.88
+                }
+              },
+              "alpha": 1.0
+            }
+          },
+          "outline": {
+            "outlineFill": {
+              "solidFill": {
+                "color": {
+                  "rgbColor": {
+                    "red": 0.9,
+                    "green": 0.45,
+                    "blue": 0.13
+                  }
+                }
+              }
+            },
+            "weight": {
+              "magnitude": 27000,
+              "unit": "EMU"
+            }
+          }
+        }
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "q_box_3",
+        "textRange": {
+          "type": "FIXED_RANGE",
+          "startIndex": 0,
+          "endIndex": 2
+        },
+        "style": {
+          "bold": true,
+          "fontSize": {
+            "magnitude": 28,
+            "unit": "PT"
+          },
+          "foregroundColor": {
+            "opaqueColor": {
+              "rgbColor": {
+                "red": 0.9,
+                "green": 0.45,
+                "blue": 0.13
+              }
+            }
+          }
+        },
+        "fields": "bold,fontSize,foregroundColor"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "objectId": "q_box_3",
+        "textRange": {
+          "type": "FIXED_RANGE",
+          "startIndex": 2,
+          "endIndex": 33
+        },
+        "style": {
+          "bold": true,
+          "fontSize": {
+            "magnitude": 22,
+            "unit": "PT"
+          }
+        },
+        "fields": "bold,fontSize"
+      }
+    },
+    {
+      "updateShapeProperties": {
+        "objectId": "q_box_3",
+        "fields": "contentAlignment",
+        "shapeProperties": {
+          "contentAlignment": "MIDDLE"
+        }
+      }
+    }
+  ]
+}
