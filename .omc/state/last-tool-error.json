@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"gws slides presentations.batchUpdate --params '{\\\"presentationId\\\":\\\"1OlgzjGKyts5TZ9jyYL-Is1vG1B_qzO2XWYim3aKjmlk\\\"}' --json '{\\n  \\\"requests\\\": [\\n    {\\n      \\\"deleteObject\\\": {\\n      ...",
-  "error": "Exit code 3\n{\n  \"error\": {\n    \"code\": 400,\n    \"message\": \"error: unrecognized subcommand 'presentations.batchUpdate'\\n\\n  tip: a similar subcommand exists: 'presentations'\\n\\nUsage: gws [OPTIONS] <COMMAND>\\n\\nFor more information, try '--help'.\\n\",\n    \"reason\": \"validationError\"\n  }\n}",
-  "timestamp": "2026-03-15T12:38:12.060Z",
-  "retry_count": 1
+  "tool_input_preview": "{\"command\":\"gcloud auth login --scopes=\\\"https://www.googleapis.com/auth/forms.body,https://www.googleapis.com/auth/drive\\\" --enable-gdrive-access 2>&1\",\"description\":\"Re-auth gcloud with Forms scope\"...",
+  "error": "Exit code 2\nERROR: (gcloud.auth.login) unrecognized arguments: --scopes=https://www.googleapis.com/auth/forms.body,https://www.googleapis.com/auth/drive \r\n\r\nTo search the help text of gcloud commands, run:\r\n  gcloud help -- SEARCH_TERMS",
+  "timestamp": "2026-03-16T00:27:56.117Z",
+  "retry_count": 3
 }

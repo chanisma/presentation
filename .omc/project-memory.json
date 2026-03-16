@@ -68,6 +68,13 @@
       "keyFiles": []
     }
   },
-  "hotPaths": [],
+  "hotPaths": [
+    {
+      "path": "프로그래밍\\4차시-HTML태그의활용\\index.html",
+      "accessCount": 2,
+      "lastAccessed": 1773620949956,
+      "type": "file"
+    }
+  ],
   "userDirectives": []
 }
