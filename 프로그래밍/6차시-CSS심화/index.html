@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>6차시 - CSS 심화: 응용과 레이아웃</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* 1. Reset & CSS Variables */
+    :root {
+      /* Theme: Blue Accent since it's programming */
+      --main: #2196f3;
+      --dark: #1565c0;
+      --light: #e3f2fd;
+      --accent: #42a5f5;
+
+      /* Base Colors */
+      --white: #ffffff;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-300: #cbd5e1;
+      --gray-400: #94a3b8;
+      --gray-500: #64748b;
+      --gray-600: #475569;
+      --gray-700: #334155;
+      --gray-800: #1e293b;
+      --gray-900: #0f172a;
+
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      --shadow-glow: 0 0 20px rgba(33, 150, 243, 0.3);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: clamp(16px, 1.5vw, 28px);
+      line-height: 1.6;
+      color: var(--gray-800);
+      background-color: var(--gray-100);
+      background-image: radial-gradient(var(--gray-300) 1px, transparent 1px);
+      background-size: 40px 40px;
+      overflow: hidden;
+    }
+
+    /* 2. Base Typography */
+    h1 {
+      font-size: 2.4rem;
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--gray-900);
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--gray-800);
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--gray-700);
+    }
+
+    p {
+      font-size: 1rem;
+    }
+
+    strong {
+      color: var(--main);
+    }
+
+    /* 3. Slide Container & Navigation */
+    .presentation {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+      transform: translateY(20px);
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+      z-index: 10;
+    }
+
+    /* 4. Browser Card Chrome */
+    .browser-card {
+      width: 100%;
+      max-width: 1400px;
+      height: 85vh;
+      max-height: 900px;
+      background: var(--white);
+      border-radius: 1rem;
+      box-shadow: var(--shadow-xl);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--gray-200);
+    }
+
+    .browser-topbar {
+      height: 2.5rem;
+      background: var(--light);
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      gap: 0.5rem;
+    }
+
+    .browser-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .browser-dot.r {
+      background: #ff5f56;
+    }
+
+    .browser-dot.y {
+      background: #ffbd2e;
+    }
+
+    .browser-dot.g {
+      background: #27c93f;
+    }
+
+    .browser-title {
+      flex: 1;
+      text-align: center;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--gray-500);
+      margin-left: -2rem;
+      /* offset dots */
+    }
+
+    .browser-content {
+      flex: 1;
+      padding: 3rem 4rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 5. Slide Components */
+    .badge {
+      display: inline-block;
+      padding: 0.3em 1em;
+      background: var(--light);
+      color: var(--dark);
+      border-radius: 2rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    /* Center Layout */
+    .slide-center {
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Two Column Layout */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      flex: 1;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+      flex: 1;
+    }
+
+    .info-box {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-left: 4px solid var(--main);
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+    }
+
+    .info-box h3 {
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    code.inline {
+      font-family: 'Fira Code', monospace;
+      background: var(--gray-100);
+      padding: 0.2em 0.4em;
+      border-radius: 0.3em;
+      font-size: 0.9em;
+      color: #e91e63;
+    }
+
+    ul.styled-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    ul.styled-list li {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    ul.styled-list li::before {
+      content: '✅';
+      position: absolute;
+      left: 0;
+      top: 0.2rem;
+      font-size: 1rem;
+    }
+
+    /* Code Playground */
+    .playground {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      border: 1px solid var(--gray-300);
+      border-radius: 0.5rem;
+      overflow: hidden;
+    }
+
+    .playground-header {
+      background: var(--gray-100);
+      padding: 0.5rem 1rem;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border-bottom: 1px solid var(--gray-300);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .playground-body {
+      display: flex;
+      flex: 1;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .editor-pane {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--gray-300);
+      background: #1e1e1e;
+    }
+
+    .pane-title {
+      background: #2d2d2d;
+      color: #d4d4d4;
+      font-size: 0.8rem;
+      padding: 0.2rem 0.8rem;
+      font-family: 'Fira Code', monospace;
+      border-bottom: 1px solid #1e1e1e;
+    }
+
+    .code-editor {
+      flex: 1;
+      width: 100%;
+      resize: none;
+      border: none;
+      background: transparent;
+      color: #d4d4d4;
+      font-family: 'Fira Code', monospace;
+      font-size: 1rem;
+      padding: 1rem;
+      outline: none;
+      line-height: 1.5;
+    }
+
+    .preview-pane {
+      flex: 1;
+      background: white;
+      position: relative;
+    }
+
+    .code-preview {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Progress bar */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      background: var(--main);
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.3s;
+    }
+
+    /* Nav Bar */
+    .nav-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.35rem 1.5rem;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--gray-200);
+      z-index: 999;
+      font-size: 14px;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.8rem;
+      height: 1.8rem;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 50%;
+      background: var(--white);
+      cursor: pointer;
+      color: var(--gray-700);
+      transition: all 0.2s;
+      padding: 0;
+    }
+
+    .nav-btn svg {
+      width: 0.8rem;
+      height: 0.8rem;
+      fill: currentColor;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      border-color: var(--main);
+      background: var(--main);
+      color: white;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .nav-counter {
+      font-weight: 700;
+      color: var(--gray-600);
+    }
+
+    .slide-input {
+      width: 1.5rem;
+      text-align: center;
+      border: none;
+      font-weight: 700;
+      font-size: 14px;
+      background: transparent;
+      color: inherit;
+      outline: none;
+      border-bottom: 2px solid transparent;
+    }
+
+    .slide-input:focus {
+      border-bottom-color: var(--main);
+    }
+
+    .task-link {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      background: var(--main);
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.2rem;
+      border-radius: 0.5rem;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .task-link:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-glow);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="progress-bar" id="progressBar"></div>
+
+  <div class="presentation" id="presentation">
+
+    <!-- Slide 1: Cover -->
+    <div class="slide active" data-slide="0">
+      <div class="browser-card">
+        <div class="browser-topbar">
+          <div class="browser-dot r"></div>
+          <div class="browser-dot y"></div>
+          <div class="browser-dot g"></div>
+          <div class="browser-title">프로그래밍 6차시</div>
+        </div>
+        <div class="browser-content slide-center">
+          <span class="badge">프로그래밍 6차시</span>
+          <h1>CSS 심화:<br>응용과 레이아웃</h1>
+          <p style="margin-top: 1rem; color: var(--gray-500); font-size: 1.2rem;">식별자 CSS 설정 / 자손·자식 선택자 / Margin과
+            Padding / Flex 배치</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: TOC -->
+    <div class="slide" data-slide="1">
+      <div class="browser-card">
+        <div class="browser-topbar">
+          <div class="browser-dot r"></div>
+          <div class="browser-dot y"></div>
+          <div class="browser-dot g"></div>
+          <div class="browser-title">목차</div>
+        </div>
+        <div class="browser-content">
+          <h2>오늘 배울 내용 🎯</h2>
+          <div class="grid-2" style="margin-top: 2rem;">
+            <div class="info-box" style="cursor: pointer;" onclick="goToSlide(3)">
+              <h3>1. 식별자에 CSS 설정하기</h3>
+              <p><code class="inline">class</code>와 <code class="inline">id</code> 속성을 이용해서 원하는 요소에만 디자인 입히기</p>
+            </div>
+            <div class="info-box" style="cursor: pointer;" onclick="goToSlide(4)">
+              <h3>2. 선택자 응용 심화</h3>
+              <p>자손 선택자와 자식 선택자를 활용한 정교한 스타일링</p>
+            </div>
+            <div class="info-box" style="cursor: pointer;" onclick="goToSlide(5)">
+              <h3>3. 여백 (Margin, Padding)</h3>
+              <p>요소의 안쪽 여백과 바깥쪽 여백으로 숨통 트이게 만들기</p>
+            </div>
+            <div class="info-box" style="cursor: pointer;" onclick="goToSlide(6)">
+              <h3>4. 레이아웃 배치 (Flexbox)</h3>
+              <p><code class="inline">display: flex;</code>를 이용한 마법같은 정렬과 배치</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Intro to interactive editor -->
+    <div class="slide" data-slide="2">
+      <div class="browser-card">
+        <div class="browser-topbar">
+          <div class="browser-dot r"></div>
+          <div class="browser-dot y"></div>
+          <div class="browser-dot g"></div>
+          <div class="browser-title">실습 안내</div>
+        </div>
+        <div class="browser-content slide-center">
+          <span class="badge">실시간 코드 에디터</span>
+          <h2>직접 코딩하며 결과 확인하기 💻</h2>
+          <p style="max-width: 800px; margin: 1rem auto; font-size: 1.1rem;">
+            다음 슬라이드부터는 소스 코드를 직접 수정해볼 수 있는 <strong>코드 에디터</strong>가 나옵니다.<br>
+            코드를 변경하면 오른쪽에 즉시결과가 반영됩니다.<br><br>
+            실습을 통해 CSS의 속성을 눈으로 직접 확인해보세요!
+          </p>
+          <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f680/512.webp" alt="로켓"
+            style="width: 100px; margin-top: 2rem;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Class and ID -->
+    <div class="slide" data-slide="3">
+      <div class="browser-card">
+        <div class="browser-topbar">
+          <div class="browser-dot r"></div>
+          <div class="browser-dot y"></div>
+          <div class="browser-dot g"></div>
+          <div class="browser-title">1. 식별자에 CSS 설정하기</div>
+        </div>
+        <div class="browser-content" style="padding-bottom: 2rem;">
+          <h2 style="margin-bottom: 0.5rem;">특정 요소만 골라서 꾸미기 (class, id)</h2>
+          <p style="margin-bottom: 1rem; font-size: 0.95rem;">
+            <code>.클래스이름</code> (점을 찍습니다) / <code>#아이디이름</code> (샵을 찍습니다)
+          </p>
+
+          <div class="playground">
+            <div class="playground-body">
+              <div class="editor-pane">
+                <div class="pane-title">HTML (수정해보세요)</div>
+                <textarea class="code-editor html-editor" id="html-1" data-id="1">
+<div class="box">나는 일반 박스야!</div>
+<div class="box highlight">나는 강조된 박스야!</div>
+<div class="box" id="special">나는 특별한 아이디를 가진 박스야!</div>
+<div class="box">나도 그냥 박스야!</div></textarea>
+                <div class="pane-title">CSS (수정해보세요)</div>
+                <textarea class="code-editor css-editor" id="css-1" data-id="1">
+.box { 
+  background-color: lightgray;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.highlight { 
+  color: red; 
+  font-weight: bold; 
+}
+#special { 
+  background-color: gold; 
+  border: 2px dashed black; 
+}</textarea>
+              </div>
+              <div class="preview-pane">
+                <iframe class="code-preview" id="preview-1"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Descendant / Child selection -->
+    <div class="slide" data-slide="4">
+      <div class="browser-card">
+        <div class="browser-topbar">
+          <div class="browser-dot r"></div>
+          <div class="browser-dot y"></div>
+          <div class="browser-dot g"></div>
+          <div class="browser-title">2. 선택자 응용 심화</div>
+        </div>
+        <div class="browser-content" style="padding-bottom: 2rem;">
+          <h2 style="margin-bottom: 0.5rem;">자손 선택자(띄어쓰기)와 자식 선택자(>)</h2>
+          <p style="margin-bottom: 1rem; font-size: 0.95rem;">
+            <code class="inline">A B</code> : A 안의 모든 B (자손)<br>
+            <code class="inline">A > B</code> : A 바로 아래의 첫 단계 B (자식)
+          </p>
+
+          <div class="playground">
+            <div class="playground-body">
+              <div class="editor-pane">
+                <div class="pane-title">HTML</div>
+                <textarea class="code-editor html-editor" id="html-2" data-id="2">
+<ul class="menu">
+  <li>메뉴 1</li>
+  <li>메뉴 2
+    <ul>
+      <li>서브메뉴 A</li>
+      <li>서브메뉴 B</li>
+    </ul>
+  </li>
+</ul></textarea>
+                <div class="pane-title">CSS</div>
+                <textarea class="code-editor css-editor" id="css-2" data-id="2">
+/* .menu 안의 모든 자손 li 스타일 변경 */
+.menu li {
+  color: blue; 
+}
+
+/* .menu 바로 아래 첫 번째 자식 li만 스타일 변경 */
+.menu > li {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* 서브메뉴 글씨색을 자손 선택자로 조작해보세요 */
+</textarea>
+              </div>
+              <div class="preview-pane">
+                <iframe class="code-preview" id="preview-2"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Margin and Padding -->
+    <div class="slide" data-slide="5">
+      <div class="browser-card">
+        <div class="browser-topbar">
+          <div class="browser-dot r"></div>
+          <div class="browser-dot y"></div>
+          <div class="browser-dot g"></div>
+          <div class="browser-title">3. 여백 (Margin 과 Padding)</div>
+        </div>
+        <div class="browser-content" style="padding-bottom: 2rem;">
+          <h2 style="margin-bottom: 0.5rem;">박스 모델의 핵심: Margin & Padding</h2>
+          <p style="margin-bottom: 1rem; font-size: 0.95rem;">
+            <code class="inline">margin</code>: 박스 <strong>바깥쪽</strong> 여백 (요소 사이의 간격) / <code
+              class="inline">padding</code>: 박스 <strong>안쪽</strong> 여백 (내용물과 테두리 사이 간격)
+          </p>
+
+          <div class="playground">
+            <div class="playground-body">
+              <div class="editor-pane">
+                <div class="pane-title">HTML</div>
+                <textarea class="code-editor html-editor" id="html-3" data-id="3">
+<div class="container">
+  <div class="box box1">Box 1</div>
+  <div class="box box2">Box 2</div>
+  <div class="box box3">Box 3</div>
+</div></textarea>
+                <div class="pane-title">CSS</div>
+                <textarea class="code-editor css-editor" id="css-3" data-id="3">
+.container { background-color: #f1f5f9; border: 2px solid #cbd5e1; }
+.box {
+  background-color: #42a5f5;
+  color: white;
+  border: 2px solid #1565c0;
+}
+
+/* box1: 안쪽 여백 주기 */
+.box1 {
+  padding: 20px;
+}
+
+/* box2: 양쪽 바깥 여백 주기 & 중앙정렬 응용 */
+.box2 {
+  margin: 30px auto; 
+  width: 150px;
+  text-align: center;
+}
+
+/* box3: 위쪽 여백만 주기 */
+.box3 {
+  margin-top: 50px;
+}</textarea>
+              </div>
+              <div class="preview-pane">
+                <iframe class="code-preview" id="preview-3"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Flexbox -->
+    <div class="slide" data-slide="6">
+      <div class="browser-card">
+        <div class="browser-topbar">
+          <div class="browser-dot r"></div>
+          <div class="browser-dot y"></div>
+          <div class="browser-dot g"></div>
+          <div class="browser-title">4. 레이아웃 배치 (Flexbox)</div>
+        </div>
+        <div class="browser-content" style="padding-bottom: 2rem;">
+          <h2 style="margin-bottom: 0.5rem;">display: flex; 가로 세로 배치의 마법사</h2>
+          <p style="margin-bottom: 1rem; font-size: 0.95rem;">
+            부모 요소에 <code class="inline">display: flex;</code>를 주면 자식들을 쉽게 정렬할 수 있습니다.<br>
+            <code class="inline">flex-direction</code>을 사용하면 가로(row) 또는 세로(column) 방향을 설정할 수 있습니다.
+          </p>
+
+          <div class="playground">
+            <div class="playground-body">
+              <div class="editor-pane">
+                <div class="pane-title">HTML</div>
+                <textarea class="code-editor html-editor" id="html-4" data-id="4">
+<div class="flex-container">
+  <div class="item">Item 1</div>
+  <div class="item">Item 2</div>
+  <div class="item">Item 3</div>
+  <div class="item">Item 4</div>
+</div></textarea>
+                <div class="pane-title">CSS</div>
+                <textarea class="code-editor css-editor" id="css-4" data-id="4">
+.flex-container {
+  display: flex;     /* 플렉스 박스로 만듭니다 */
+  flex-direction: row; /* row: 가로, column: 세로 */
+  gap: 15px;         /* 항목 사이의 간격 */
+  
+  /* 주축 기준 정렬 (space-between, center, flex-end) */
+  justify-content: flex-start;  
+  
+  /* 교차축 기준 정렬 (center, flex-end, stretch) */
+  align-items: center; 
+  
+  background-color: #e2e8f0;
+  height: 200px;
+  padding: 20px;
+}
+
+.item {
+  background-color: #ff9800;
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  font-weight: bold;
+}</textarea>
+              </div>
+              <div class="preview-pane">
+                <iframe class="code-preview" id="preview-4"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Practice Assignment -->
+    <div class="slide" data-slide="7">
+      <div class="browser-card">
+        <div class="browser-topbar">
+          <div class="browser-dot r"></div>
+          <div class="browser-dot y"></div>
+          <div class="browser-dot g"></div>
+          <div class="browser-title">실습 과제</div>
+        </div>
+        <div class="browser-content slide-center">
+          <span class="badge" style="background:var(--accent); color:var(--white);">최종 미션</span>
+          <h2>나만의 자기소개 페이지 완성하기 🚀</h2>
+          <div class="info-box"
+            style="margin-top: 2rem; max-width: 600px; text-align: left; margin-left: auto; margin-right: auto;">
+            <h3>✔️ 실습 체크리스트</h3>
+            <ul class="styled-list" style="margin-top: 1rem; font-size: 1.05rem;">
+              <li>지금까지 만들었던 자기소개 HTML 문서를 엽니다.</li>
+              <li>오늘 배운 <strong>Margin</strong>과 <strong>Padding</strong>을 사용해 디자인 간격을 띄워주세요.</li>
+              <li>Flexbox (<code>display: flex</code>)를 이용하여 프로필 사진과 소개글을 <strong>나란히 배치</strong>해보세요.</li>
+              <li><code>class</code> 또는 <code>id</code> 속성을 이용해서 포인트 컬러를 적용해주세요.</li>
+            </ul>
+          </div>
+          <p style="margin-top: 2rem; color: var(--gray-600);">실습을 완료했다면, 아래 구글 폼 링크로 결과 코드를 제출해주세요!</p>
+          <a href="https://forms.gle/bh8ah3u4Ug9PhG2T9" target="_blank" class="task-link">📝 구글 폼으로 과제 제출하기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="prevSlide()" disabled aria-label="이전"><svg viewBox="0 0 24 24">
+        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+      </svg></button>
+    <span class="nav-counter"><input type="text" class="slide-input" id="slideInput" value="1" aria-label="슬라이드 번호 입력">
+      / <span id="totalSlides">8</span></span>
+    <button class="nav-btn" id="nextBtn" onclick="nextSlide()" aria-label="다음"><svg viewBox="0 0 24 24">
+        <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" />
+      </svg></button>
+  </div>
+
+  <script>
+    // Navigation Logic
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const progress = document.getElementById('progressBar');
+    const input = document.getElementById('slideInput');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    let currentSlide = 0;
+    document.getElementById('totalSlides').textContent = totalSlides;
+
+    function updateNav() {
+      slides.forEach((s, i) => {
+        if (i === currentSlide) {
+          s.classList.add('active');
+        } else {
+          s.classList.remove('active');
+        }
+      });
+      progress.style.width = ((currentSlide + 1) / totalSlides * 100) + '%';
+      input.value = currentSlide + 1;
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === totalSlides - 1;
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateNav();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateNav();
+      }
+    }
+
+    function goToSlide(n) {
+      if (n >= 0 && n < totalSlides) {
+        currentSlide = n;
+        updateNav();
+      }
+    }
+
+    // Keyboard navigation (skip if inside textarea or input)
+    document.addEventListener('keydown', (e) => {
+      // Input 필드에서 처리 방지
+      if (e.target.tagName.toLowerCase() === 'textarea' || e.target.tagName.toLowerCase() === 'input') {
+        return;
+      }
+
+      if (['ArrowRight', 'ArrowDown', ' ', 'PageDown'].includes(e.key)) {
+        e.preventDefault();
+        nextSlide();
+      } else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        goToSlide(0);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        goToSlide(totalSlides - 1);
+      }
+    });
+
+    // Input jump logic
+    input.addEventListener('keydown', (e) => {
+      e.stopPropagation(); // prevent document keydown
+      if (e.key === 'Enter') {
+        let val = parseInt(input.value) - 1;
+        if (!isNaN(val)) goToSlide(Math.max(0, Math.min(val, totalSlides - 1)));
+        input.blur();
+      } else if (e.key === 'Escape') {
+        input.value = currentSlide + 1;
+        input.blur();
+      }
+    });
+
+    // Mouse wheel navigation
+    let wheelLocked = false;
+    document.addEventListener('wheel', (e) => {
+      // 코드 에디터 내부 스크롤 시에는 슬라이드 넘김 방지
+      if (e.target.closest('.code-editor') || e.target.closest('.preview-pane')) return;
+
+      e.preventDefault();
+      if (wheelLocked) return;
+      wheelLocked = true;
+      if (e.deltaY > 0) nextSlide();
+      else if (e.deltaY < 0) prevSlide();
+      setTimeout(() => { wheelLocked = false; }, 600);
+    }, { passive: false });
+
+    // Live Code Editor Logic
+    function updatePreview(id) {
+      const htmlEditor = document.getElementById(`html-${id}`);
+      const cssEditor = document.getElementById(`css-${id}`);
+      const iframe = document.getElementById(`preview-${id}`);
+
+      if (!htmlEditor || !cssEditor || !iframe) return;
+
+      const htmlCode = htmlEditor.value;
+      const cssCode = cssEditor.value;
+
+      // template literal 파싱 오류 방지를 위해 분리 처리 (이전 에러 원인)
+      const content = "<!DOCTYPE html>\n<html>\n<head>\n<style>\nbody { font-family: 'Noto Sans KR', sans-serif; padding: 15px; margin: 0; box-sizing: border-box; }\n" + cssCode + "\n</style>\n</head>\n<body>\n" + htmlCode + "\n</body>\n</html>";
+
+      // Use srcdoc which is robust
+      iframe.srcdoc = content;
+    }
+
+    // Add event listeners and init
+    document.querySelectorAll('.html-editor, .css-editor').forEach(editor => {
+      editor.addEventListener('input', (e) => {
+        const id = e.target.getAttribute('data-id');
+        updatePreview(id);
+      });
+    });
+
+    // Initial render
+    [1, 2, 3, 4].forEach(id => updatePreview(id));
+    updateNav();
+  </script>
+</body>
+
+</html>

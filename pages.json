@@ -113,6 +113,27 @@
             }
           ],
           "gradient": "linear-gradient(90deg, #1565c0, #42a5f5)"
+        },
+        {
+          "title": "6차시 - CSS 심화: 응용과 레이아웃",
+          "path": "프로그래밍/6차시-CSS심화/index.html",
+          "emoji": "🛠️",
+          "description": "실시간 코드 에디터로 직접 코딩하며 식별자(class, id) 설정, 선택자 응용, 여백(Margin, Padding), Flexbox 배치를 실습합니다.",
+          "tags": [
+            {
+              "label": "CSS 심화",
+              "color": "blue"
+            },
+            {
+              "label": "레이아웃",
+              "color": "purple"
+            },
+            {
+              "label": "실시간 코딩",
+              "color": "orange"
+            }
+          ],
+          "gradient": "linear-gradient(90deg, #1565c0, #2196f3)"
         }
       ]
     },
