@@ -1,19 +1,30 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1773612351572,
-  "projectRoot": "C:\\Users\\chani\\presentation",
+  "lastScanned": 1774186532311,
+  "projectRoot": "E:\\presentation",
   "techStack": {
-    "languages": [],
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      }
+    ],
     "frameworks": [],
-    "packageManager": null,
+    "packageManager": "npm",
     "runtime": null
   },
   "build": {
     "buildCommand": null,
     "testCommand": null,
     "lintCommand": null,
-    "devCommand": null,
-    "scripts": {}
+    "devCommand": "npm run dev",
+    "scripts": {
+      "dev": "npx serve . -p 3000 -C"
+    }
   },
   "conventions": {
     "namingStyle": null,
@@ -36,49 +47,79 @@
       "path": "AI전문적학습동아리",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1773612351507,
+      "lastAccessed": 1774186531983,
       "keyFiles": []
     },
     "인공지능과피지컬컴퓨팅": {
       "path": "인공지능과피지컬컴퓨팅",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1773612351508,
+      "lastAccessed": 1774186532025,
       "keyFiles": []
     },
     "정보": {
       "path": "정보",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1773612351514,
+      "lastAccessed": 1774186532026,
       "keyFiles": []
     },
     "정보화부": {
       "path": "정보화부",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1773612351515,
+      "lastAccessed": 1774186532031,
       "keyFiles": []
     },
     "프로그래밍": {
       "path": "프로그래밍",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1773612351517,
+      "lastAccessed": 1774186532033,
       "keyFiles": []
     }
   },
   "hotPaths": [
     {
-      "path": "프로그래밍\\4차시-HTML태그의활용\\index.html",
-      "accessCount": 2,
-      "lastAccessed": 1773620949956,
+      "path": ".claude\\SKILL.md",
+      "accessCount": 7,
+      "lastAccessed": 1774186874286,
       "type": "file"
     },
     {
-      "path": "정보화부\\학교사업안내-학부모\\index.html",
+      "path": "정보\\AI이미지생성-프로젝트\\index.html",
+      "accessCount": 3,
+      "lastAccessed": 1774186754775,
+      "type": "file"
+    },
+    {
+      "path": "정보\\AI이미지생성-프로젝트\\apply_style.py",
       "accessCount": 2,
-      "lastAccessed": 1773713037355,
+      "lastAccessed": 1774187034062,
+      "type": "file"
+    },
+    {
+      "path": "정보\\AI이미지생성-프로젝트\\create_submission_doc.sh",
+      "accessCount": 1,
+      "lastAccessed": 1774186899959,
+      "type": "file"
+    },
+    {
+      "path": "정보\\AI이미지생성-프로젝트\\debug_doc.py",
+      "accessCount": 1,
+      "lastAccessed": 1774187066582,
+      "type": "file"
+    },
+    {
+      "path": "정보\\AI이미지생성-프로젝트\\create_doc.py",
+      "accessCount": 1,
+      "lastAccessed": 1774187277048,
+      "type": "file"
+    },
+    {
+      "path": "정보\\AI이미지생성-프로젝트\\fix_pin_style.py",
+      "accessCount": 1,
+      "lastAccessed": 1774187321361,
       "type": "file"
     }
   ],

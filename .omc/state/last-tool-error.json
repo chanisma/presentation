@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"gcloud auth login --scopes=\\\"https://www.googleapis.com/auth/forms.body,https://www.googleapis.com/auth/drive\\\" --enable-gdrive-access 2>&1\",\"description\":\"Re-auth gcloud with Forms scope\"...",
-  "error": "Exit code 2\nERROR: (gcloud.auth.login) unrecognized arguments: --scopes=https://www.googleapis.com/auth/forms.body,https://www.googleapis.com/auth/drive \r\n\r\nTo search the help text of gcloud commands, run:\r\n  gcloud help -- SEARCH_TERMS",
-  "timestamp": "2026-03-16T00:27:56.117Z",
-  "retry_count": 3
+  "tool_input_preview": "{\"command\":\"cd \\\"E:/presentation/정보/AI이미지생성-프로젝트\\\" && PYTHONUTF8=1 python3 apply_style.py\",\"timeout\":30000,\"description\":\"Apply styles to the Google Doc\"}",
+  "error": "Exit code 1\nTraceback (most recent call last):\r\n  File \"E:\\presentation\\정보\\AI이미지생성-프로젝트\\apply_style.py\", line 7, in <module>\r\n    token = subprocess.check_output([\"gcloud\", \"auth\", \"print-access-token\"], text=True).strip()\r\n            ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Users\\chani\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\subprocess.py\", line 472, in check_output\r\n    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,\r\n      ...",
+  "timestamp": "2026-03-22T13:43:36.245Z",
+  "retry_count": 1
 }

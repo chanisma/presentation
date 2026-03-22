@@ -393,6 +393,27 @@
             }
           ],
           "gradient": "linear-gradient(90deg, #1a237e, #3f51b5)"
+        },
+        {
+          "title": "AI 이미지 생성 미니 프로젝트",
+          "path": "정보/AI이미지생성-프로젝트/index.html",
+          "emoji": "🎨",
+          "description": "프롬프트 엔지니어링을 활용한 AI 이미지 생성 미니 프로젝트. 10개 주제 중 선택하여 4장의 AI 이미지를 생성하고 프롬프트 설계 과정을 기록합니다.",
+          "tags": [
+            {
+              "label": "AI 이미지",
+              "color": "purple"
+            },
+            {
+              "label": "프로젝트",
+              "color": "blue"
+            },
+            {
+              "label": "프롬프트",
+              "color": "green"
+            }
+          ],
+          "gradient": "linear-gradient(90deg, #7B00FF, #00FF88)"
         }
       ]
     }

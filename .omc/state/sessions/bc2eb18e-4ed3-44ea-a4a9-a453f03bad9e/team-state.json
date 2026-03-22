@@ -1,0 +1,8 @@
+{
+  "active": true,
+  "started_at": "2026-03-22T08:17:59.422Z",
+  "original_prompt": "/team 3 presentation-builder 활용하여 @프로그래밍/6차시-CSS심화/index.html 를 바탕으로 수업 새로 생성. agent1은 기존 파일을 분석하고 opus model을 활용해서 수업 재설계, agent2는 agent1이 만든 재설계 계획을 바탕으로 간단한 대본 생성, agent3은 agent1, agent2 내용을 바탕으로 presentation 생성. 학생들이 코드 실습을 할 때 아직 html의 구조에 익숙하지 않아서 전체 구조를 함께 보여줘야 함.",
+  "session_id": "bc2eb18e-4ed3-44ea-a4a9-a453f03bad9e",
+  "reinforcement_count": 0,
+  "last_checked_at": "2026-03-22T08:17:59.423Z"
+}
