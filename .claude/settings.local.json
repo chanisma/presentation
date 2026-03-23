@@ -107,7 +107,13 @@
       "Bash(npm run:*)",
       "mcp__plugin_playwright_playwright__browser_resize",
       "Bash(bash create_submission_doc.sh)",
-      "Bash(PYTHONUTF8=1 python3 apply_style.py)"
+      "Bash(PYTHONUTF8=1 python3 apply_style.py)",
+      "Bash(npm install:*)",
+      "Bash(npm search:*)",
+      "Bash(\"c:\\\\Users\\\\chani\\\\.vscode\\\\extensions\\\\highagency.pencildev-0.6.25\\\\out\\\\mcp-server-windows-x64.exe\" --help)",
+      "Bash(\"C:/Users/chani/.vscode/extensions/highagency.pencildev-0.6.35/out/mcp-server-windows-x64.exe\" --help)",
+      "Bash(exit 0)",
+      "Bash(claude plugin:*)"
     ]
   }
 }

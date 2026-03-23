@@ -412,7 +412,19 @@ green-sub:     #43b867 / bg: #e8f5e9
 - **카드 스타일별 상단바**: browser(dot 3개), minimal(타이틀만), rounded(둥근+그림자)
 - **네비게이션 바**: 고정 px(14px)로 본문 rem과 독립, 최소 크기 유지
 - **SVG 아이콘**: 유니코드(◀▶) 대신 반드시 SVG 사용 (폰트별 정렬 문제 방지)
-- **이모지 절제**: 이모지는 section-divider 아이콘, 카드 아이콘 등 시각적 구분 목적에만 사용. 본문 텍스트, highlight-box, tip 설명문 안에 이모지를 남발하지 않는다. 한 슬라이드당 이모지는 최대 5~6개 이내로 제한하고, 같은 이모지를 반복 사용하지 않는다. 이모지가 정보를 전달하지 않고 장식에 불과하다면 빼는 것이 낫다.
+- **이모지 절제**: 한 슬라이드에 **동시에 보이는 이모지는 최대 3개**. section-divider 아이콘도 이 예산에 포함된다. 카드 그리드에 아이콘을 넣으면 section 아이콘은 생략하는 것이 좋다. 본문 텍스트·highlight-box·tip 설명문 안에 이모지를 넣지 않는다. 같은 이모지 반복 금지. 포멀한 스타일(Dark Academia, Swiss International, Monochrome 등)에서는 이모지 대신 유니코드 기호(❧ ✦ ◆ ※ ⊕)나 SVG 아이콘을 사용한다.
+- **색상 대비 검증**: 스타일 팔레트 적용 시 다음 최소 대비를 확인한다. `--text` on `--bg` ≥ 7:1, `--text-secondary` on `--bg` ≥ 4.5:1, `--primary` on `--bg` ≥ 3:1. 대비가 부족하면 색상을 조정한다. `--text`가 `--text-secondary`보다 대비가 낮으면 안 된다(이름과 역할 일치).
+- **인라인 스타일 금지**: HTML body 내 `style=""` 속성 사용을 최소화한다. 반복되는 패턴은 CSS 클래스로 정의한다. 표지/마무리 슬라이드의 투명 카드는 `.browser-card--frameless` 클래스를 사용한다.
+- **미사용 폰트 금지**: `<link>` 태그로 로드하는 폰트는 CSS에서 실제 사용하는 것만 포함한다. 스타일 스펙에 명시된 폰트만 로드하고, 사용하지 않는 폰트를 Google Fonts URL에 포함하지 않는다.
+- **필수 슬라이드 레이아웃 CSS 구조**: 모든 스타일에서 반드시 아래 CSS 구조를 준수해야 한다. 이 구조가 없으면 overflow가 발생한다:
+  ```css
+  .presentation { height: calc(100vh - 42px); position: relative; overflow: hidden; }
+  .slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 0.8rem 1.2rem; opacity: 0; pointer-events: none; }
+  .slide.active { opacity: 1; pointer-events: auto; }
+  .browser-card { width: 100%; max-width: 1200px; max-height: calc(100vh - 4.8rem); display: flex; flex-direction: column; overflow: hidden; }
+  .browser-content { flex: 1; overflow-y: auto; padding: 1rem 2rem 0.8rem; }
+  ```
+  특히 `.browser-card`의 `max-height: calc(100vh - 4.8rem)`과 `.browser-content`의 `flex: 1; overflow-y: auto`는 반드시 포함해야 한다. `display: none/block` 전환 방식을 사용하면 안 되며, `opacity` 전환 방식을 사용한다.
 
 ---
 
@@ -429,23 +441,60 @@ green-sub:     #43b867 / bg: #e8f5e9
 ─ slide padding:       34px  (1.2rem × 28px)
 ─ browser topbar:      35px
 ─ content padding:     50px  (1.8rem × 28px)
+─ 안전 마진:           60px  (line-height, border 등 미세 요소)
 ──────────────────────────────
-content 가용 높이:    ≈860px
+content 가용 높이:    ≈800px (보수적 기준)
 ```
 
-### 요소별 높이 참조표 (base 28px 기준)
+> **주의**: 이론상 860px이나, line-height·border·box-shadow·margin collapse 등 미세 요소로 인해 실측에서 차이가 발생합니다. 안전하게 **800px**을 기준으로 설계하세요.
 
-| 요소 | 예상 높이 |
-|------|----------|
-| section-divider (아이콘 인라인 + 제목 + 자막) | ~50px |
-| card (아이콘 + 제목 + 본문 1줄) | ~80px |
-| card (아이콘 + 제목 + 본문 2줄) | ~110px |
-| grid-2 gap | ~17px (0.6rem) |
-| highlight-box (1줄) | ~55px |
-| highlight-box (2줄) | ~75px |
-| step-item (2x2 grid) | ~90px |
-| stat-card | ~100px |
-| tip-item | ~45px |
+### 요소별 높이 참조표 (1920×1080 실측 기반)
+
+> 이 수치는 Playwright로 실측한 값입니다. 추정이 아닌 실측 기준으로 설계하세요.
+
+| 요소 | 실측 높이 | 비고 |
+|------|----------|------|
+| section-label + h2 + rule | **95px** | 라벨+제목+구분선 세트 |
+| section-divider (아이콘 인라인 + 제목 + 자막) | **80px** | 인라인 아이콘 방식 |
+| highlight-box (1줄) | **100px** | padding 포함 |
+| highlight-box (2줄) | **140px** | padding 포함 |
+| highlight-box (3줄+) | **170px** | 가급적 2줄 이하로 |
+| card (아이콘 + 제목 + 본문 1줄) | **120px** | padding+gap 포함 |
+| card (아이콘 + 제목 + 본문 2줄) | **150px** | padding+gap 포함 |
+| grid-2 (2×1) | **카드높이 + gap 17px** | 1행 |
+| grid-2 (2×2) | **카드높이×2 + gap×3 ≈ 350px** | 2행 (본문 1줄 기준) |
+| grid-3 (3×2) | **카드높이×2 + gap×3 ≈ 350px** | 2행 |
+| toc-item (1개) | **80px** | 패딩+호버영역 포함 |
+| activity-item (1개) | **140px** | 아이콘+제목+설명 |
+| step-item (2x2 grid) | **110px** | compact 레이아웃 |
+| stat-card | **120px** | 아이콘+숫자+라벨 |
+| tip-item | **55px** | 아이콘+텍스트 |
+| gold-rule / divider | **5px** | 구분선 |
+| gap (grid/flex) | **17px** | 0.6rem 기준 |
+
+### 슬라이드당 콘텐츠 제한 규칙
+
+content 가용 높이 실측값은 약 **880px**이나, 안전 마진을 포함하여 **800px**을 예산으로 사용합니다.
+
+**콘텐츠 조합 상한 (800px 이내):**
+- section-header(95px) + grid-2×2(350px) + highlight(140px) = **585px** ✓
+- section-header(95px) + activity-item×4(560px) = **655px** ✓
+- section-header(95px) + activity-item×5(700px) = **795px** ⚠️ 한계
+- section-header(95px) + toc-item×8(640px) = **735px** ✓
+- section-header(95px) + toc-item×10(800px) = **895px** ✗ 넘침!
+
+**절대 금지:**
+- activity-item 6개 이상을 한 슬라이드에 배치
+- toc-item 9개 이상을 한 슬라이드에 배치
+- card-grid 3행 이상 (grid-2×3, grid-3×3 등)
+- highlight-box 2개 이상을 한 슬라이드에 배치
+- two-column 레이아웃에서 한 쪽에 5개 이상의 리스트 항목
+
+**10슬라이드 이상 프레젠테이션 추가 규칙:**
+- 콘텐츠 슬라이드(표지/목차/마무리 제외)에서 콘텐츠 조합을 더 보수적으로 설계
+- 한 슬라이드에 activity-item은 최대 3개 (4개가 아닌 3개)
+- highlight-box + card-grid 2×2 조합은 highlight를 1줄로 제한
+- two-column은 한 쪽에 최대 3개 항목
 
 ### 설계 시 검증 방법
 
@@ -457,7 +506,7 @@ content 가용 높이:    ≈860px
              + highlight-box (있으면)
              + margin/gap 합산
 
-→ 860px 이내이면 OK
+→ 800px 이내이면 OK
 → 초과하면 조정:
   1. 텍스트 간결하게 축약
   2. 카드 padding/gap 축소
@@ -467,11 +516,58 @@ content 가용 높이:    ≈860px
 
 ### 넘침 방지 CSS 가이드라인
 
-- section-divider: 아이콘을 h2 왼쪽에 `display: inline`으로 배치하여 세로 공간 절약
 - card padding: `0.8rem 1rem` 이하
 - grid gap: `0.6rem` 이하
 - highlight-box margin: `0.6rem 0` 이하
 - 카드 본문 텍스트 1~2줄 이내로 유지
+
+### section-divider 필수 HTML 패턴 (P1)
+
+모든 콘텐츠 슬라이드의 섹션 헤더는 반드시 아이콘을 h2 왼쪽에 인라인 배치한다. 아래 패턴을 정확히 따른다:
+
+```html
+<div class="section-header">
+  <h2><span class="section-icon" aria-hidden="true">📊</span> 데이터 과학이란?</h2>
+  <p class="section-subtitle">데이터를 다루는 학문의 기초</p>
+</div>
+```
+
+```css
+.section-icon { display: inline; font-size: 1.2em; margin-right: 0.4em; vertical-align: -0.1em; }
+```
+
+포멀한 스타일(Dark Academia, Swiss International, Nordic, Monochrome)에서는 이모지 대신 유니코드 기호(◆ ✦ ※ ❧)를 사용한다.
+
+### 카드 그리드 이모지 예산 규칙 (P2)
+
+슬라이드당 동시에 보이는 이모지 최대 3개. 카드 그리드에서는:
+
+```
+grid-2 (2항목): 카드 아이콘 OK (2개) + section 아이콘 OK = 최대 3개
+grid-2 (4항목): 카드 아이콘 3개까지만, 4번째 카드는 아이콘 생략
+grid-3 (3항목): 카드 아이콘 OK (3개), section 아이콘 생략
+grid-3 (6항목): 카드 아이콘 3개까지만 (첫 행만), 나머지는 색상 테두리로 구분
+```
+
+### 색상 변수 규칙 (P3)
+
+- `--style-accent`는 `--style-primary`와 반드시 시각적으로 구분되어야 한다 (HSL 기준 색상 30° 이상 차이 또는 명도 20% 이상 차이)
+- 같은 값을 두 변수에 할당하지 않는다
+
+### 장식 요소 CSS 클래스 규칙 (P4)
+
+배경 blob, 장식 SVG 등 반복되는 위치/크기 값은 인라인 스타일 대신 CSS 클래스로 정의한다:
+```css
+.deco-blob--tr { right: -2rem; top: -2rem; width: 38%; opacity: 0.45; }
+.deco-blob--bl { left: -3rem; bottom: -1rem; width: 28%; opacity: 0.40; }
+```
+
+### 추가 규칙 (P5-P7)
+
+- **browser-card max-width**: 기본 `1200px`. 스타일 스펙에서 명시적으로 지정한 경우만 다른 값 사용
+- **마무리 슬라이드 제목**: `<h2 class="end-title">`을 사용한다. 페이지에 `<h1>`은 표지에만 1개
+- **topbar-title**: 항상 `margin: 0 auto`로 중앙 정렬
+- **아이콘 크기 통일**: activity-icon과 card-icon의 font-size는 동일 파일 내에서 같은 값(권장 `1.4rem`)을 사용
 
 ---
 
@@ -484,7 +580,7 @@ content 가용 높이:    ≈860px
 5. **추가 기능 로딩**: 활성화된 추가 기능이 있으면 `references/features.md` 읽기
 6. **구조 설계 공유**: 슬라이드 순서와 컴포넌트 구성을 사용자에게 간략히 공유
 7. **HTML 생성**: 단일 파일로 완전한 프레젠테이션 생성
-8. **세로 높이 검증**: 5.5단계 기준으로 각 슬라이드가 860px 이내인지 코드상 확인하고 초과 시 조정
+8. **세로 높이 검증**: 5.5단계 기준으로 각 슬라이드가 800px 이내인지 코드상 확인하고 초과 시 조정
 9. **폴더 생성 & 파일 저장**: 아래 디렉토리 규칙에 따라 저장
 10. **pages.json 업데이트**: 아래 매니페스트 규칙에 따라 항목 추가
 11. **확인 안내**: 브라우저에서 열어 확인하도록 안내
