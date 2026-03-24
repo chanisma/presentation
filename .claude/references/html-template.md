@@ -14,6 +14,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>if(!location.pathname.endsWith('/')&&!location.pathname.endsWith('.html')){var b=document.createElement('base');b.href=location.pathname+'/';document.head.appendChild(b);}</script>
   <title>{제목}</title>
   <!-- Google Fonts -->
   <style>

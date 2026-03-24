@@ -416,6 +416,25 @@
           "gradient": "linear-gradient(90deg, #7B00FF, #00FF88)"
         }
       ]
+    },
+    {
+      "name": "테스트 수업 자료",
+      "icon": "🧪",
+      "color": "orange",
+      "pages": [
+        {
+          "title": "테스트 수업 모음",
+          "path": "test/index.html",
+          "emoji": "🧪",
+          "description": "다양한 주제의 테스트 수업 프레젠테이션 모음. 사회·역사, 과학·기술, 수학, 국어·영어, 예체능, 진로·안전·건강 등 19개 수업을 포함합니다.",
+          "tags": [
+            { "label": "테스트", "color": "orange" },
+            { "label": "19개 수업", "color": "blue" },
+            { "label": "전과목", "color": "green" }
+          ],
+          "gradient": "linear-gradient(90deg, #e65100, #ff9800)"
+        }
+      ]
     }
   ]
 }
