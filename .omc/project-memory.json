@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1774238176130,
+  "lastScanned": 1774351551641,
   "projectRoot": "E:\\presentation",
   "techStack": {
     "languages": [
@@ -49,278 +49,86 @@
       "path": "AI전문적학습동아리",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1774238175441,
+      "lastAccessed": 1774351550648,
       "keyFiles": []
     },
     "test": {
       "path": "test",
       "purpose": "Test files",
-      "fileCount": 0,
-      "lastAccessed": 1774238175495,
-      "keyFiles": []
+      "fileCount": 34,
+      "lastAccessed": 1774351550659,
+      "keyFiles": [
+        "bash.exe.stackdump",
+        "cycle4-image-report.json",
+        "cycle4-improvement-report.md",
+        "cycle4-scenarios.json",
+        "cycle4-validation-report.md"
+      ]
     },
     "인공지능과피지컬컴퓨팅": {
       "path": "인공지능과피지컬컴퓨팅",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1774238175536,
+      "lastAccessed": 1774351550695,
       "keyFiles": []
     },
     "정보": {
       "path": "정보",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1774238175579,
+      "lastAccessed": 1774351550715,
       "keyFiles": []
     },
     "정보화부": {
       "path": "정보화부",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1774238175593,
+      "lastAccessed": 1774351550752,
       "keyFiles": []
     },
     "프로그래밍": {
       "path": "프로그래밍",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1774238175619,
+      "lastAccessed": 1774351550789,
       "keyFiles": []
     }
   },
   "hotPaths": [
     {
-      "path": ".claude\\SKILL.md",
-      "accessCount": 64,
-      "lastAccessed": 1774318924019,
-      "type": "file"
-    },
-    {
-      "path": ".claude\\references\\styles.md",
-      "accessCount": 61,
-      "lastAccessed": 1774318056410,
-      "type": "file"
-    },
-    {
-      "path": ".claude\\references\\web-image-search.md",
-      "accessCount": 30,
-      "lastAccessed": 1774318033433,
-      "type": "file"
-    },
-    {
-      "path": ".claude\\references\\html-template.md",
-      "accessCount": 27,
-      "lastAccessed": 1774318926109,
-      "type": "file"
-    },
-    {
-      "path": "test",
-      "accessCount": 19,
-      "lastAccessed": 1774272955701,
-      "type": "directory"
-    },
-    {
-      "path": "test\\cycle2-1-solar-system\\index.html",
-      "accessCount": 18,
-      "lastAccessed": 1774314436179,
-      "type": "file"
-    },
-    {
-      "path": "test\\eval-design.md",
-      "accessCount": 14,
-      "lastAccessed": 1774303972594,
-      "type": "file"
-    },
-    {
-      "path": "test\\cycle2-2-joseon-science\\index.html",
-      "accessCount": 12,
-      "lastAccessed": 1774304963747,
-      "type": "file"
-    },
-    {
-      "path": "test\\pages.json",
-      "accessCount": 12,
-      "lastAccessed": 1774318629687,
-      "type": "file"
-    },
-    {
-      "path": "test\\cycle1-1-shakespeare\\index.html",
+      "path": "프로그래밍\\7차시-예제를통해배우는CSS1\\index.html",
       "accessCount": 11,
-      "lastAccessed": 1774272895413,
+      "lastAccessed": 1774354924589,
       "type": "file"
     },
     {
-      "path": "test\\cycle2-3-carbon-footprint\\index.html",
-      "accessCount": 11,
-      "lastAccessed": 1774304967144,
-      "type": "file"
-    },
-    {
-      "path": "test\\eval-rules.md",
-      "accessCount": 10,
-      "lastAccessed": 1774273368004,
-      "type": "file"
-    },
-    {
-      "path": "test\\cycle2-4-afterschool\\index.html",
-      "accessCount": 10,
-      "lastAccessed": 1774304970805,
-      "type": "file"
-    },
-    {
-      "path": "test\\cycle2-5-digital-literacy\\index.html",
-      "accessCount": 10,
-      "lastAccessed": 1774304973870,
-      "type": "file"
-    },
-    {
-      "path": "test\\index.html",
-      "accessCount": 9,
-      "lastAccessed": 1774242327963,
-      "type": "file"
-    },
-    {
-      "path": "test\\scenarios.md",
-      "accessCount": 9,
-      "lastAccessed": 1774310963596,
-      "type": "file"
-    },
-    {
-      "path": "",
-      "accessCount": 8,
-      "lastAccessed": 1774315025702,
-      "type": "directory"
-    },
-    {
-      "path": "test\\cycle1-2-ai-school\\index.html",
-      "accessCount": 7,
-      "lastAccessed": 1774266894587,
-      "type": "file"
-    },
-    {
-      "path": "test\\cycle1-4-ai-workshop\\index.html",
-      "accessCount": 7,
-      "lastAccessed": 1774266895435,
-      "type": "file"
-    },
-    {
-      "path": "test\\cycle1-5-ecobot\\index.html",
-      "accessCount": 7,
-      "lastAccessed": 1774266895715,
-      "type": "file"
-    },
-    {
-      "path": "test\\cycle3-4-ontology\\index.html",
-      "accessCount": 7,
-      "lastAccessed": 1774318609176,
-      "type": "file"
-    },
-    {
-      "path": "test\\scenarios.json",
-      "accessCount": 6,
-      "lastAccessed": 1774314357688,
-      "type": "file"
-    },
-    {
-      "path": ".claude\\settings.local.json",
-      "accessCount": 5,
-      "lastAccessed": 1774312219266,
-      "type": "directory"
-    },
-    {
-      "path": "test\\cycle1-3-five-senses\\index.html",
+      "path": ".claude\\commands\\references\\html-template.md",
       "accessCount": 4,
-      "lastAccessed": 1774266890767,
+      "lastAccessed": 1774358706316,
+      "type": "file"
+    },
+    {
+      "path": ".claude\\commands\\references\\styles.md",
+      "accessCount": 2,
+      "lastAccessed": 1774358650449,
       "type": "file"
     },
     {
       "path": "pages.json",
-      "accessCount": 4,
-      "lastAccessed": 1774307228925,
-      "type": "file"
-    },
-    {
-      "path": "test\\improvements.md",
-      "accessCount": 3,
-      "lastAccessed": 1774268121152,
-      "type": "file"
-    },
-    {
-      "path": "C:\\Users\\chani\\.claude\\projects\\E--presentation\\f8e130af-81dc-4085-bf44-5738d593c6cd\\tool-results\\mcp-plugin_playwright_playwright-browser_snapshot-1774312288755.txt",
-      "accessCount": 3,
-      "lastAccessed": 1774312363383,
-      "type": "directory"
-    },
-    {
-      "path": "test\\skill-improvement-report.md",
-      "accessCount": 3,
-      "lastAccessed": 1774317801526,
-      "type": "file"
-    },
-    {
-      "path": "C:\\Users\\chani\\.claude\\projects\\E--presentation\\f1a2652a-4e28-4ef5-8fb2-a5792a987837\\tool-results\\mcp-plugin_playwright_playwright-browser_snapshot-1774318115464.txt",
-      "accessCount": 3,
-      "lastAccessed": 1774318143362,
-      "type": "directory"
-    },
-    {
-      "path": "test\\image-download-report.md",
-      "accessCount": 2,
-      "lastAccessed": 1774314368190,
-      "type": "file"
-    },
-    {
-      "path": "test\\playwright-validation-report.md",
-      "accessCount": 2,
-      "lastAccessed": 1774317232694,
-      "type": "file"
-    },
-    {
-      "path": "test\\test2-joseon-exam\\index.html",
       "accessCount": 1,
-      "lastAccessed": 1774238264627,
+      "lastAccessed": 1774357227839,
       "type": "file"
     },
     {
-      "path": "index.html",
+      "path": "인공지능과피지컬컴퓨팅\\YOLO\\index.html",
       "accessCount": 1,
-      "lastAccessed": 1774238286178,
+      "lastAccessed": 1774358687313,
       "type": "file"
     },
     {
-      "path": "package.json",
+      "path": "인공지능과피지컬컴퓨팅\\Teachable-Machine\\index.html",
       "accessCount": 1,
-      "lastAccessed": 1774241360353,
-      "type": "file"
-    },
-    {
-      "path": ".env",
-      "accessCount": 1,
-      "lastAccessed": 1774270682879,
-      "type": "file"
-    },
-    {
-      "path": "C:\\Users\\chani\\.claude\\settings.json",
-      "accessCount": 1,
-      "lastAccessed": 1774312155267,
-      "type": "file"
-    },
-    {
-      "path": "test\\cycle3-1-world-heritage\\index.html",
-      "accessCount": 1,
-      "lastAccessed": 1774314570525,
-      "type": "file"
-    },
-    {
-      "path": "test\\cycle3-2-ai-careers\\index.html",
-      "accessCount": 1,
-      "lastAccessed": 1774314724153,
-      "type": "file"
-    },
-    {
-      "path": "test\\cycle3-3-korean-food\\index.html",
-      "accessCount": 1,
-      "lastAccessed": 1774314880907,
+      "lastAccessed": 1774359005315,
       "type": "file"
     }
   ],

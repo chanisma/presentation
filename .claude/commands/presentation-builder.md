@@ -3,11 +3,7 @@ name: presentation-builder
 description: >
   한국 교육용 프레젠테이션 HTML 페이지를 생성합니다. 프레젠테이션, 발표자료, 슬라이드, PPT 대체, 수업자료, 학교 발표,
   교육 프레젠테이션을 만들고 싶을 때 사용하세요. '발표자료 만들어줘', '프레젠테이션 생성', '슬라이드 제작', '수업 PPT' 등의
-  요청에 반드시 이 스킬을 사용하세요. Also use for: "create presentation", "make slides", "build a deck",
-  "education slides", "school presentation", or any request involving 30 modern design styles like
-  Glassmorphism, Neo-Brutalism, Bento Grid, Dark Academia, Aurora Neon Glow, Cyberpunk Outline etc.
-  한국 학교/학부모 안내, 교육 발표자료 요청에도 반드시 활성화하세요.
-  퀵스타트: "빠르게", "간단하게", "바로", "지금 바로" 키워드가 있으면 퀵스타트 모드를 사용하세요.
+  요청에 반드시 이 스킬을 사용하세요. 퀵스타트: "빠르게", "간단하게", "바로", "지금 바로" 키워드가 있으면 퀵스타트 모드를 사용하세요.
 allowed-tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep", "WebFetch", "AskUserQuestion"]
 ---
 
@@ -50,7 +46,7 @@ allowed-tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep", "WebFetch", "As
 | 디자인 스타일 | 대상에 따라 자동 선택 |
 | 컬러 테마 | `blue` |
 | 폰트 | `noto-sans-kr` |
-| 이미지 | `emoji` |
+| 이미지 | `미사용` (이모지 + CSS 컴포넌트) |
 | 네비게이션 | 기본값 전체 적용 |
 | 추가 기능 | 모두 off |
 
@@ -60,26 +56,99 @@ allowed-tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep", "WebFetch", "As
 
 ## 1단계: 설정 인터뷰 (표준 모드)
 
-퀵스타트가 아닌 경우, **단계별 의사결정 트리**로 진행합니다. 한 번에 모든 옵션을 나열하지 말고, 핵심 3가지만 먼저 확인하세요.
+퀵스타트가 아닌 경우, `AskUserQuestion` 도구를 사용하여 대화형 UI로 설정을 수집한다.
 
-### 핵심 질문 3가지 (필수)
+### AskUserQuestion 기반 인터뷰 시스템
+
+**워크플로우 (2단계로 수집):**
+
+**Step A — 과목 선택 (AskUserQuestion, 동적 생성)**
+1. 작업 디렉토리의 `pages.json`을 읽어 기존 과목 목록을 추출한다.
+2. 프레젠테이션 수가 많은 순으로 정렬하여 **상위 3개**를 AskUserQuestion 옵션으로 구성한다.
+3. 나머지 과목과 신규 과목은 "Other" (직접 입력)로 입력받는다.
+4. `pages.json`이 없거나 과목이 없으면 이 단계를 건너뛰고 텍스트로 직접 입력받는다.
 
 ```
-프레젠테이션을 만들기 전에 확인할게요:
-
-1. 제목과 주제는 무엇인가요?
-   (예: "2026 수학 오리엔테이션" / "AI 윤리 수업자료")
-
-2. 발표 대상과 학교/기관명을 알려주세요.
-   (예: "중학교 1학년 학생" / "학부모" / "교사 연수")
-
-3. 내용을 직접 제공하시겠어요, 아니면 제가 주제에 맞게 자동 구성할까요?
-   (직접 제공 → 내용 붙여넣기 / 자동 구성 → 주제만으로 생성)
-
-4. 참고할 자료가 있나요? (선택사항)
-   (PDF, PPTX, 한글(HWPX), 이미지, 구글 문서 URL 등)
-   → 있으면 파일 경로나 URL을 알려주세요. 자료에서 내용을 추출하여 슬라이드를 구성합니다.
+// 실행 시 동적으로 구성하는 방법:
+1. Read 도구로 pages.json 읽기
+2. subjects 배열에서 {name, icon, pages.length}를 추출
+3. pages.length 내림차순 정렬 → 상위 3개를 options로 구성:
+   - label: "{icon} {name}"
+   - description: "기존 {count}개 프레젠테이션 보유"
+4. AskUserQuestion 호출
 ```
+→ 과목 확정 후, 수업 제목을 텍스트로 질문: "📌 수업 제목을 알려주세요. (예: 웹개발을 위한 자바스크립트 기초)"
+
+**Step B — 선택형 설정 3개를 AskUserQuestion으로 한 번에 수집**
+```json
+AskUserQuestion({
+  "questions": [
+    {
+      "question": "발표 대상은 누구인가요?",
+      "header": "발표 대상",
+      "options": [
+        {"label": "고등학생 (Recommended)", "description": "전문 어휘 허용, 논리적 문체, 데이터 포함"},
+        {"label": "학부모", "description": "정중한 일상 어휘, 공손한 문체, 실용 정보 우선"},
+        {"label": "교사/교직원", "description": "교육 전문 용어, 간결한 업무 문체"}
+      ],
+      "multiSelect": false
+    },
+    {
+      "question": "내용을 어떻게 구성할까요?",
+      "header": "내용 구성",
+      "options": [
+        {"label": "자동 구성 (Recommended)", "description": "주제만으로 제가 알아서 슬라이드 내용을 생성합니다"},
+        {"label": "직접 제공", "description": "내용을 텍스트로 붙여넣으면 슬라이드로 변환합니다"}
+      ],
+      "multiSelect": false
+    },
+    {
+      "question": "이미지는 어떻게 할까요?",
+      "header": "이미지",
+      "options": [
+        {"label": "미사용 (Recommended)", "description": "이모지와 CSS 컴포넌트만 사용. 가장 빠르고 오프라인 지원"},
+        {"label": "자동 검색", "description": "웹에서 이미지를 자동 검색하여 삽입 (슬라이드당 +30초)"},
+        {"label": "직접 지정", "description": "키워드나 URL로 원하는 이미지를 직접 알려주세요"}
+      ],
+      "multiSelect": false
+    }
+  ]
+})
+```
+
+**Step C — 참고 자료 (선택사항)**
+선택형 수집 후 추가 질문:
+"📎 참고할 자료가 있나요? (없으면 '없음') — PDF, PPTX, 한글(HWPX), 이미지, 구글 문서 URL 지원"
+
+**답변 매핑 규칙:**
+- "고등학생" → high_school (스타일: Bento Grid)
+- "학부모" → parents (스타일: Soft Pink Card UI / Nordic Minimalism)
+- "교사/교직원" → teachers (스타일: Swiss International / Bento Grid)
+- Other 선택 시 → 사용자 입력을 그대로 사용, 맥락에 맞는 스타일 자동 선택
+
+**과목 선택지 동적 생성 규칙:**
+- `pages.json`에서 subjects를 읽어 과목명, 아이콘, 프레젠테이션 수를 추출
+- 프레젠테이션 수가 많은 순으로 정렬하여 상위 3개를 옵션으로 표시
+- 나머지 과목과 신규 과목은 "Other" (직접 입력)로 입력
+- `pages.json`이 없으면 과목 선택 단계를 건너뛰고 텍스트로 직접 입력받음
+
+**설정 수집 완료 후:** `scripts/interview.py summary`와 `config`를 호출하여 자동 추천 설정을 확인하고 사용자에게 요약을 보여준다.
+```
+Bash: python scripts/interview.py summary --answers '{...}'
+Bash: python scripts/interview.py config --answers '{...}'
+```
+
+**이미지 옵션 상세:**
+
+| 옵션 | 동작 | 소요 시간 | 결과물 |
+|------|------|----------|--------|
+| **자동 검색** | Playwright로 Google Images 검색 → URL 삽입 (url-link 모드) | 슬라이드당 +30초 | 실제 사진/다이어그램 포함 |
+| **사용자 설명** | 사용자가 키워드나 URL 제공 → 해당 이미지로 삽입 | 빠름 | 사용자 의도에 정확히 맞는 이미지 |
+| **미사용** | 이모지 아이콘 + CSS 컴포넌트만 | 즉시 | 깔끔하고 가벼움, 오프라인 완벽 지원 |
+
+- **자동 검색**: `references/web-image-search.md`의 이미지 사용 판단 기준에 따라 모든 슬라이드가 아닌 **30~50%**에만 이미지 삽입. 기본 url-link 모드(다운로드 없음).
+- **사용자 설명**: 사용자가 제공한 키워드로 검색하거나, URL을 직접 `<img src>`에 삽입
+- **미사용**: CSS 컴포넌트(stat-highlight, card-grid, diagram, comparison 등)로 시각화. **⚠️ 이미지가 없다고 이모지로 보상하지 마세요.** 이모지 예산 규칙(슬라이드당 최대 3개)은 이미지 유무와 무관하게 동일 적용됩니다. 포멀 스타일에서는 이모지 대신 유니코드 기호(✦ ◆ ※ ❧ ⊕)나 `border-left` 색상 구분을 사용하세요.
 
 ### 선택 질문 (사용자가 원할 때만)
 
@@ -99,7 +168,7 @@ allowed-tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep", "WebFetch", "As
 
 | 확장자 / 형식 | 처리 방법 | 도구 |
 |--------------|----------|------|
-| `.pdf` | Read 도구로 읽기, pages 파라미터로 범위 지정 | `Read` |
+| `.pdf` | `opendataloader-pdf`로 마크다운 변환 후 읽기 | `Bash` + `Read` |
 | `.pptx`, `.ppt` | `/pptx` 스킬로 내용 추출 | `Skill: pptx` |
 | `.hwpx`, `.hwp` | `/hwpxskill` 스킬로 읽기 | `Skill: hwpxskill` |
 | `.png`, `.jpg`, `.jpeg`, `.webp` | Read 도구로 시각적 분석 | `Read` |
@@ -109,12 +178,21 @@ allowed-tools: ["Read", "Write", "Edit", "Bash", "Glob", "Grep", "WebFetch", "As
 
 ### 형식별 처리 상세
 
-#### PDF 파일
+#### PDF 파일 (opendataloader-pdf 사용)
 ```
-1. Read 도구로 파일 읽기 (pages: "1-5" 등 범위 지정)
-2. 큰 PDF(10페이지 초과)는 목차/첫 페이지로 구조 파악 후 핵심 페이지만 읽기
-3. 추출한 내용을 슬라이드 구조로 자동 변환
-4. 원본 문서의 섹션 구조를 존중하여 슬라이드 순서 결정
+1. Bash로 PDF를 마크다운으로 변환:
+   python -c "from opendataloader_pdf import convert; convert('<파일경로>', output_dir='<출력폴더>', format='markdown', quiet=True)"
+
+   옵션:
+   - pages="1-5" : 특정 페이지만 변환
+   - format="markdown-with-images" : 이미지 포함 마크다운
+   - use_struct_tree=True : 태그된 PDF의 구조 활용
+   - table_method="cluster" : 표 감지 향상
+
+2. 변환된 .md 파일을 Read 도구로 읽기
+3. 마크다운 헤딩(#, ##)을 슬라이드 구분 기준으로 활용
+4. 표는 comparison 컴포넌트, 목록은 activity-list로 자동 매핑
+5. 원본 문서의 섹션 구조를 존중하여 슬라이드 순서 결정
 ```
 
 #### PPTX 파일
@@ -823,24 +901,39 @@ Playwright 브라우저 자동화를 사용하여 Google 이미지 검색에서 
 
 ### 이미지 사용 규칙
 
+- **⚠️ 다운로드된 이미지 전량 사용 필수**: 시나리오에서 `needs_image: true`로 지정하고 다운로드한 이미지는 **반드시 모두** HTML에서 참조해야 합니다. 다운로드했지만 HTML에 삽입하지 않은 이미지가 있으면 안 됩니다. grid-cards, two-column 등 이미지를 삽입할 수 있는 컴포넌트에 적극 배치하세요.
 - **슬라이드당 이미지 최대 1개** — 이미지가 많으면 로딩 느려짐
 - **image-focus 컴포넌트에 우선 배치** — 독립된 이미지 영역이 있는 컴포넌트
 - **cover/end 슬라이드**: 배경 이미지로 사용 가능 (opacity 0.15~0.3 오버레이)
-- **card-grid 카드 내**: 이모지 대신 작은 이미지 사용 가능 (48x48~64x64)
+- **card-grid 카드 내**: `card-img` 클래스로 이미지 삽입 (이모지 대신). `needs_image: true`인 카드 슬라이드에는 반드시 이미지 포함
 - **파일명 규칙**: `img-{슬라이드번호}-{키워드}.{확장자}` (예: `img-04-shakespeare.jpg`)
 - **fallback**: 이미지 검색/다운로드 실패 시 이모지 또는 placeholder로 대체
 - **로딩 최적화**: `loading="lazy"` 속성 추가, width/height 명시
+- **일관된 래퍼 구조**: 모든 프레젠테이션에서 `.image-container` + `.image-caption` 래퍼를 일관되게 사용 (cover 배경, card-img 제외)
+- **최소 해상도**: 이미지 너비 최소 1280px 권장 (FHD 디스플레이 선명도 확보). 800px 이하 이미지는 흐릿하게 표시됨
+- **커버 이미지**: 반드시 가로형(landscape, ratio > 1.5) 이미지 사용. 정사각형/세로형은 커버 배경에 부적합
 
 ### 이미지 검색이 필요한 슬라이드 판단 기준
 
 | 컴포넌트 | 이미지 필요도 | 설명 |
 |----------|-------------|------|
 | `image-focus` | **필수** | 이미지 전용 컴포넌트 |
-| `cover` | 선택 | 배경 이미지로 분위기 연출 |
+| `cover` | 선택 | 배경 이미지로 분위기 연출 (가로형 필수) |
 | `two-column` | 선택 | 한쪽에 이미지 배치 가능 |
-| `card-grid` | 낮음 | 이모지로 충분, 특별 요청 시만 |
+| `card-grid` | **needs_image 시 필수** | `needs_image: true`인 카드에는 반드시 `card-img` 삽입 |
 | `showcase-grid` | 선택 | 제품/결과물 사진 시 유용 |
 | 기타 | 불필요 | 텍스트 위주 컴포넌트 |
+
+### HTML 생성 후 이미지 검증 체크리스트
+
+```
+✅ 다운로드된 모든 이미지가 HTML에서 <img> 또는 background-image로 참조되는가?
+✅ 모든 <img> 태그에 onerror fallback이 있는가?
+✅ 모든 <img> 태그에 referrerpolicy="no-referrer"가 있는가?
+✅ 커버 이미지가 가로형(landscape)인가?
+✅ 모든 이미지에 .image-container 래퍼가 일관되게 적용되었는가? (cover, card 제외)
+✅ 세로형 이미지에 data-ratio="portrait" 속성이 적용되었는가?
+```
 
 ---
 

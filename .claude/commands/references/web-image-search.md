@@ -77,6 +77,18 @@
 - 투명 배경이 필요하면 `"png transparent background"` 추가
 - **안정적인 URL을 위해**: `site:wikimedia.org` 또는 `site:wikipedia.org` 추가 권장
 
+**슬라이드 유형별 키워드 전략:**
+
+| 슬라이드 유형 | 키워드 패턴 | 필수 수식어 |
+|-------------|-----------|-----------|
+| **표지 (cover)** | `"{주제} wide panoramic landscape"` | `wide`, `panoramic`, `landscape`, `banner` 중 1개 이상 |
+| **개념 설명** | `"{개념} diagram explanation"` | — |
+| **실물/장소** | `"{대상} photo high resolution"` | `high resolution` 권장 |
+| **인물** | `"{인물명} portrait official"` | — |
+| **card-grid 카드** | `"{카드주제} icon illustration"` | — |
+
+> **⚠️ 표지 이미지 키워드 필수 규칙**: 표지(cover) 배경에 사용할 이미지는 반드시 `wide`, `panoramic`, `landscape`, `banner` 중 하나를 키워드에 포함하세요. 정사각형(1:1) 이미지는 커버 배경에 부적합합니다 — 좌우 빈 공간이 생기거나 과도한 확대가 발생합니다.
+
 **키워드 예시:**
 ```
 슬라이드: "셰익스피어 소개" → "shakespeare portrait painting"
@@ -84,6 +96,8 @@
 슬라이드: "교실 에너지 절약" → "classroom energy saving robot education"
 슬라이드: "오감 탐험" → "five senses children education illustration"
 슬라이드: "타지마할" → "taj mahal landscape photo site:wikimedia.org"
+슬라이드: "태양계 표지" → "solar system wide panoramic space landscape"
+슬라이드: "AI 교육 표지" → "artificial intelligence technology wide banner"
 ```
 
 ### Step 2: Google Images 검색
@@ -197,7 +211,23 @@ file "{다운로드된파일}"
 size=$(wc -c < "{다운로드된파일}")
 if [ "$size" -gt 2097152 ]; then echo "⚠️ OVERSIZED — 재검색"; fi
 
-# 3. 일괄 검증 스크립트
+# 3. 해상도 및 종횡비 검증 (Python PIL 사용)
+python3 -c "
+from PIL import Image
+img = Image.open('{다운로드된파일}')
+w, h = img.size
+ratio = w / h
+print(f'Size: {w}x{h}, Ratio: {ratio:.2f}')
+if w < 1280:
+    print(f'⚠️ LOW-RES: {w}px wide — 최소 1280px 권장, FHD에서 흐릿할 수 있음')
+if ratio < 1.0:
+    print(f'⚠️ PORTRAIT: ratio={ratio:.2f} — 세로형 이미지, object-fit:cover 시 과도한 크롭 발생')
+    print(f'   → 가로형(landscape) 이미지로 재검색 권장 (검색 URL에 &tbs=iar:w 추가)')
+if 0.95 <= ratio <= 1.05:
+    print(f'⚠️ SQUARE: ratio={ratio:.2f} — 커버 배경에 부적합, 일반 슬라이드에서만 사용')
+"
+
+# 4. 일괄 검증 스크립트
 for img in "{프레젠테이션폴더}"/img-*.{jpg,png}; do
   [ -f "$img" ] || continue
   mime=$(file -b --mime-type "$img")
@@ -213,6 +243,16 @@ for img in "{프레젠테이션폴더}"/img-*.{jpg,png}; do
   echo "✅ OK: $img ($mime, ${size} bytes)"
 done
 ```
+
+**이미지 품질 기준:**
+
+| 기준 | 최소값 | 권장값 | 비고 |
+|------|--------|--------|------|
+| **너비** | 1024px | 1280px 이상 | FHD(1920px) 디스플레이에서 선명하게 표시 |
+| **종횡비** | 1.2:1 이상 | 16:9 ~ 16:10 | 가로형 필수, 세로형은 크롭 과다 |
+| **커버 이미지 너비** | 1280px | 1920px | 전체 화면 배경 사용 |
+| **커버 종횡비** | 1.5:1 이상 | 16:9 (1.78:1) | 와이드스크린에 맞는 파노라마형 |
+| **파일 크기** | — | 100KB~500KB | 2MB 초과 시 거부 |
 
 ### Step 5: HTML에 이미지 삽입
 
@@ -303,6 +343,8 @@ done
 
 프레젠테이션에 이미지를 삽입할 때 사용하는 CSS 클래스:
 
+> **⚠️ 일관성 규칙**: 모든 프레젠테이션에서 이미지를 사용할 때 반드시 `.image-container` + `.image-caption` 래퍼를 사용하세요 (cover 배경, card-img 제외). 프레젠테이션마다 다른 구조를 사용하면 유지보수가 어렵고 스타일 불일치가 발생합니다.
+
 ```css
 /* 이미지 공통 — 슬라이드 내 모든 이미지에 오버플로 방지 */
 .slide img {
@@ -341,6 +383,40 @@ done
   font-style: italic;
 }
 
+/* 종횡비 대응 — 세로형/정사각형 이미지 레이아웃 보정 */
+.col-image {
+  width: 100%; max-height: 350px;
+  object-fit: cover; border-radius: 0.5rem;
+  aspect-ratio: 16/10; /* 가로형 비율 강제 — 세로형 이미지 크롭 */
+}
+.col-image[data-ratio="portrait"] {
+  /* 세로형 이미지: contain으로 전환하여 과도한 크롭 방지 */
+  object-fit: contain;
+  background: linear-gradient(135deg, var(--style-bg), rgba(0,0,0,0.03));
+  aspect-ratio: auto; /* 자연스러운 비율 유지 */
+  max-height: 380px;
+}
+.col-image[data-ratio="square"] {
+  /* 정사각형 이미지: 비율 유지하되 크기 제한 */
+  object-fit: contain;
+  aspect-ratio: auto;
+  max-height: 320px;
+  max-width: 80%;
+  margin: 0 auto;
+  display: block;
+}
+
+/* 커버 배경 이미지 — 반드시 가로형(landscape) 이미지 사용 */
+.cover {
+  background-color: var(--style-bg);
+  background-size: cover;
+  background-position: center;
+}
+.cover-overlay {
+  position: absolute; inset: 0;
+  background: rgba(var(--style-bg-rgb), 0.75);
+}
+
 /* placeholder (이미지 로드 실패 시) */
 .image-placeholder {
   display: flex;
@@ -372,8 +448,30 @@ done
 @media (max-width: 768px) {
   .image-container { max-width: 95%; }
   .col-image { max-height: 200px; }
+  .col-image[data-ratio="portrait"] { max-height: 250px; }
 }
 ```
+
+### 이미지 종횡비별 data-ratio 적용 규칙
+
+HTML 생성 시 이미지의 종횡비를 확인하고 `data-ratio` 속성을 적용하세요:
+
+```javascript
+// 이미지 종횡비 판별 후 data-ratio 속성 자동 적용
+document.querySelectorAll('.col-image').forEach(img => {
+  img.addEventListener('load', function() {
+    const ratio = this.naturalWidth / this.naturalHeight;
+    if (ratio < 0.95) {
+      this.dataset.ratio = 'portrait';  // 세로형
+    } else if (ratio <= 1.05) {
+      this.dataset.ratio = 'square';    // 정사각형
+    }
+    // 가로형(ratio > 1.05)은 기본 스타일 적용 (data-ratio 없음)
+  });
+});
+```
+
+> **권장**: 다운로드 모드에서는 이미지 다운로드 후 PIL로 종횡비를 확인하여 HTML 생성 시 `data-ratio` 속성을 직접 삽입하는 것이 더 안정적입니다. 런타임 JS 판별은 url-link 모드에서만 사용하세요.
 
 ---
 
@@ -406,17 +504,52 @@ done
 | 검색 결과 없음 | 키워드 변경하여 재검색 (영어 → 간단한 영어) |
 | URL이 Google 캐시뿐 | 원본 사이트 방문하여 실제 URL 추출, 또는 `site:wikimedia.org` 재검색 |
 | 이미지 로드 실패 (onerror) | CSS placeholder 자동 표시 (gradient 배경 + 이모지 아이콘) |
-| Playwright 연결 실패 | emoji 모드로 fallback (이모지 아이콘 사용) |
+| Playwright 연결 실패 | **아래 "Playwright 미사용 Fallback" 참조** |
+| Chrome 확장 미연결 | **아래 "Playwright 미사용 Fallback" 참조** |
 | 이미지 너무 작음 (< 200px) | 다음 검색 결과로 이동 |
+| 이미지 해상도 < 1280px | 재검색하여 고해상도 이미지 선택 (FHD 디스플레이 흐릿함 방지) |
 | 부적절한 이미지 감지 | safe=active 유지, 교육용 키워드 추가하여 재검색 |
 | 세로형 이미지 (portrait) | 다른 가로형 이미지 선택 (검색 시 `&tbs=iar:w` 필터 사용) |
+| 정사각형 이미지 (cover용) | `wide panoramic landscape` 키워드 추가하여 재검색 |
 | 영어 인포그래픽 (한국어 발표) | 한국어 키워드로 재검색, 또는 텍스트 없는 사진 선택 |
 | (download 모드) HTML이 이미지로 저장됨 | `file` 명령으로 감지 → 삭제 → 재다운로드 |
 | (download 모드) 파일 크기 > 2MB | 다른 이미지 선택하여 재다운로드 |
 
 **Fallback 순서:**
 ```
-web-search(url-link) → web-search(download) → 스크린샷 캡처 → placeholder → emoji
+Playwright(url-link) → Playwright(download) → Google Custom Search API → WebFetch(Wikimedia) → 스크린샷 캡처 → placeholder → emoji
+```
+
+### Playwright 미사용 Fallback (Chrome 확장 미연결 시)
+
+Playwright MCP(browser 도구)를 사용할 수 없는 경우(Chrome 확장 미설치, 브라우저 미실행 등) 아래 대안을 순서대로 시도합니다:
+
+**방법 1: `/google-image-search` 스킬 사용 (Google Custom Search API)**
+```
+Skill: google-image-search 스킬이 설치되어 있으면 이를 사용합니다.
+- Google Custom Search API 기반으로 동작
+- API 키가 설정되어 있어야 함
+- LLM 기반 이미지 선택으로 품질 높은 결과
+```
+
+**방법 2: WebFetch로 Wikimedia Commons 직접 검색**
+```
+1. WebFetch로 Wikimedia Commons API 호출:
+   URL: https://commons.wikimedia.org/w/api.php?action=query&list=search&srsearch={keyword}&srnamespace=6&format=json&srlimit=5
+
+2. 검색 결과에서 파일명 추출 후 이미지 URL 구성:
+   URL: https://commons.wikimedia.org/wiki/Special:FilePath/{filename}?width=1280
+
+3. 이미지 URL을 HTML에 직접 삽입 (url-link 모드)
+   - Wikimedia URL은 매우 안정적 (영구 URL)
+   - 교육용 이미지로 적합 (CC 라이선스)
+```
+
+**방법 3: Emoji + CSS placeholder (최종 fallback)**
+```
+- 이미지 대신 이모지 아이콘 + gradient 배경 placeholder 사용
+- CSS 컴포넌트(stat-highlight, card-grid 등)로 시각화
+- 사용자에게 "이미지 검색 도구를 사용할 수 없어 텍스트 기반으로 생성했습니다" 안내
 ```
 
 ---
@@ -425,9 +558,12 @@ web-search(url-link) → web-search(download) → 스크린샷 캡처 → placeh
 
 ### 표지 (cover)
 - **검색 전략**: 주제의 대표적 이미지, 추상적/미적 이미지 선호
-- **키워드 패턴**: `"{주제} aesthetic background"` 또는 `"{주제} illustration"`
-- **사용 방식**: 배경 이미지 + 반투명 오버레이
-- **URL 팁**: Unsplash/Pexels 이미지가 커버에 적합 (고해상도, 무료)
+- **키워드 패턴**: `"{주제} wide panoramic landscape background"` 또는 `"{주제} banner aesthetic"`
+- **⚠️ 필수 키워드**: `wide`, `panoramic`, `landscape`, `banner` 중 1개 이상 포함
+- **⚠️ 종횡비**: 반드시 가로형(ratio > 1.5:1) 선택. 정사각형/세로형 절대 사용 금지
+- **⚠️ 최소 해상도**: 1280px 이상 (권장 1920px — FHD 전체 배경에 적합)
+- **사용 방식**: 배경 이미지 + 반투명 오버레이 (`background-size: cover`)
+- **URL 팁**: Unsplash/Pexels 이미지가 커버에 적합 (고해상도, 무료, 와이드 이미지 풍부)
 
 ### 개념 설명 슬라이드
 - **검색 전략**: 다이어그램, 인포그래픽 선호

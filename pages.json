@@ -134,6 +134,27 @@
             }
           ],
           "gradient": "linear-gradient(90deg, #1565c0, #2196f3)"
+        },
+        {
+          "title": "7차시 - 예제를 통해 배우는 CSS 1",
+          "path": "프로그래밍/7차시-예제를통해배우는CSS1/index.html",
+          "emoji": "🎨",
+          "description": "Google Fonts, 색상·그라데이션, border-radius, box-shadow, hover 효과 등 개인 페이지를 꾸미는 실전 CSS를 예제로 배웁니다.",
+          "tags": [
+            {
+              "label": "CSS",
+              "color": "blue"
+            },
+            {
+              "label": "웹디자인",
+              "color": "purple"
+            },
+            {
+              "label": "실습",
+              "color": "orange"
+            }
+          ],
+          "gradient": "linear-gradient(90deg, #4ECDC4, #1A1A2E)"
         }
       ]
     },
@@ -291,6 +312,27 @@
             }
           ],
           "gradient": "linear-gradient(90deg, #7B00FF, #00FF88)"
+        },
+        {
+          "title": "Teachable Machine - AI 모델을 직접 만들다",
+          "path": "인공지능과피지컬컴퓨팅/Teachable-Machine/index.html",
+          "emoji": "✋",
+          "description": "CNN의 전이학습 원리를 이해하고, Teachable Machine으로 손동작 인식 AI 모델을 직접 만듭니다. 다음 차시 아두이노 연동 프로젝트를 준비합니다.",
+          "tags": [
+            {
+              "label": "전이학습",
+              "color": "purple"
+            },
+            {
+              "label": "Teachable Machine",
+              "color": "blue"
+            },
+            {
+              "label": "모델 만들기",
+              "color": "orange"
+            }
+          ],
+          "gradient": "linear-gradient(90deg, #A78BFA, #67E8F9)"
         }
       ]
     },
@@ -428,9 +470,18 @@
           "emoji": "🧪",
           "description": "다양한 주제의 테스트 수업 프레젠테이션 모음. 사회·역사, 과학·기술, 수학, 국어·영어, 예체능, 진로·안전·건강 등 19개 수업을 포함합니다.",
           "tags": [
-            { "label": "테스트", "color": "orange" },
-            { "label": "19개 수업", "color": "blue" },
-            { "label": "전과목", "color": "green" }
+            {
+              "label": "테스트",
+              "color": "orange"
+            },
+            {
+              "label": "19개 수업",
+              "color": "blue"
+            },
+            {
+              "label": "전과목",
+              "color": "green"
+            }
           ],
           "gradient": "linear-gradient(90deg, #e65100, #ff9800)"
         }

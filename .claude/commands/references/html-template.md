@@ -375,6 +375,31 @@ p:  1rem / line-height 1.7
 </div>
 ```
 
+#### card-grid 이미지 변형 (web-search 모드)
+
+이미지 검색이 활성화되고 `needs_image: true`인 카드 슬라이드에는 이모지 아이콘 대신 실제 이미지를 삽입합니다:
+
+```html
+<div class="grid-3 card-grid" role="list">
+  <div class="card" role="listitem">
+    <img src="img-04-inner-planets.jpg" alt="내행성 사진"
+         loading="lazy" class="card-img"
+         referrerpolicy="no-referrer"
+         crossorigin="anonymous"
+         onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+    <div class="image-placeholder" style="display:none;">
+      <span class="placeholder-icon">🖼️</span>
+      <span class="placeholder-text">이미지를 불러올 수 없습니다</span>
+    </div>
+    <h3 class="card-title">내행성</h3>
+    <p class="card-desc">수성, 금성, 지구, 화성</p>
+  </div>
+  <!-- 추가 카드 반복 — 다운로드된 이미지가 있으면 모두 삽입 -->
+</div>
+```
+
+> **⚠️ 중요**: 시나리오에서 `needs_image: true`로 지정하고 다운로드된 이미지가 있는 card-grid 슬라이드에는 **반드시** 해당 이미지를 `card-img`로 삽입하세요. 다운로드한 이미지를 HTML에서 참조하지 않는 것은 리소스 낭비입니다.
+
 ### 6. showcase-grid — 쇼케이스 (5열)
 
 ```html
