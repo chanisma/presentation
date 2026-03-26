@@ -97,8 +97,14 @@
   "hotPaths": [
     {
       "path": "프로그래밍\\7차시-예제를통해배우는CSS1\\index.html",
-      "accessCount": 11,
-      "lastAccessed": 1774354924589,
+      "accessCount": 19,
+      "lastAccessed": 1774420173527,
+      "type": "file"
+    },
+    {
+      "path": "pages.json",
+      "accessCount": 6,
+      "lastAccessed": 1774420419151,
       "type": "file"
     },
     {
@@ -108,15 +114,15 @@
       "type": "file"
     },
     {
+      "path": "인공지능과피지컬컴퓨팅\\피지컬AI-아두이노연동\\index.html",
+      "accessCount": 3,
+      "lastAccessed": 1774419645507,
+      "type": "directory"
+    },
+    {
       "path": ".claude\\commands\\references\\styles.md",
       "accessCount": 2,
       "lastAccessed": 1774358650449,
-      "type": "file"
-    },
-    {
-      "path": "pages.json",
-      "accessCount": 1,
-      "lastAccessed": 1774357227839,
       "type": "file"
     },
     {
@@ -129,6 +135,36 @@
       "path": "인공지능과피지컬컴퓨팅\\Teachable-Machine\\index.html",
       "accessCount": 1,
       "lastAccessed": 1774359005315,
+      "type": "file"
+    },
+    {
+      "path": "인공지능과피지컬컴퓨팅\\피지컬AI-아두이노연동\\smart_light.ino",
+      "accessCount": 1,
+      "lastAccessed": 1774419026083,
+      "type": "file"
+    },
+    {
+      "path": "프로그래밍\\8차시-예제를통해배우는CSS2\\index.html",
+      "accessCount": 1,
+      "lastAccessed": 1774420385585,
+      "type": "file"
+    },
+    {
+      "path": ".playwright-cli\\page-2026-03-25T12-25-47-063Z.yml",
+      "accessCount": 1,
+      "lastAccessed": 1774441579769,
+      "type": "file"
+    },
+    {
+      "path": ".playwright-cli\\page-2026-03-25T12-27-17-752Z.yml",
+      "accessCount": 1,
+      "lastAccessed": 1774441666709,
+      "type": "file"
+    },
+    {
+      "path": "todomvc-test.png",
+      "accessCount": 1,
+      "lastAccessed": 1774441757933,
       "type": "file"
     }
   ],
