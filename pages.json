@@ -167,6 +167,18 @@
             {"label": "실습", "color": "orange"}
           ],
           "gradient": "linear-gradient(90deg, #4ECDC4, #FF6B6B)"
+        },
+        {
+          "title": "9차시 - 예제를 통해 배우는 CSS 3",
+          "path": "프로그래밍/9차시-예제를통해배우는CSS3/index.html",
+          "emoji": "📱",
+          "description": "미디어 쿼리, 유연한 레이아웃, 유연한 이미지로 반응형 웹 디자인을 배웁니다. 비반응형/반응형 데모 페이지를 직접 비교합니다.",
+          "tags": [
+            {"label": "반응형", "color": "blue"},
+            {"label": "미디어쿼리", "color": "purple"},
+            {"label": "실습", "color": "orange"}
+          ],
+          "gradient": "linear-gradient(90deg, #4ECDC4, #1A1A2E)"
         }
       ]
     },

@@ -108,15 +108,15 @@
       "type": "file"
     },
     {
-      "path": ".claude\\commands\\references\\html-template.md",
-      "accessCount": 7,
-      "lastAccessed": 1774766009186,
+      "path": "pages.json",
+      "accessCount": 8,
+      "lastAccessed": 1774774714668,
       "type": "file"
     },
     {
-      "path": "pages.json",
-      "accessCount": 6,
-      "lastAccessed": 1774766309123,
+      "path": ".claude\\commands\\references\\html-template.md",
+      "accessCount": 7,
+      "lastAccessed": 1774766009186,
       "type": "file"
     },
     {
