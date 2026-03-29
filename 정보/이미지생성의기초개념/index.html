@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>if(!location.pathname.endsWith('/')&&!location.pathname.endsWith('.html')){var b=document.createElement('base');b.href=location.pathname+'/';document.head.appendChild(b);}</script>
+  <title>이미지 생성의 기초 개념</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --style-bg: #050510;
+      --style-primary: #00FF88;
+      --style-accent: #7B00FF;
+      --style-accent2: #00B4FF;
+      --style-text: #D0D0F0;
+      --style-text-secondary: #9595b8;
+      --style-panel: rgba(15, 15, 40, 0.85);
+      --style-panel-border: rgba(0, 255, 136, 0.15);
+      --style-glow-green: rgba(0, 255, 136, 0.3);
+      --style-glow-violet: rgba(123, 0, 255, 0.25);
+      --style-glow-cyan: rgba(0, 180, 255, 0.25);
+    }
+    html, body {
+      font-size: clamp(16px, 1.5vw, 28px);
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--style-bg);
+      color: var(--style-text);
+      overflow: hidden;
+      height: 100vh;
+      line-height: 1.6;
+    }
+    h1, h2, h3 { font-family: 'Barlow Condensed', 'Noto Sans KR', sans-serif; }
+    h1 { font-size: 2.4rem; font-weight: 700; letter-spacing: 0.12em; }
+    h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: 0.06em; }
+    h3 { font-size: 1.1rem; font-weight: 600; }
+    code, .mono { font-family: 'Space Mono', monospace; }
+    .gradient-text {
+      background: linear-gradient(90deg, #00FF88, #00B4FF, #7B00FF);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* Accessibility */
+    .sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+    .skip-link { position:absolute;top:-40px;left:0;background:var(--style-primary);color:#050510;padding:8px 16px;z-index:9999;font-size:14px;border-radius:0 0 4px 0;transition:top 0.2s; }
+    .skip-link:focus { top:0; }
+    :focus-visible { outline: 2px solid var(--style-primary); outline-offset: 2px; border-radius: 4px; }
+    :focus:not(:focus-visible) { outline: none; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration:0.01ms!important;transition-duration:0.01ms!important; } }
+
+    /* Progress Bar */
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px; z-index: 1000;
+      background: linear-gradient(90deg, #00FF88, #00B4FF, #7B00FF);
+      transition: width 0.4s ease;
+      box-shadow: 0 0 12px var(--style-glow-green);
+    }
+
+    /* Presentation & Slides */
+    .presentation { height: calc(100vh - 42px); position: relative; overflow: hidden; }
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0.8rem 1.2rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+    .slide.active { opacity: 1; pointer-events: auto; }
+
+    /* Browser Card (minimal dark) */
+    .browser-card {
+      width: 100%; max-width: 1200px;
+      max-height: calc(100vh - 4.8rem);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+      background: var(--style-panel);
+      border: 1px solid var(--style-panel-border);
+      border-radius: 1rem;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 60px rgba(0,255,136,0.06), 0 0 120px rgba(123,0,255,0.04);
+    }
+    .browser-card--frameless {
+      background: transparent; border: none; box-shadow: none; backdrop-filter: none;
+    }
+    .browser-topbar {
+      display: flex; align-items: center; justify-content: center;
+      padding: 0.4rem 1rem;
+      border-bottom: 1px solid rgba(0,255,136,0.08);
+      min-height: 35px;
+    }
+    .topbar-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--style-text-secondary);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin: 0 auto;
+    }
+    .browser-content {
+      flex: 1; overflow-y: auto;
+      padding: 1.2rem 2rem 1rem;
+    }
+    .browser-content::-webkit-scrollbar { width: 4px; }
+    .browser-content::-webkit-scrollbar-thumb { background: rgba(0,255,136,0.2); border-radius: 2px; }
+
+    /* Glow Blobs */
+    .glow-blob { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
+    .glow-blob--green { background: var(--style-glow-green); }
+    .glow-blob--violet { background: var(--style-glow-violet); }
+    .glow-blob--cyan { background: var(--style-glow-cyan); }
+    .deco-blob--tr { right: -5%; top: -10%; width: 35%; aspect-ratio: 1; }
+    .deco-blob--bl { left: -8%; bottom: -5%; width: 30%; aspect-ratio: 1; }
+    .deco-blob--cr { right: 5%; top: 30%; width: 20%; aspect-ratio: 1; }
+
+    /* Section Header */
+    .section-header { margin-bottom: 0.8rem; }
+    .section-header h2 { color: var(--style-text); }
+    .section-icon { display: inline; font-size: 1.2em; margin-right: 0.4em; vertical-align: -0.1em; }
+    .section-subtitle { color: var(--style-text-secondary); font-size: 0.88rem; margin-top: 0.2rem; }
+    .section-rule { height: 2px; background: linear-gradient(90deg, var(--style-primary), transparent); margin-top: 0.4rem; border: none; }
+
+    /* Highlight Box */
+    .highlight-box {
+      background: rgba(0,255,136,0.06);
+      border-left: 3px solid var(--style-primary);
+      padding: 0.6rem 1rem;
+      border-radius: 0 0.5rem 0.5rem 0;
+      margin: 0.6rem 0;
+      font-size: 0.95rem;
+    }
+
+    /* Card Grid */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+    .card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(0,255,136,0.1);
+      border-radius: 0.6rem;
+      padding: 0.8rem 1rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .card:hover { border-color: var(--style-primary); box-shadow: 0 0 20px rgba(0,255,136,0.1); }
+    .card-icon { font-size: 1.4rem; display: block; margin-bottom: 0.3rem; }
+    .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; color: var(--style-text); }
+    .card-desc { font-size: 0.88rem; color: var(--style-text-secondary); line-height: 1.5; }
+    .slide.active .card { animation: popUp 0.5s ease-out both; }
+    .slide.active .card:nth-child(2) { animation-delay: 0.08s; }
+    .slide.active .card:nth-child(3) { animation-delay: 0.16s; }
+    .slide.active .card:nth-child(4) { animation-delay: 0.24s; }
+    @keyframes popUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+    /* Two Column */
+    .two-col { display: flex; gap: 1rem; align-items: flex-start; }
+    .col-left, .col-right { flex: 1; }
+    .col-divider { width: 1px; background: linear-gradient(180deg, transparent, var(--style-primary), transparent); align-self: stretch; }
+    .col-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .col-list { list-style: none; font-size: 0.92rem; }
+    .col-list li { padding: 0.25rem 0; padding-left: 1.2em; position: relative; }
+    .col-list li::before { content: '▸'; position: absolute; left: 0; color: var(--style-primary); }
+
+    /* Comparison Table */
+    .table-wrapper { overflow-x: auto; margin: 0.6rem 0; }
+    .comparison-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .comparison-table th, .comparison-table td { padding: 0.5rem 0.8rem; text-align: left; border: 1px solid rgba(0,255,136,0.12); }
+    .comparison-table thead th { background: rgba(0,255,136,0.1); color: var(--style-primary); font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.05em; }
+    .comparison-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+
+    /* Task List */
+    .task-list { list-style: none; }
+    .task-item {
+      display: flex; gap: 0.8rem; align-items: flex-start;
+      padding: 0.6rem 0; border-left: 3px solid var(--style-accent);
+      padding-left: 0.8rem; margin-bottom: 0.4rem;
+    }
+    .task-num { font-family: 'Space Mono', monospace; font-size: 1.2rem; color: var(--style-primary); font-weight: 700; flex-shrink: 0; }
+    .task-title { font-weight: 700; font-size: 0.98rem; }
+    .task-desc { font-size: 0.88rem; color: var(--style-text-secondary); margin-top: 0.15rem; }
+
+    /* Badge */
+    .badge { display: inline-block; font-family: 'Space Mono', monospace; font-size: 0.75rem; padding: 0.15rem 0.6rem; border-radius: 1rem; letter-spacing: 0.08em; }
+    .main-badge { background: rgba(0,255,136,0.15); color: var(--style-primary); border: 1px solid rgba(0,255,136,0.3); }
+
+    /* Cover */
+    .cover-slide {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; min-height: 60vh; position: relative;
+    }
+    .cover-title {
+      font-size: 2.6rem; font-weight: 700; letter-spacing: 0.15em;
+      background: linear-gradient(90deg, #00FF88, #00B4FF, #7B00FF);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin: 0.5rem 0 0.3rem;
+    }
+    .cover-subtitle { color: var(--style-text-secondary); font-size: 1rem; margin-bottom: 0.8rem; }
+    .cover-divider { width: 80px; height: 2px; background: linear-gradient(90deg, #00FF88, #7B00FF); margin: 0.5rem auto; }
+    .cover-meta { font-size: 0.82rem; color: var(--style-text-secondary); font-family: 'Space Mono', monospace; }
+
+    /* End Slide */
+    .end-slide { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .end-title {
+      font-size: 2rem; font-weight: 700;
+      background: linear-gradient(90deg, #00FF88, #00B4FF);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 0.4rem;
+    }
+    .end-subtitle { color: var(--style-text-secondary); font-size: 0.92rem; margin-bottom: 0.8rem; }
+    .end-summary { max-width: 600px; text-align: left; }
+    .summary-title { font-size: 1rem; color: var(--style-primary); margin-bottom: 0.3rem; }
+    .summary-list { list-style: none; }
+    .summary-list li { padding: 0.2rem 0; font-size: 0.92rem; }
+    .summary-list li::before { content: '✦ '; color: var(--style-primary); }
+
+    /* TOC */
+    .toc-list { list-style: none; }
+    .toc-item {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.5rem 0.8rem; border-radius: 0.5rem; cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      border: 1px solid transparent; margin-bottom: 0.3rem;
+    }
+    .toc-item:hover { background: rgba(0,255,136,0.06); border-color: rgba(0,255,136,0.15); }
+    .toc-num { font-family: 'Space Mono', monospace; color: var(--style-primary); font-weight: 700; font-size: 1rem; flex-shrink: 0; }
+    .toc-text { flex: 1; font-size: 0.95rem; }
+    .toc-arrow { color: var(--style-primary); opacity: 0; transition: opacity 0.2s; }
+    .toc-item:hover .toc-arrow { opacity: 1; }
+
+    /* GAN Interactive */
+    .gan-viz {
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      background: rgba(0,0,0,0.3); border-radius: 0.8rem; padding: 0.8rem;
+      border: 1px solid rgba(0,255,136,0.1);
+    }
+    .gan-flow { display: flex; align-items: center; justify-content: center; gap: 0.4rem; width: 100%; }
+    .gan-node {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 0.4rem 0.6rem; border-radius: 0.5rem; text-align: center; min-width: 5rem;
+      transition: all 0.5s ease;
+    }
+    .gan-node-label { font-size: 0.72rem; font-family: 'Space Mono', monospace; margin-top: 0.2rem; }
+    .gan-node-icon { font-size: 1.6rem; }
+    .gan-node--noise { background: rgba(123,0,255,0.15); border: 1px solid rgba(123,0,255,0.3); }
+    .gan-node--generator { background: rgba(0,255,136,0.1); border: 1px solid rgba(0,255,136,0.3); }
+    .gan-node--fake { background: rgba(255,180,0,0.1); border: 1px solid rgba(255,180,0,0.3); }
+    .gan-node--discriminator { background: rgba(255,60,60,0.1); border: 1px solid rgba(255,60,60,0.3); }
+    .gan-arrow { font-size: 1.2rem; color: var(--style-primary); flex-shrink: 0; }
+    .gan-controls { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.3rem; }
+    .gan-btn {
+      font-family: 'Space Mono', monospace; font-size: 0.72rem;
+      padding: 0.3rem 0.8rem; border-radius: 0.4rem; cursor: pointer;
+      border: 1px solid var(--style-primary); background: rgba(0,255,136,0.08);
+      color: var(--style-primary); transition: all 0.2s;
+    }
+    .gan-btn:hover { background: rgba(0,255,136,0.2); }
+    .gan-status { font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--style-text-secondary); text-align: center; min-height: 1.2em; }
+    .gan-epoch { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--style-accent2); }
+    .gan-quality-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 3px; overflow: hidden; margin-top: 0.2rem; }
+    .gan-quality-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease; background: linear-gradient(90deg, #7B00FF, #00FF88); }
+    .gan-grid-preview { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3px; width: 100%; max-width: 360px; }
+    .gan-cell { aspect-ratio: 1; border-radius: 4px; transition: all 0.6s ease; }
+
+    /* Diffusion Interactive */
+    .diff-viz {
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      background: rgba(0,0,0,0.3); border-radius: 0.8rem; padding: 0.8rem;
+      border: 1px solid rgba(0,180,255,0.1);
+    }
+    .diff-canvas-row { display: flex; align-items: center; gap: 0.5rem; width: 100%; justify-content: center; }
+    .diff-stage { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; flex: 1; max-width: 120px; }
+    .diff-stage-box {
+      width: 100%; aspect-ratio: 1; border-radius: 0.5rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; transition: all 0.5s ease; position: relative; overflow: hidden;
+    }
+    .diff-stage-label { font-size: 0.68rem; font-family: 'Space Mono', monospace; color: var(--style-text-secondary); text-align: center; }
+    .diff-arrow-step { color: var(--style-accent2); font-size: 1rem; flex-shrink: 0; }
+    .diff-slider-wrap { width: 100%; max-width: 500px; display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+    .diff-slider {
+      -webkit-appearance: none; width: 100%; height: 6px;
+      background: linear-gradient(90deg, #00FF88, #00B4FF, #7B00FF);
+      border-radius: 3px; outline: none;
+    }
+    .diff-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 18px; height: 18px;
+      background: var(--style-text); border-radius: 50%; cursor: pointer;
+      box-shadow: 0 0 10px var(--style-glow-cyan);
+    }
+    .diff-slider-labels { display: flex; justify-content: space-between; width: 100%; font-size: 0.68rem; font-family: 'Space Mono', monospace; color: var(--style-text-secondary); }
+    .diff-info { font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--style-accent2); text-align: center; }
+    .diff-prompt-box {
+      display: flex; align-items: center; gap: 0.4rem;
+      background: rgba(0,255,136,0.06); border: 1px solid rgba(0,255,136,0.15);
+      border-radius: 0.4rem; padding: 0.3rem 0.6rem; font-size: 0.75rem;
+      color: var(--style-primary); font-family: 'Space Mono', monospace;
+    }
+    .noise-canvas { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+
+    /* Link Button */
+    .link-btn {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      font-family: 'Space Mono', monospace; font-size: 0.75rem;
+      padding: 0.3rem 0.8rem; border-radius: 0.4rem;
+      background: rgba(0,180,255,0.1); border: 1px solid rgba(0,180,255,0.3);
+      color: var(--style-accent2); text-decoration: none; transition: all 0.2s;
+    }
+    .link-btn:hover { background: rgba(0,180,255,0.2); }
+
+    /* Nav Bar */
+    .nav-bar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      padding: 0.35rem 1.5rem;
+      background: rgba(5,5,16,0.95); backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(0,255,136,0.08); z-index: 999; font-size: 14px;
+    }
+    .nav-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 1.8rem; height: 1.8rem;
+      border: 1.5px solid rgba(0,255,136,0.2); border-radius: 50%;
+      background: rgba(255,255,255,0.03); cursor: pointer;
+      color: var(--style-text); transition: all 0.2s; padding: 0; line-height: 1; font-size: 0;
+    }
+    .nav-btn svg { width: 0.55rem; height: 0.55rem; fill: currentColor; display: block; }
+    .nav-btn:hover:not(:disabled) { border-color: var(--style-primary); background: rgba(0,255,136,0.1); }
+    .nav-btn:hover:not(:disabled) svg { fill: var(--style-primary); }
+    .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .nav-counter { font-size: 13px; font-weight: 700; color: var(--style-text-secondary); min-width: 3rem; text-align: center; display: flex; align-items: center; gap: 0.15rem; line-height: 1; }
+    .slide-input { width: 1.4rem; text-align: center; border: none; border-bottom: 1.5px solid transparent; background: transparent; font-size: 13px; font-weight: 700; color: var(--style-text-secondary); font-family: inherit; padding: 0; outline: none; cursor: pointer; transition: border-color 0.2s; line-height: 1; }
+    .slide-input:hover { border-bottom-color: var(--style-primary); }
+    .slide-input:focus { border-bottom-color: var(--style-primary); background: rgba(0,255,136,0.05); border-radius: 4px; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      html, body { font-size: clamp(14px, 3vw, 20px); }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .two-col { flex-direction: column; }
+      .col-divider { width: 100%; height: 1px; }
+      .gan-flow { flex-wrap: wrap; }
+      .diff-canvas-row { flex-wrap: wrap; }
+    }
+
+    /* Animations */
+    @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    .slide.active .browser-card { animation: fadeInUp 0.6s ease-out; }
+  </style>
+</head>
+<body>
+  <a href="#presentation" class="skip-link">본문으로 바로가기</a>
+  <div class="progress-bar" id="progressBar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="15" aria-label="프레젠테이션 진행률"></div>
+
+  <div class="presentation" id="presentation" role="main">
+
+    <!-- Slide 1: 표지 -->
+    <div class="slide active" data-slide="0" role="region" aria-label="슬라이드 1: 표지">
+      <div class="glow-blob glow-blob--green deco-blob--tr"></div>
+      <div class="glow-blob glow-blob--violet deco-blob--bl"></div>
+      <div class="browser-card browser-card--frameless">
+        <div class="browser-content cover-slide">
+          <div class="badge main-badge">정보 수업</div>
+          <h1 class="cover-title">이미지 생성의 기초 개념</h1>
+          <p class="cover-subtitle">GAN과 Diffusion으로 이해하는 AI 이미지 생성 원리</p>
+          <div class="cover-divider" aria-hidden="true"></div>
+          <div class="cover-meta">
+            <span>전주기전여자고등학교</span>
+            <span aria-hidden="true"> · </span>
+            <span><time datetime="2025-09">2025년 9월</time></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: 목차 -->
+    <div class="slide" data-slide="1" role="region" aria-label="슬라이드 2: 목차">
+      <div class="glow-blob glow-blob--cyan deco-blob--cr"></div>
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true"><span class="topbar-title">table of contents</span></div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">◆</span> 오늘의 학습 내용</h2>
+            <hr class="section-rule">
+          </div>
+          <nav aria-label="슬라이드 목차">
+            <ol class="toc-list">
+              <li class="toc-item" role="button" tabindex="0"><span class="toc-num">01</span><span class="toc-text">인공지능은 어떻게 이미지를 생성할까?</span><span class="toc-arrow">→</span></li>
+              <li class="toc-item" role="button" tabindex="0"><span class="toc-num">02</span><span class="toc-text">GAN — 적대적 생성 신경망</span><span class="toc-arrow">→</span></li>
+              <li class="toc-item" role="button" tabindex="0"><span class="toc-num">03</span><span class="toc-text">Diffusion — 확산 모델</span><span class="toc-arrow">→</span></li>
+              <li class="toc-item" role="button" tabindex="0"><span class="toc-num">04</span><span class="toc-text">GAN vs Diffusion 비교</span><span class="toc-arrow">→</span></li>
+              <li class="toc-item" role="button" tabindex="0"><span class="toc-num">05</span><span class="toc-text">체험 활동 & 마무리</span><span class="toc-arrow">→</span></li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: 도입 -->
+    <div class="slide" data-slide="2" role="region" aria-label="슬라이드 3: 도입">
+      <div class="glow-blob glow-blob--violet deco-blob--tr"></div>
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true"><span class="topbar-title">introduction</span></div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> 인공지능은 어떻게 이미지를 생성할까?</h2>
+            <hr class="section-rule">
+          </div>
+          <div class="highlight-box" role="note">
+            <p>이미지 생성 인공지능은 <strong>노이즈로부터 그림을 생성하는 방법</strong>을 학습한 것입니다.</p>
+          </div>
+          <div class="grid-2 card-grid" role="list" style="margin-top:0.6rem;">
+            <div class="card" role="listitem">
+              <div class="card-title" style="color:var(--style-accent);">노이즈 (Noise)</div>
+              <p class="card-desc">무작위 픽셀 데이터 — 아무런 의미 없는 잡음</p>
+              <div style="margin-top:0.4rem;height:60px;border-radius:6px;overflow:hidden;position:relative;">
+                <canvas id="noiseDemo1" class="noise-canvas"></canvas>
+              </div>
+            </div>
+            <div class="card" role="listitem">
+              <div class="card-title" style="color:var(--style-primary);">생성된 이미지</div>
+              <p class="card-desc">AI가 노이즈에서 만들어낸 의미 있는 사진</p>
+              <div style="margin-top:0.4rem;height:60px;border-radius:6px;background:linear-gradient(135deg,rgba(0,255,136,0.15),rgba(0,180,255,0.15));display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🐕</div>
+            </div>
+          </div>
+          <div class="highlight-box" style="margin-top:0.6rem;border-left-color:var(--style-accent);">
+            <p>이 과정을 가능하게 하는 두 가지 핵심 기술: <strong class="gradient-text">GAN</strong>과 <strong class="gradient-text">Diffusion</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: GAN 개요 -->
+    <div class="slide" data-slide="3" role="region" aria-label="슬라이드 4: GAN 개념">
+      <div class="glow-blob glow-blob--green deco-blob--bl"></div>
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true"><span class="topbar-title">gan — overview</span></div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">◆</span> GAN — Generative Adversarial Networks</h2>
+            <p class="section-subtitle">적대적 생성 신경망</p>
+            <hr class="section-rule">
+          </div>
+          <div class="two-col" style="margin-top:0.6rem;">
+            <div class="col-left">
+              <h3 class="col-title gradient-text">핵심 아이디어</h3>
+              <p style="font-size:0.92rem;margin-bottom:0.5rem;">두 개의 신경망이 서로 <strong>경쟁(적대)</strong>하면서 학습</p>
+              <ul class="col-list" role="list">
+                <li role="listitem"><strong>생성자(Generator)</strong> — 위조범 역할</li>
+                <li role="listitem"><strong>판별자(Discriminator)</strong> — 경찰 역할</li>
+                <li role="listitem">경쟁을 통해 양쪽 모두 발전</li>
+              </ul>
+            </div>
+            <div class="col-divider" aria-hidden="true"></div>
+            <div class="col-right">
+              <h3 class="col-title" style="color:var(--style-accent2);">비유로 이해하기</h3>
+              <div class="card" style="margin-top:0.3rem;">
+                <div class="card-desc" style="font-size:0.88rem;">
+                  <strong>생성자</strong>는 진짜처럼 보이는 위조지폐를 만들고, <strong>판별자</strong>는 진짜 지폐와 위조지폐를 구별하려 합니다. 둘의 경쟁이 반복될수록 위조지폐는 점점 정교해집니다.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: GAN 학습 과정 인터랙티브 -->
+    <div class="slide" data-slide="4" role="region" aria-label="슬라이드 5: GAN 학습 과정 시각화">
+      <div class="glow-blob glow-blob--green deco-blob--tr"></div>
+      <div class="glow-blob glow-blob--violet deco-blob--bl"></div>
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true"><span class="topbar-title">gan — interactive training</span></div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> GAN 학습 과정 시각화</h2>
+            <p class="section-subtitle">버튼을 클릭하여 학습 단계를 진행하세요</p>
+            <hr class="section-rule">
+          </div>
+          <div class="gan-viz" id="ganViz">
+            <div class="gan-flow">
+              <div class="gan-node gan-node--noise"><div class="gan-node-icon">🎲</div><div class="gan-node-label">노이즈</div></div>
+              <div class="gan-arrow">→</div>
+              <div class="gan-node gan-node--generator" id="ganGenerator"><div class="gan-node-icon">🎨</div><div class="gan-node-label">생성자</div></div>
+              <div class="gan-arrow">→</div>
+              <div class="gan-node gan-node--fake" id="ganFake"><div class="gan-node-icon" id="ganFakeIcon">❓</div><div class="gan-node-label">가짜 데이터</div></div>
+              <div class="gan-arrow">→</div>
+              <div class="gan-node gan-node--discriminator" id="ganDiscriminator"><div class="gan-node-icon">🔍</div><div class="gan-node-label">판별자</div></div>
+            </div>
+            <div class="gan-status" id="ganStatus">▶ [학습 시작]을 눌러 GAN 학습을 시작하세요</div>
+            <div class="gan-epoch" id="ganEpoch"></div>
+            <div class="gan-quality-bar"><div class="gan-quality-fill" id="ganQuality" style="width:0%"></div></div>
+            <div class="gan-grid-preview" id="ganGrid"></div>
+            <div class="gan-controls">
+              <button class="gan-btn" id="ganStartBtn">▶ 학습 시작</button>
+              <button class="gan-btn" id="ganStepBtn" style="display:none;">다음 단계 →</button>
+              <button class="gan-btn" id="ganResetBtn" style="display:none;">↻ 초기화</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: GAN 학습 능력 -->
+    <div class="slide" data-slide="5" role="region" aria-label="슬라이드 6: GAN 학습 능력">
+      <div class="glow-blob glow-blob--cyan deco-blob--cr"></div>
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true"><span class="topbar-title">gan — capabilities</span></div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">◆</span> 판별자와 생성자가 학습하는 능력</h2>
+            <hr class="section-rule">
+          </div>
+          <div class="grid-2 card-grid" role="list">
+            <div class="card" role="listitem" style="border-color:rgba(0,180,255,0.3);">
+              <div class="card-title" style="color:var(--style-accent2);">판별자 (Discriminator)</div>
+              <p class="card-desc">실제 이미지와 가짜 이미지를 <strong>판단하는 능력</strong>을 학습합니다</p>
+            </div>
+            <div class="card" role="listitem" style="border-color:rgba(0,255,136,0.3);">
+              <div class="card-title" style="color:var(--style-primary);">생성자 (Generator)</div>
+              <p class="card-desc">판별자를 속일 수 있는 <strong>가짜 이미지를 생성하는 능력</strong>을 학습합니다</p>
+            </div>
+          </div>
+          <div class="highlight-box" style="margin-top:0.6rem;">
+            <p>학습 단계가 진행될수록 판별자와 생성자의 능력이 <strong>함께 향상</strong>됩니다</p>
+          </div>
+          <div class="highlight-box" style="border-left-color:var(--style-accent);">
+            <p>최종적으로 생성자가 만든 가짜 이미지는 <strong>진짜와 구분할 수 없는 수준</strong>에 도달합니다</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: GAN 결과와 활용 -->
+    <div class="slide" data-slide="6" role="region" aria-label="슬라이드 7: GAN 결과와 활용">
+      <div class="glow-blob glow-blob--green deco-blob--bl"></div>
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true"><span class="topbar-title">gan — results</span></div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> GAN의 학습 결과</h2>
+            <hr class="section-rule">
+          </div>
+          <div class="highlight-box" role="note">
+            <p>어느 순간 진짜 이미지와 생성된 이미지를 <strong>판별하지 못하는 단계</strong>에 이르게 됩니다</p>
+          </div>
+          <div class="grid-2 card-grid" role="list" style="margin-top:0.6rem;">
+            <div class="card" role="listitem">
+              <div class="card-title" style="color:var(--style-primary);">얼굴 생성</div>
+              <p class="card-desc">존재하지 않는 사람의 얼굴을 생성 — StyleGAN</p>
+              <a href="https://carpedm20.github.io/faces/" target="_blank" rel="noopener" class="link-btn" style="margin-top:0.3rem;">Neural Face ↗</a>
+            </div>
+            <div class="card" role="listitem">
+              <div class="card-title" style="color:var(--style-accent2);">스타일 변환</div>
+              <p class="card-desc">사진을 특정 화풍으로 변환 — CycleGAN</p>
+            </div>
+          </div>
+          <div class="card" style="margin-top:0.6rem;border-color:rgba(123,0,255,0.3);">
+            <div class="card-title" style="color:#b388ff;">GAN의 한계</div>
+            <p class="card-desc">학습이 불안정하고, 모드 붕괴(mode collapse) 현상이 발생할 수 있음 → 이를 보완한 기술이 <strong>Diffusion</strong> 모델</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Diffusion 핵심 원리 -->
+    <div class="slide" data-slide="7" role="region" aria-label="슬라이드 8: Diffusion 핵심 원리">
+      <div class="glow-blob glow-blob--cyan deco-blob--tr"></div>
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true"><span class="topbar-title">diffusion — overview</span></div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">◆</span> Diffusion의 핵심 원리</h2>
+            <p class="section-subtitle">확산 모델</p>
+            <hr class="section-rule">
+          </div>
+          <div class="highlight-box" role="note">
+            <p>이미지에 <strong>노이즈를 점진적으로 추가(확산)</strong>한 뒤, 그 과정을 <strong>역으로 되돌리는 방법(복원)</strong>을 학습</p>
+          </div>
+          <div class="grid-2 card-grid" role="list" style="margin-top:0.6rem;">
+            <div class="card" role="listitem" style="border-color:rgba(123,0,255,0.3);">
+              <div class="card-title" style="color:#b388ff;">확산 (Forward Process)</div>
+              <p class="card-desc">원본 이미지에 <strong>노이즈를 단계적으로 추가</strong>하여 완전한 노이즈로 만듦</p>
+            </div>
+            <div class="card" role="listitem" style="border-color:rgba(0,255,136,0.3);">
+              <div class="card-title" style="color:var(--style-primary);">복원 (Reverse Process)</div>
+              <p class="card-desc">노이즈에서 <strong>노이즈를 단계적으로 제거</strong>하여 이미지를 복원</p>
+            </div>
+          </div>
+          <div class="highlight-box" style="margin-top:0.5rem;border-left-color:var(--style-accent2);">
+            <p>비유: 물에 잉크를 떨어뜨리면 확산됨 → 이 과정을 거꾸로 되돌리는 것이 Diffusion의 핵심</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Diffusion 인터랙티브 시각화 -->
+    <div class="slide" data-slide="8" role="region" aria-label="슬라이드 9: Diffusion 과정 시각화">
+      <div class="glow-blob glow-blob--cyan deco-blob--tr"></div>
+      <div class="glow-blob glow-blob--violet deco-blob--bl"></div>
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true"><span class="topbar-title">diffusion — interactive denoising</span></div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> Diffusion 과정 시각화</h2>
+            <p class="section-subtitle">슬라이더를 움직여 노이즈 제거 과정을 직접 체험하세요</p>
+            <hr class="section-rule">
+          </div>
+          <div class="diff-viz" id="diffViz">
+            <div class="diff-canvas-row">
+              <div class="diff-stage"><div class="diff-stage-box" id="diffStage0" style="background:rgba(123,0,255,0.1);border:1px solid rgba(123,0,255,0.3);"><canvas id="diffCanvas0" width="120" height="120" class="noise-canvas"></canvas></div><div class="diff-stage-label">T=1000<br>순수 노이즈</div></div>
+              <div class="diff-arrow-step">→</div>
+              <div class="diff-stage"><div class="diff-stage-box" id="diffStage1" style="background:rgba(0,180,255,0.1);border:1px solid rgba(0,180,255,0.3);"><canvas id="diffCanvas1" width="120" height="120" class="noise-canvas"></canvas></div><div class="diff-stage-label">T=750<br>노이즈 제거 중</div></div>
+              <div class="diff-arrow-step">→</div>
+              <div class="diff-stage"><div class="diff-stage-box" id="diffStage2" style="background:rgba(0,180,255,0.1);border:1px solid rgba(0,180,255,0.3);"><canvas id="diffCanvas2" width="120" height="120" class="noise-canvas"></canvas></div><div class="diff-stage-label">T=500<br>형태 형성</div></div>
+              <div class="diff-arrow-step">→</div>
+              <div class="diff-stage"><div class="diff-stage-box" id="diffStage3" style="background:rgba(0,180,255,0.1);border:1px solid rgba(0,180,255,0.3);"><canvas id="diffCanvas3" width="120" height="120" class="noise-canvas"></canvas></div><div class="diff-stage-label">T=250<br>디테일 생성</div></div>
+              <div class="diff-arrow-step">→</div>
+              <div class="diff-stage"><div class="diff-stage-box" id="diffStage4" style="background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);"><canvas id="diffCanvas4" width="120" height="120" class="noise-canvas"></canvas></div><div class="diff-stage-label">T=0<br>완성 이미지</div></div>
+            </div>
+            <div class="diff-slider-wrap">
+              <input type="range" class="diff-slider" id="diffSlider" min="0" max="100" value="100" aria-label="노이즈 레벨 조절">
+              <div class="diff-slider-labels"><span>완성 이미지</span><span>순수 노이즈</span></div>
+            </div>
+            <div class="diff-info" id="diffInfo">노이즈 레벨: 100% — 슬라이더를 왼쪽으로 움직여 노이즈를 제거하세요</div>
+            <div class="diff-prompt-box">✦ 프롬프트가 노이즈 제거 방향을 가이드합니다</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: Diffusion 이미지 생성 과정 -->
+    <div class="slide" data-slide="9" role="region" aria-label="슬라이드 10: 이미지 생성 과정">
+      <div class="glow-blob glow-blob--green deco-blob--cr"></div>
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true"><span class="topbar-title">diffusion — generation process</span></div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">◆</span> 이미지 생성 과정</h2>
+            <hr class="section-rule">
+          </div>
+          <ol class="task-list" role="list">
+            <li class="task-item" role="listitem"><span class="task-num">01</span><div class="task-body"><h3 class="task-title">랜덤 노이즈 생성</h3><p class="task-desc">완전히 무작위인 노이즈 이미지에서 시작합니다</p></div></li>
+            <li class="task-item" role="listitem"><span class="task-num">02</span><div class="task-body"><h3 class="task-title">프롬프트 입력</h3><p class="task-desc">사용자가 원하는 이미지를 텍스트로 설명합니다</p></div></li>
+            <li class="task-item" role="listitem"><span class="task-num">03</span><div class="task-body"><h3 class="task-title">단계적 노이즈 제거</h3><p class="task-desc">프롬프트를 가이드로 삼아 노이즈를 조금씩 제거합니다</p></div></li>
+            <li class="task-item" role="listitem"><span class="task-num">04</span><div class="task-body"><h3 class="task-title">이미지 완성</h3><p class="task-desc">모든 노이즈가 제거되면 프롬프트에 맞는 이미지가 완성됩니다</p></div></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: 프롬프트와 가이드 -->
+    <div class="slide" data-slide="10" role="region" aria-label="슬라이드 11: 프롬프트와 가이드">
+      <div class="glow-blob glow-blob--cyan deco-blob--tr"></div>
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true"><span class="topbar-title">diffusion — guides</span></div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> 프롬프트와 다양한 가이드</h2>
+            <hr class="section-rule">
+          </div>
+          <div class="highlight-box" role="note">
+            <p>노이즈를 제거하는 과정 속에 <strong>프롬프트의 내용이 가이드 역할</strong>을 수행합니다</p>
+          </div>
+          <div class="grid-3 card-grid" role="list" style="margin-top:0.6rem;">
+            <div class="card" role="listitem" style="border-left:3px solid var(--style-primary);">
+              <div class="card-title">텍스트 프롬프트</div>
+              <p class="card-desc">원하는 이미지를 언어로 설명하여 생성 방향을 결정</p>
+            </div>
+            <div class="card" role="listitem" style="border-left:3px solid var(--style-accent2);">
+              <div class="card-title">이미지 가이드</div>
+              <p class="card-desc">참조 이미지를 입력하여 스타일이나 구도를 반영</p>
+            </div>
+            <div class="card" role="listitem" style="border-left:3px solid #b388ff;">
+              <div class="card-title">스켈레톤/포즈</div>
+              <p class="card-desc">인물의 자세나 위치를 지정하여 구도를 제어</p>
+            </div>
+          </div>
+          <div class="highlight-box" style="margin-top:0.5rem;border-left-color:var(--style-accent);">
+            <p>인공지능에 따라 프롬프트뿐만 아니라 <strong>이미지, 인물 스켈레톤</strong> 등 다양한 가이드를 활용할 수 있습니다</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Stable Diffusion 구조 -->
+    <div class="slide" data-slide="11" role="region" aria-label="슬라이드 12: Stable Diffusion 구조">
+      <div class="glow-blob glow-blob--violet deco-blob--bl"></div>
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true"><span class="topbar-title">stable diffusion — architecture</span></div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">◆</span> Stable Diffusion의 구조</h2>
+            <hr class="section-rule">
+          </div>
+          <div class="grid-2" style="margin-top:0.5rem;">
+            <div class="card" style="border-color:rgba(0,255,136,0.3);">
+              <div class="card-title" style="color:var(--style-primary);">Text Representation Generator</div>
+              <p class="card-desc">텍스트 프롬프트를 AI가 이해할 수 있는 <strong>수치적 표현</strong>으로 변환하는 모듈</p>
+              <p class="card-desc" style="margin-top:0.2rem;color:var(--style-accent2);">CLIP 텍스트 인코더 사용</p>
+            </div>
+            <div class="card" style="border-color:rgba(0,180,255,0.3);">
+              <div class="card-title" style="color:var(--style-accent2);">Image Representation Refiner</div>
+              <p class="card-desc">노이즈에서 프롬프트에 맞는 이미지를 <strong>단계적으로 정제</strong>하는 모듈</p>
+              <p class="card-desc" style="margin-top:0.2rem;color:var(--style-accent2);">U-Net + 스케줄러 사용</p>
+            </div>
+          </div>
+          <div class="highlight-box" style="margin-top:0.5rem;">
+            <p><strong>핵심 흐름:</strong> 프롬프트 → 텍스트 인코딩 → 랜덤 노이즈 + 가이드 → 반복 정제 → 최종 이미지</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 13: GAN vs Diffusion 비교 -->
+    <div class="slide" data-slide="12" role="region" aria-label="슬라이드 13: GAN vs Diffusion 비교">
+      <div class="glow-blob glow-blob--green deco-blob--tr"></div>
+      <div class="glow-blob glow-blob--cyan deco-blob--bl"></div>
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true"><span class="topbar-title">comparison</span></div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> GAN vs Diffusion 비교</h2>
+            <hr class="section-rule">
+          </div>
+          <div class="table-wrapper" role="region" aria-label="비교 표" tabindex="0">
+            <table class="comparison-table">
+              <caption class="sr-only">GAN과 Diffusion 모델 비교표</caption>
+              <thead><tr><th scope="col">구분</th><th scope="col">GAN</th><th scope="col">Diffusion</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">핵심 원리</th><td>생성자 vs 판별자 경쟁</td><td>노이즈 추가 후 단계적 제거</td></tr>
+                <tr><th scope="row">학습 방식</th><td>적대적 학습 (두 네트워크)</td><td>노이즈 예측 학습 (단일 네트워크)</td></tr>
+                <tr><th scope="row">생성 속도</th><td>빠름 (한 번에 생성)</td><td>느림 (수십~수백 단계)</td></tr>
+                <tr><th scope="row">품질</th><td>높음 (특정 도메인)</td><td>매우 높음 (다양한 도메인)</td></tr>
+                <tr><th scope="row">안정성</th><td>불안정 (모드 붕괴)</td><td>안정적</td></tr>
+                <tr><th scope="row">대표 모델</th><td>StyleGAN, CycleGAN</td><td>DALL-E, Stable Diffusion, Midjourney</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 14: 체험 활동 -->
+    <div class="slide" data-slide="13" role="region" aria-label="슬라이드 14: 체험 활동">
+      <div class="glow-blob glow-blob--violet deco-blob--cr"></div>
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true"><span class="topbar-title">hands-on</span></div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">◆</span> 체험 활동</h2>
+            <p class="section-subtitle">직접 경험해 봅시다</p>
+            <hr class="section-rule">
+          </div>
+          <div class="grid-2 card-grid" role="list">
+            <div class="card" role="listitem" style="border-color:rgba(0,255,136,0.3);">
+              <div class="card-title" style="color:var(--style-primary);">Diffusion Explainer</div>
+              <p class="card-desc">Stable Diffusion의 작동 원리를 시각적으로 확인</p>
+              <a href="https://poloclub.github.io/diffusion-explainer/" target="_blank" rel="noopener" class="link-btn" style="margin-top:0.4rem;">체험하기 ↗</a>
+            </div>
+            <div class="card" role="listitem" style="border-color:rgba(0,180,255,0.3);">
+              <div class="card-title" style="color:var(--style-accent2);">KREA AI Realtime Editor</div>
+              <p class="card-desc">실시간으로 AI 이미지를 생성하고 편집하는 체험</p>
+              <a href="https://www.krea.ai/apps/image/realtime" target="_blank" rel="noopener" class="link-btn" style="margin-top:0.4rem;">체험하기 ↗</a>
+            </div>
+          </div>
+          <div class="highlight-box" style="margin-top:0.6rem;">
+            <p>체험하면서 다음을 관찰해 보세요:</p>
+            <ul style="margin-top:0.3rem;padding-left:1rem;font-size:0.88rem;">
+              <li>프롬프트를 바꾸면 결과가 어떻게 달라지나요?</li>
+              <li>노이즈에서 이미지로 변하는 과정이 보이나요?</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 15: 마무리 -->
+    <div class="slide" data-slide="14" role="region" aria-label="슬라이드 15: 마무리">
+      <div class="glow-blob glow-blob--green deco-blob--tr"></div>
+      <div class="glow-blob glow-blob--violet deco-blob--bl"></div>
+      <div class="browser-card browser-card--frameless">
+        <div class="browser-content end-slide">
+          <h2 class="end-title">수고하셨습니다</h2>
+          <p class="end-subtitle">이미지 생성 AI의 기초 개념을 함께 알아보았습니다</p>
+          <div class="highlight-box end-summary">
+            <h3 class="summary-title">오늘의 핵심</h3>
+            <ul class="summary-list" role="list">
+              <li role="listitem">이미지 생성 AI는 <strong>노이즈에서 이미지를 만드는 방법</strong>을 학습한 것</li>
+              <li role="listitem"><strong>GAN</strong>은 생성자와 판별자의 적대적 경쟁으로 학습</li>
+              <li role="listitem"><strong>Diffusion</strong>은 노이즈를 단계적으로 제거하며, 프롬프트가 가이드 역할</li>
+              <li role="listitem">현재 대부분의 AI 이미지 생성 서비스는 <strong>Diffusion 기반</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="slideAnnounce" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+
+  <nav class="nav-bar" aria-label="슬라이드 네비게이션">
+    <button class="nav-btn" id="prevBtn" disabled aria-label="이전 슬라이드">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+    </button>
+    <span class="nav-counter" aria-label="슬라이드 위치">
+      <input type="text" class="slide-input" id="slideInput" value="1" aria-label="슬라이드 번호 입력" inputmode="numeric" pattern="[0-9]*">
+      / <span id="totalSlides">15</span>
+    </span>
+    <button class="nav-btn" id="nextBtn" aria-label="다음 슬라이드">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+    </button>
+    <button class="nav-btn" id="fsBtn" aria-label="전체화면 전환" style="margin-left:0.3rem;">
+      <svg id="fsExpand" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+      <svg id="fsCompress" viewBox="0 0 24 24" aria-hidden="true" focusable="false" style="display:none"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>
+    </button>
+  </nav>
+
+  <script>
+    /* Navigation */
+    const slides = document.querySelectorAll('.slide');
+    const totalSlidesCount = slides.length;
+    let currentSlide = 0;
+    const progressBar = document.getElementById('progressBar');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const slideInput = document.getElementById('slideInput');
+    document.getElementById('totalSlides').textContent = totalSlidesCount;
+
+    function announceSlide(c, t) {
+      const el = document.getElementById('slideAnnounce');
+      if (el) el.textContent = '\uC2AC\uB77C\uC774\uB4DC ' + (c + 1) + ' / ' + t;
+    }
+    function goToSlide(index) {
+      if (index < 0 || index >= totalSlidesCount) return;
+      slides[currentSlide].classList.remove('active');
+      currentSlide = index;
+      slides[currentSlide].classList.add('active');
+      updateNav();
+      announceSlide(currentSlide, totalSlidesCount);
+      var content = slides[currentSlide].querySelector('.browser-content');
+      if (content) content.focus();
+    }
+    function nextSlide() { if (currentSlide < totalSlidesCount - 1) goToSlide(currentSlide + 1); }
+    function prevSlide() { if (currentSlide > 0) goToSlide(currentSlide - 1); }
+    function updateNav() {
+      var pct = ((currentSlide + 1) / totalSlidesCount) * 100;
+      progressBar.style.width = pct + '%';
+      progressBar.setAttribute('aria-valuenow', currentSlide + 1);
+      slideInput.value = currentSlide + 1;
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === totalSlidesCount - 1;
+    }
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+
+    document.addEventListener('keydown', function(e) {
+      if (e.target === slideInput) return;
+      if (['ArrowRight','ArrowDown',' ','PageDown'].indexOf(e.key) !== -1) { e.preventDefault(); nextSlide(); }
+      else if (['ArrowLeft','ArrowUp','PageUp'].indexOf(e.key) !== -1) { e.preventDefault(); prevSlide(); }
+      else if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+      else if (e.key === 'End') { e.preventDefault(); goToSlide(totalSlidesCount - 1); }
+    });
+
+    var wheelLocked = false;
+    document.addEventListener('wheel', function(e) {
+      if (e.target.closest && e.target.closest('.diff-slider-wrap')) return;
+      e.preventDefault();
+      if (wheelLocked) return;
+      wheelLocked = true;
+      if (e.deltaY > 0) nextSlide(); else if (e.deltaY < 0) prevSlide();
+      setTimeout(function() { wheelLocked = false; }, 600);
+    }, { passive: false });
+
+    var touchStartX = 0;
+    document.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', function(e) {
+      var dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 50) { if (dx < 0) nextSlide(); else prevSlide(); }
+    }, { passive: true });
+
+    slideInput.addEventListener('focus', function() { slideInput.select(); });
+    slideInput.addEventListener('keydown', function(e) {
+      e.stopPropagation();
+      if (e.key === 'Enter') { var n = parseInt(slideInput.value); if (n >= 1 && n <= totalSlidesCount) goToSlide(n - 1); slideInput.blur(); }
+      else if (e.key === 'Escape') { slideInput.value = currentSlide + 1; slideInput.blur(); }
+    });
+    slideInput.addEventListener('blur', function() {
+      var n = parseInt(slideInput.value);
+      if (n >= 1 && n <= totalSlidesCount) goToSlide(n - 1);
+      else slideInput.value = currentSlide + 1;
+    });
+
+    /* Fullscreen */
+    document.getElementById('fsBtn').addEventListener('click', function() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(function() {});
+        document.getElementById('fsExpand').style.display = 'none';
+        document.getElementById('fsCompress').style.display = 'block';
+      } else {
+        document.exitFullscreen();
+        document.getElementById('fsExpand').style.display = 'block';
+        document.getElementById('fsCompress').style.display = 'none';
+      }
+    });
+
+    /* TOC navigation */
+    var tocSlideMap = [2, 3, 7, 12, 13];
+    document.querySelectorAll('.toc-item').forEach(function(item, i) {
+      item.addEventListener('click', function() { goToSlide(tocSlideMap[i]); });
+      item.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goToSlide(tocSlideMap[i]); } });
+    });
+    updateNav();
+
+    /* Noise Canvas Drawing */
+    function drawNoise(canvas, noiseLevel, hue) {
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var w = canvas.width, h = canvas.height;
+      var imageData = ctx.createImageData(w, h);
+      var data = imageData.data;
+      var baseR = hue === 'green' ? 0 : hue === 'blue' ? 20 : hue === 'violet' ? 60 : 30;
+      var baseG = hue === 'green' ? 100 : hue === 'blue' ? 60 : 20;
+      var baseB = hue === 'green' ? 50 : hue === 'blue' ? 100 : hue === 'violet' ? 120 : 50;
+      for (var i = 0; i < data.length; i += 4) {
+        var px = (i / 4) % w;
+        var py = Math.floor(i / 4 / w);
+        var noise = (Math.random() - 0.5) * 2 * noiseLevel;
+        var cx = w / 2, cy = h / 2;
+        var dist = Math.sqrt(Math.pow(px - cx, 2) + Math.pow(py - cy, 2)) / (w / 2);
+        var signal = Math.max(0, 1 - dist) * (1 - noiseLevel);
+        data[i] = Math.min(255, Math.max(0, baseR + signal * 80 + noise * 255));
+        data[i + 1] = Math.min(255, Math.max(0, baseG + signal * 120 + noise * 255));
+        data[i + 2] = Math.min(255, Math.max(0, baseB + signal * 100 + noise * 255));
+        data[i + 3] = 255;
+      }
+      ctx.putImageData(imageData, 0, 0);
+    }
+
+    function initNoiseDemo() {
+      var c = document.getElementById('noiseDemo1');
+      if (c) { c.width = c.parentElement.clientWidth; c.height = 60; drawNoise(c, 1.0, 'violet'); }
+    }
+    initNoiseDemo();
+    window.addEventListener('resize', initNoiseDemo);
+
+    /* GAN Interactive Visualization */
+    var ganSteps = [
+      { status: 'Epoch 0: \uD559\uC2B5 \uC2DC\uC791 \u2014 \uC0DD\uC131\uC790\uB294 \uBB34\uC791\uC704 \uB178\uC774\uC988\uB9CC \uCD9C\uB825\uD569\uB2C8\uB2E4', quality: 0, icon: '\uD83C\uDFB2' },
+      { status: '\uC0DD\uC131\uC790\uAC00 \uB178\uC774\uC988\uB85C\uBD80\uD130 \uAC00\uC9DC \uB370\uC774\uD130\uB97C \uC0DD\uC131\uD569\uB2C8\uB2E4', quality: 5, icon: '\uD83C\uDF2B\uFE0F' },
+      { status: '\uD310\uBCC4\uC790\uAC00 \uC9C4\uC9DC/\uAC00\uC9DC\uB97C \uAD6C\uBCC4\uD569\uB2C8\uB2E4 \u2192 \uD310\uB2E8: \uAC00\uC9DC!', quality: 8, icon: '\uD83C\uDF2B\uFE0F' },
+      { status: '\uD310\uBCC4\uC790 \uD559\uC2B5: \uC9C4\uC9DC\uC640 \uAC00\uC9DC\uB97C \uB354 \uC798 \uAD6C\uBCC4\uD558\uB3C4\uB85D \uAC00\uC911\uCE58 \uC5C5\uB370\uC774\uD2B8', quality: 12, icon: '\uD83C\uDF2B\uFE0F' },
+      { status: '\uC0DD\uC131\uC790 \uD559\uC2B5: \uD310\uBCC4\uC790\uB97C \uC18D\uC77C \uC218 \uC788\uB3C4\uB85D \uAC00\uC911\uCE58 \uC5C5\uB370\uC774\uD2B8', quality: 20, icon: '\uD83C\uDF01' },
+      { status: 'Epoch 50: \uC0DD\uC131\uC790\uAC00 \uC57D\uAC04\uC758 \uD615\uD0DC\uB97C \uB9CC\uB4E4\uAE30 \uC2DC\uC791\uD569\uB2C8\uB2E4', quality: 35, icon: '\uD83C\uDF01' },
+      { status: '\uD310\uBCC4\uC790\uAC00 \uC5EC\uC804\uD788 \uAD6C\uBCC4 \uAC00\uB2A5 \u2192 \uB2E4\uC2DC \uD559\uC2B5 \uBC18\uBCF5', quality: 45, icon: '\uD83C\uDF04' },
+      { status: 'Epoch 200: \uC0DD\uC131\uC790\uC758 \uC774\uBBF8\uC9C0\uAC00 \uC810\uC810 \uC815\uAD50\uD574\uC9D1\uB2C8\uB2E4', quality: 60, icon: '\uD83C\uDF04' },
+      { status: '\uD310\uBCC4\uC790\uAC00 \uAD6C\uBCC4\uD558\uAE30 \uC5B4\uB824\uC6CC\uC9C0\uAE30 \uC2DC\uC791\uD569\uB2C8\uB2E4', quality: 75, icon: '\uD83D\uDDBC\uFE0F' },
+      { status: 'Epoch 500: \uC0DD\uC131\uC790\uC640 \uD310\uBCC4\uC790\uC758 \uB2A5\uB825\uC774 \uADE0\uD615\uC5D0 \uB3C4\uB2EC\uD569\uB2C8\uB2E4', quality: 88, icon: '\uD83D\uDDBC\uFE0F' },
+      { status: '\uD559\uC2B5 \uC644\uB8CC! \uD310\uBCC4\uC790\uAC00 \uC9C4\uC9DC\uC640 \uAC00\uC9DC\uB97C \uAD6C\uBCC4\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4', quality: 98, icon: '\uD83C\uDFA8' },
+    ];
+    var ganStep = -1;
+    var ganStartBtn = document.getElementById('ganStartBtn');
+    var ganStepBtn = document.getElementById('ganStepBtn');
+    var ganResetBtn = document.getElementById('ganResetBtn');
+    var ganStatusEl = document.getElementById('ganStatus');
+    var ganEpochEl = document.getElementById('ganEpoch');
+    var ganQualityEl = document.getElementById('ganQuality');
+    var ganFakeIconEl = document.getElementById('ganFakeIcon');
+    var ganGridEl = document.getElementById('ganGrid');
+
+    function clearElement(el) { while (el.firstChild) el.removeChild(el.firstChild); }
+
+    function updateGanGrid(quality) {
+      clearElement(ganGridEl);
+      for (var i = 0; i < 12; i++) {
+        var cell = document.createElement('div');
+        cell.className = 'gan-cell';
+        var q = quality / 100;
+        var hue = 140 + Math.random() * 80;
+        var sat = 30 + q * 50;
+        var light = 15 + q * 25 + Math.random() * 10;
+        var noiseAmt = (1 - q) * 40;
+        var rx = Math.random() * noiseAmt, ry = Math.random() * noiseAmt;
+        if (q < 0.3) {
+          cell.style.background = 'hsl(' + (Math.random()*360) + ', ' + (20+Math.random()*30) + '%, ' + (10+Math.random()*30) + '%)';
+        } else if (q < 0.6) {
+          cell.style.background = 'radial-gradient(circle at ' + (50+rx) + '% ' + (50+ry) + '%, hsl(' + hue + ',' + sat + '%,' + (light+15) + '%), hsl(' + (hue+20) + ',' + (sat-10) + '%,' + light + '%))';
+        } else {
+          cell.style.background = 'radial-gradient(ellipse at ' + (45+rx*0.3) + '% ' + (40+ry*0.3) + '%, hsl(' + hue + ',' + (sat+10) + '%,' + (light+20) + '%), hsl(' + hue + ',' + sat + '%,' + (light+10) + '%) 40%, hsl(' + (hue+10) + ',' + (sat-5) + '%,' + light + '%) 80%)';
+          cell.style.boxShadow = 'inset 0 0 ' + (4+q*6) + 'px rgba(0,255,136,' + (q*0.15) + ')';
+        }
+        ganGridEl.appendChild(cell);
+      }
+    }
+
+    function advanceGan() {
+      ganStep++;
+      if (ganStep >= ganSteps.length) { ganStep = ganSteps.length - 1; return; }
+      var s = ganSteps[ganStep];
+      ganStatusEl.textContent = s.status;
+      ganQualityEl.style.width = s.quality + '%';
+      ganFakeIconEl.textContent = s.icon;
+      ganEpochEl.textContent = '\uC0DD\uC131 \uD488\uC9C8: ' + s.quality + '%';
+      updateGanGrid(s.quality);
+      if (ganStep >= ganSteps.length - 1) {
+        ganStepBtn.style.display = 'none';
+        ganResetBtn.style.display = 'inline-block';
+      }
+    }
+
+    ganStartBtn.addEventListener('click', function() {
+      ganStartBtn.style.display = 'none';
+      ganStepBtn.style.display = 'inline-block';
+      ganResetBtn.style.display = 'inline-block';
+      ganStep = -1;
+      advanceGan();
+    });
+    ganStepBtn.addEventListener('click', advanceGan);
+    ganResetBtn.addEventListener('click', function() {
+      ganStep = -1;
+      ganStatusEl.textContent = '\u25B6 [\uD559\uC2B5 \uC2DC\uC791]\uC744 \uB20C\uB7EC GAN \uD559\uC2B5\uC744 \uC2DC\uC791\uD558\uC138\uC694';
+      ganEpochEl.textContent = '';
+      ganQualityEl.style.width = '0%';
+      ganFakeIconEl.textContent = '\u2753';
+      clearElement(ganGridEl);
+      ganStartBtn.style.display = 'inline-block';
+      ganStepBtn.style.display = 'none';
+      ganResetBtn.style.display = 'none';
+    });
+    updateGanGrid(0);
+
+    /* Diffusion Interactive Visualization */
+    var diffSliderEl = document.getElementById('diffSlider');
+    var diffInfoEl = document.getElementById('diffInfo');
+    var diffCanvases = [0,1,2,3,4].map(function(i) { return document.getElementById('diffCanvas' + i); });
+
+    function drawDiffStages(noiseLevel) {
+      var levels = [1.0, 0.75, 0.5, 0.25, 0.0];
+      var hues = ['violet', 'blue', 'blue', 'green', 'green'];
+      diffCanvases.forEach(function(canvas, i) {
+        if (!canvas) return;
+        var effectiveNoise = Math.min(1, Math.max(0, levels[i] * (noiseLevel / 100)));
+        drawNoise(canvas, effectiveNoise, hues[i]);
+        var box = canvas.parentElement;
+        if (box) {
+          var glow = (1 - effectiveNoise) * 0.15;
+          box.style.boxShadow = '0 0 ' + (20 + (1-effectiveNoise)*30) + 'px rgba(0,255,136,' + glow + ')';
+        }
+      });
+    }
+
+    function updateDiffInfo(val) {
+      var v = parseInt(val);
+      var desc = '';
+      if (v > 80) desc = '\uC21C\uC218 \uB178\uC774\uC988 \uC0C1\uD0DC';
+      else if (v > 60) desc = '\uB178\uC774\uC988 \uC81C\uAC70 \uC2DC\uC791 \u2014 \uB300\uB7B5\uC801 \uD615\uD0DC \uAC10\uC9C0';
+      else if (v > 40) desc = '\uC724\uACFD\uC774 \uB098\uD0C0\uB0A8 \u2014 \uD504\uB86C\uD504\uD2B8 \uBC29\uD5A5\uC73C\uB85C \uC218\uB834';
+      else if (v > 20) desc = '\uB514\uD14C\uC77C \uC0DD\uC131 \uC911 \u2014 \uC0C9\uC0C1\uACFC \uC9C8\uAC10 \uC815\uC81C';
+      else desc = '\uC774\uBBF8\uC9C0 \uAC70\uC758 \uC644\uC131 \u2014 \uCD5C\uC885 \uB514\uD14C\uC77C \uBCF4\uC815';
+      diffInfoEl.textContent = '\uB178\uC774\uC988 \uB808\uBCA8: ' + v + '% \u2014 ' + desc;
+    }
+
+    diffSliderEl.addEventListener('input', function(e) {
+      drawDiffStages(parseInt(e.target.value));
+      updateDiffInfo(e.target.value);
+    });
+
+    /* Observe slide activation to init diffusion canvases */
+    var observer = new MutationObserver(function() {
+      var diffSlide = document.querySelector('[data-slide="8"]');
+      if (diffSlide && diffSlide.classList.contains('active')) {
+        drawDiffStages(parseInt(diffSliderEl.value));
+      }
+    });
+    slides.forEach(function(s) { observer.observe(s, { attributes: true, attributeFilter: ['class'] }); });
+
+    drawDiffStages(100);
+    updateDiffInfo(100);
+  </script>
+</body>
+</html>

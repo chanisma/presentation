@@ -489,6 +489,18 @@
             }
           ],
           "gradient": "linear-gradient(90deg, #7B00FF, #00FF88)"
+        },
+        {
+          "title": "이미지 생성의 기초 개념",
+          "path": "정보/이미지생성의기초개념/index.html",
+          "emoji": "🎨",
+          "description": "GAN과 Diffusion 모델의 원리를 인터랙티브 시각화와 함께 학습합니다. 생성자-판별자 학습 과정과 노이즈 제거 과정을 직접 체험합니다.",
+          "tags": [
+            { "label": "GAN", "color": "purple" },
+            { "label": "Diffusion", "color": "blue" },
+            { "label": "인터랙티브", "color": "orange" }
+          ],
+          "gradient": "linear-gradient(90deg, #7B00FF, #00FF88)"
         }
       ]
     },
