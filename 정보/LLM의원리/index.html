@@ -661,7 +661,7 @@
 </head>
 <body>
   <a href="#presentation" class="skip-link">본문으로 바로가기</a>
-  <div class="progress-bar" id="progressBar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="14" aria-label="프레젠테이션 진행률"></div>
+  <div class="progress-bar" id="progressBar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="15" aria-label="프레젠테이션 진행률"></div>
 
   <div class="presentation" id="presentation" role="main">
 
@@ -1263,8 +1263,21 @@
       </div>
     </div>
 
-    <!-- ═══ Slide 14: 마무리 ═══ -->
-    <div class="slide" data-slide="13" role="region" aria-label="슬라이드 14: 마무리">
+    <!-- ═══ Slide 14: 유사도 측정기 ═══ -->
+    <div class="slide" data-slide="13" role="region" aria-label="슬라이드 14: 유사도 측정기">
+      <div class="browser-card" style="max-width:1400px;">
+        <div class="browser-topbar" aria-hidden="true">
+          <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+          <span class="topbar-title">Similarity Analyzer</span>
+        </div>
+        <div class="browser-content" style="padding:0;overflow:hidden;">
+          <iframe src="similarity.html" style="width:100%;height:calc(100vh - 8rem);border:none;border-radius:0 0 1rem 1rem;" title="유사도 측정기"></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Slide 15: 마무리 ═══ -->
+    <div class="slide" data-slide="14" role="region" aria-label="슬라이드 15: 마무리">
       <div class="browser-card browser-card--frameless">
         <div class="browser-content end-slide">
           <div class="end-header">
@@ -1294,7 +1307,7 @@
     </button>
     <span class="nav-counter" aria-label="슬라이드 위치">
       <input type="text" class="slide-input" id="slideInput" value="1" aria-label="슬라이드 번호 입력" inputmode="numeric" pattern="[0-9]*">
-      / <span id="totalSlides" aria-hidden="true">14</span>
+      / <span id="totalSlides" aria-hidden="true">15</span>
     </span>
     <button class="nav-btn" id="nextBtn" aria-label="다음 슬라이드">
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
