@@ -378,6 +378,27 @@
             }
           ],
           "gradient": "linear-gradient(90deg, #A78BFA, #34D399)"
+        },
+        {
+          "title": "웹캠 AI × 엑추에이터 제어",
+          "path": "인공지능과피지컬컴퓨팅/웹캠AI-엑추에이터제어/index.html",
+          "emoji": "⚡",
+          "description": "Teachable Machine 모델과 아두이노를 연동하여 웹캠 인식 결과에 따라 부저, LED, 서보모터 등 다양한 엑추에이터를 제어하는 응용 실습입니다.",
+          "tags": [
+            {
+              "label": "엑추에이터",
+              "color": "purple"
+            },
+            {
+              "label": "서보모터",
+              "color": "blue"
+            },
+            {
+              "label": "AI코드생성",
+              "color": "orange"
+            }
+          ],
+          "gradient": "linear-gradient(90deg, #A78BFA, #67E8F9)"
         }
       ]
     },
