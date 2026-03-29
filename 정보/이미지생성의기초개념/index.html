@@ -206,7 +206,7 @@
       margin-bottom: 0.4rem;
     }
     .end-subtitle { color: var(--style-text-secondary); font-size: 0.92rem; margin-bottom: 0.8rem; }
-    .end-summary { max-width: 600px; text-align: left; }
+    .end-summary { max-width: 720px; width: 100%; text-align: left; }
     .summary-title { font-size: 1rem; color: var(--style-primary); margin-bottom: 0.3rem; }
     .summary-list { list-style: none; }
     .summary-list li { padding: 0.2rem 0; font-size: 0.92rem; }
@@ -342,29 +342,32 @@
 
     /* Image containers for dark theme */
     .img-container {
-      background: rgba(255,255,255,0.92); border-radius: 0.5rem;
-      padding: 0.4rem; margin: 0.5rem 0;
-      border: 1px solid rgba(0,255,136,0.1);
-      box-shadow: 0 0 20px rgba(0,255,136,0.05);
+      background: rgba(240,240,250,0.88); border-radius: 0.6rem;
+      padding: 0.5rem; margin: 0.5rem 0;
+      border: 1px solid rgba(0,255,136,0.12);
+      box-shadow: 0 0 24px rgba(0,255,136,0.06), inset 0 0 0 1px rgba(0,0,0,0.05);
       display: flex; justify-content: center; align-items: center;
-      overflow: hidden;
+      overflow: hidden; position: relative;
+    }
+    .img-container::after {
+      content: ''; position: absolute; inset: 0; border-radius: 0.6rem;
+      background: linear-gradient(135deg, rgba(0,255,136,0.03), rgba(123,0,255,0.03));
+      pointer-events: none;
     }
     .img-container img {
-      width: 100%; height: auto; display: block; border-radius: 0.3rem;
-      max-height: 280px; object-fit: contain;
+      width: 100%; height: auto; display: block; border-radius: 0.4rem;
+      max-height: 280px; object-fit: contain; position: relative; z-index: 1;
     }
-    .img-container--wide img { max-height: 200px; }
-    .img-container--sm img { max-height: 150px; }
-    .img-container--dark {
-      background: rgba(255,255,255,0.95);
-    }
+    .img-container--wide img { max-height: 180px; }
+    .img-container--sm img { max-height: 120px; }
+    .img-container--tall img { max-height: 240px; }
     .img-caption {
-      font-size: 0.72rem; font-family: 'Space Mono', monospace;
+      font-size: 0.78rem; font-family: 'Space Mono', monospace;
       color: var(--style-text-secondary); text-align: center;
-      margin-top: 0.2rem;
+      margin-top: 0.3rem; line-height: 1.4;
     }
     .img-row {
-      display: flex; gap: 0.5rem; align-items: flex-start;
+      display: flex; gap: 0.6rem; align-items: flex-start;
     }
     .img-row > * { flex: 1; }
 
@@ -582,9 +585,9 @@
               <p class="card-desc">사진을 특정 화풍으로 변환 — CycleGAN</p>
             </div>
           </div>
-          <div class="card" style="margin-top:0.6rem;border-color:rgba(123,0,255,0.3);">
-            <div class="card-title" style="color:#b388ff;">GAN의 한계</div>
-            <p class="card-desc">학습이 불안정하고, 모드 붕괴(mode collapse) 현상이 발생할 수 있음 → 이를 보완한 기술이 <strong>Diffusion</strong> 모델</p>
+          <div class="card" style="margin-top:0.4rem;border-color:rgba(255,100,100,0.3);border-left:3px solid rgba(255,100,100,0.6);">
+            <div class="card-title" style="color:#ff8a80;">⚠ GAN의 한계</div>
+            <p class="card-desc">학습이 불안정하고, 모드 붕괴(mode collapse) 현상이 발생할 수 있음 → 이를 보완한 기술이 <strong style="color:var(--style-primary);">Diffusion</strong> 모델</p>
           </div>
         </div>
       </div>
@@ -616,12 +619,12 @@
           </div>
           <div class="img-row" style="margin-top:0.5rem;">
             <div>
-              <div class="img-container img-container--wide"><img src="img-diff-forward.png" alt="Forward Process: 이미지에 노이즈를 점진적으로 추가" loading="lazy" onerror="this.style.display='none';"></div>
-              <p class="img-caption">Forward: x₀(원본) → xₜ → x_T(노이즈)</p>
+              <div class="img-container img-container--tall"><img src="img-diff-forward.png" alt="Forward Process: 이미지에 노이즈를 점진적으로 추가" loading="lazy" onerror="this.style.display='none';"></div>
+              <p class="img-caption">▸ Forward: x₀(원본) → xₜ → x_T(노이즈)</p>
             </div>
             <div>
-              <div class="img-container img-container--wide"><img src="img-diff-reverse.png" alt="Reverse Process: 노이즈에서 이미지를 복원" loading="lazy" onerror="this.style.display='none';"></div>
-              <p class="img-caption">Reverse: x_T(노이즈) → xₜ₋₁ → x₀(복원)</p>
+              <div class="img-container img-container--tall"><img src="img-diff-reverse.png" alt="Reverse Process: 노이즈에서 이미지를 복원" loading="lazy" onerror="this.style.display='none';"></div>
+              <p class="img-caption">◂ Reverse: x_T(노이즈) → xₜ₋₁ → x₀(복원)</p>
             </div>
           </div>
         </div>
@@ -672,6 +675,27 @@
           <div class="section-header">
             <h2><span class="section-icon" aria-hidden="true">◆</span> 이미지 생성 과정</h2>
             <hr class="section-rule">
+          </div>
+          <div style="display:flex;justify-content:center;gap:0.3rem;align-items:center;margin-bottom:0.6rem;flex-wrap:wrap;">
+            <div style="text-align:center;padding:0.4rem 0.6rem;background:rgba(123,0,255,0.12);border:1px solid rgba(123,0,255,0.25);border-radius:0.4rem;min-width:5rem;">
+              <div style="font-size:1.2rem;">🎲</div>
+              <div style="font-size:0.7rem;font-family:'Space Mono',monospace;color:var(--style-text-secondary);">랜덤 노이즈</div>
+            </div>
+            <span style="color:var(--style-primary);font-size:1rem;">→</span>
+            <div style="text-align:center;padding:0.4rem 0.6rem;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);border-radius:0.4rem;min-width:5rem;">
+              <div style="font-size:1.2rem;">📝</div>
+              <div style="font-size:0.7rem;font-family:'Space Mono',monospace;color:var(--style-text-secondary);">프롬프트</div>
+            </div>
+            <span style="color:var(--style-primary);font-size:1rem;">→</span>
+            <div style="text-align:center;padding:0.4rem 0.6rem;background:rgba(0,180,255,0.1);border:1px solid rgba(0,180,255,0.25);border-radius:0.4rem;min-width:5rem;">
+              <div style="font-size:1.2rem;">🔄</div>
+              <div style="font-size:0.7rem;font-family:'Space Mono',monospace;color:var(--style-text-secondary);">노이즈 제거</div>
+            </div>
+            <span style="color:var(--style-primary);font-size:1rem;">→</span>
+            <div style="text-align:center;padding:0.4rem 0.6rem;background:rgba(0,255,136,0.12);border:1px solid rgba(0,255,136,0.3);border-radius:0.4rem;min-width:5rem;">
+              <div style="font-size:1.2rem;">🖼️</div>
+              <div style="font-size:0.7rem;font-family:'Space Mono',monospace;color:var(--style-text-secondary);">완성 이미지</div>
+            </div>
           </div>
           <ol class="task-list" role="list">
             <li class="task-item" role="listitem"><span class="task-num">01</span><div class="task-body"><h3 class="task-title">랜덤 노이즈 생성</h3><p class="task-desc">완전히 무작위인 노이즈 이미지에서 시작합니다</p></div></li>
@@ -797,11 +821,22 @@
             </div>
           </div>
           <div class="highlight-box" style="margin-top:0.6rem;">
-            <p>체험하면서 다음을 관찰해 보세요:</p>
+            <p><strong>체험하면서 다음을 관찰해 보세요:</strong></p>
             <ul style="margin-top:0.3rem;padding-left:1rem;font-size:0.88rem;">
               <li>프롬프트를 바꾸면 결과가 어떻게 달라지나요?</li>
               <li>노이즈에서 이미지로 변하는 과정이 보이나요?</li>
+              <li>같은 프롬프트로 여러 번 생성하면 결과가 동일한가요?</li>
             </ul>
+          </div>
+          <div class="grid-2" style="margin-top:0.5rem;">
+            <div class="card" style="border-color:rgba(0,255,136,0.15);text-align:center;">
+              <div style="font-size:0.82rem;color:var(--style-text-secondary);font-family:'Space Mono',monospace;">TIP</div>
+              <p class="card-desc">영어 프롬프트가 더 다양한 결과를 생성합니다</p>
+            </div>
+            <div class="card" style="border-color:rgba(0,180,255,0.15);text-align:center;">
+              <div style="font-size:0.82rem;color:var(--style-text-secondary);font-family:'Space Mono',monospace;">TIP</div>
+              <p class="card-desc">구체적인 설명일수록 원하는 이미지에 가까워집니다</p>
+            </div>
           </div>
         </div>
       </div>
