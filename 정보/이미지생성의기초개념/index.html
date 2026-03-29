@@ -340,6 +340,34 @@
       .diff-canvas-row { flex-wrap: wrap; }
     }
 
+    /* Image containers for dark theme */
+    .img-container {
+      background: rgba(255,255,255,0.92); border-radius: 0.5rem;
+      padding: 0.4rem; margin: 0.5rem 0;
+      border: 1px solid rgba(0,255,136,0.1);
+      box-shadow: 0 0 20px rgba(0,255,136,0.05);
+      display: flex; justify-content: center; align-items: center;
+      overflow: hidden;
+    }
+    .img-container img {
+      width: 100%; height: auto; display: block; border-radius: 0.3rem;
+      max-height: 280px; object-fit: contain;
+    }
+    .img-container--wide img { max-height: 200px; }
+    .img-container--sm img { max-height: 150px; }
+    .img-container--dark {
+      background: rgba(255,255,255,0.95);
+    }
+    .img-caption {
+      font-size: 0.72rem; font-family: 'Space Mono', monospace;
+      color: var(--style-text-secondary); text-align: center;
+      margin-top: 0.2rem;
+    }
+    .img-row {
+      display: flex; gap: 0.5rem; align-items: flex-start;
+    }
+    .img-row > * { flex: 1; }
+
     /* Animations */
     @keyframes fadeInUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
     .slide.active .browser-card { animation: fadeInUp 0.6s ease-out; }
@@ -417,7 +445,10 @@
             <div class="card" role="listitem">
               <div class="card-title" style="color:var(--style-primary);">생성된 이미지</div>
               <p class="card-desc">AI가 노이즈에서 만들어낸 의미 있는 사진</p>
-              <div style="margin-top:0.4rem;height:60px;border-radius:6px;background:linear-gradient(135deg,rgba(0,255,136,0.15),rgba(0,180,255,0.15));display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🐕</div>
+              <div class="img-container--sm" style="margin-top:0.4rem;">
+                <div class="img-container" style="padding:0.2rem;margin:0;"><img src="img-puppy.png" alt="AI가 생성한 강아지 이미지" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <div style="display:none;height:60px;align-items:center;justify-content:center;font-size:1.8rem;">🐕</div></div>
+              </div>
             </div>
           </div>
           <div class="highlight-box" style="margin-top:0.6rem;border-left-color:var(--style-accent);">
@@ -451,11 +482,8 @@
             <div class="col-divider" aria-hidden="true"></div>
             <div class="col-right">
               <h3 class="col-title" style="color:var(--style-accent2);">비유로 이해하기</h3>
-              <div class="card" style="margin-top:0.3rem;">
-                <div class="card-desc" style="font-size:0.88rem;">
-                  <strong>생성자</strong>는 진짜처럼 보이는 위조지폐를 만들고, <strong>판별자</strong>는 진짜 지폐와 위조지폐를 구별하려 합니다. 둘의 경쟁이 반복될수록 위조지폐는 점점 정교해집니다.
-                </div>
-              </div>
+              <div class="img-container" style="margin-top:0.3rem;"><img src="img-gan-diagram.png" alt="GAN 구조 다이어그램: Generator가 Fake data를 생성하고 Discriminator가 Real data와 비교 판별" loading="lazy" onerror="this.style.display='none';"></div>
+              <p class="img-caption">Generator(위조범) ↔ Discriminator(경찰) 경쟁 구조</p>
             </div>
           </div>
         </div>
@@ -524,6 +552,8 @@
           <div class="highlight-box" style="border-left-color:var(--style-accent);">
             <p>최종적으로 생성자가 만든 가짜 이미지는 <strong>진짜와 구분할 수 없는 수준</strong>에 도달합니다</p>
           </div>
+          <div class="img-container img-container--wide" style="margin-top:0.4rem;"><img src="img-gan-distribution.png" alt="GAN 학습 단계별 분포 변화 그래프 (a)→(b)→(c)→(d)" loading="lazy" onerror="this.style.display='none';"></div>
+          <p class="img-caption">(a) 초기 → (b) 판별자 학습 → (c) 생성자 학습 → (d) 균형 도달 (검정: 데이터 분포, 녹색: 생성 분포)</p>
         </div>
       </div>
     </div>
@@ -584,8 +614,15 @@
               <p class="card-desc">노이즈에서 <strong>노이즈를 단계적으로 제거</strong>하여 이미지를 복원</p>
             </div>
           </div>
-          <div class="highlight-box" style="margin-top:0.5rem;border-left-color:var(--style-accent2);">
-            <p>비유: 물에 잉크를 떨어뜨리면 확산됨 → 이 과정을 거꾸로 되돌리는 것이 Diffusion의 핵심</p>
+          <div class="img-row" style="margin-top:0.5rem;">
+            <div>
+              <div class="img-container img-container--wide"><img src="img-diff-forward.png" alt="Forward Process: 이미지에 노이즈를 점진적으로 추가" loading="lazy" onerror="this.style.display='none';"></div>
+              <p class="img-caption">Forward: x₀(원본) → xₜ → x_T(노이즈)</p>
+            </div>
+            <div>
+              <div class="img-container img-container--wide"><img src="img-diff-reverse.png" alt="Reverse Process: 노이즈에서 이미지를 복원" loading="lazy" onerror="this.style.display='none';"></div>
+              <p class="img-caption">Reverse: x_T(노이즈) → xₜ₋₁ → x₀(복원)</p>
+            </div>
           </div>
         </div>
       </div>
@@ -673,9 +710,8 @@
               <p class="card-desc">인물의 자세나 위치를 지정하여 구도를 제어</p>
             </div>
           </div>
-          <div class="highlight-box" style="margin-top:0.5rem;border-left-color:var(--style-accent);">
-            <p>인공지능에 따라 프롬프트뿐만 아니라 <strong>이미지, 인물 스켈레톤</strong> 등 다양한 가이드를 활용할 수 있습니다</p>
-          </div>
+          <div class="img-container img-container--wide" style="margin-top:0.5rem;"><img src="img-openpose.png" alt="OpenPose: 입력 이미지 → 스켈레톤 추출 → AI 이미지 생성" loading="lazy" onerror="this.style.display='none';"></div>
+          <p class="img-caption">OpenPose 예시: 인물 포즈를 스켈레톤으로 추출하여 AI 이미지 생성의 가이드로 활용</p>
         </div>
       </div>
     </div>
@@ -702,9 +738,8 @@
               <p class="card-desc" style="margin-top:0.2rem;color:var(--style-accent2);">U-Net + 스케줄러 사용</p>
             </div>
           </div>
-          <div class="highlight-box" style="margin-top:0.5rem;">
-            <p><strong>핵심 흐름:</strong> 프롬프트 → 텍스트 인코딩 → 랜덤 노이즈 + 가이드 → 반복 정제 → 최종 이미지</p>
-          </div>
+          <div class="img-container img-container--wide" style="margin-top:0.5rem;"><img src="img-sd-architecture.png" alt="Stable Diffusion 파이프라인: Text Representation Generator → Image Representation Refiner → Upscale" loading="lazy" onerror="this.style.display='none';"></div>
+          <p class="img-caption">Stable Diffusion 파이프라인: 프롬프트 → 텍스트 인코딩 → 노이즈 + 가이드 → 반복 정제 → 최종 이미지</p>
         </div>
       </div>
     </div>
