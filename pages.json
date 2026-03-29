@@ -501,6 +501,18 @@
             { "label": "인터랙티브", "color": "orange" }
           ],
           "gradient": "linear-gradient(90deg, #7B00FF, #00FF88)"
+        },
+        {
+          "title": "대형언어모델(LLM)의 원리",
+          "path": "정보/LLM의원리/index.html",
+          "emoji": "🧠",
+          "description": "트랜스포머의 작동 원리(토큰화, 셀프 어텐션, 다음 단어 예측)를 인터랙티브 시각화와 함께 학습합니다. GPT의 구조와 멀티모달 능력을 이해합니다.",
+          "tags": [
+            { "label": "LLM", "color": "purple" },
+            { "label": "트랜스포머", "color": "blue" },
+            { "label": "GPT", "color": "orange" }
+          ],
+          "gradient": "linear-gradient(90deg, #1A1A4E, #6B21A8)"
         }
       ]
     },
