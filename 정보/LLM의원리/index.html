@@ -661,7 +661,7 @@
 </head>
 <body>
   <a href="#presentation" class="skip-link">본문으로 바로가기</a>
-  <div class="progress-bar" id="progressBar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="15" aria-label="프레젠테이션 진행률"></div>
+  <div class="progress-bar" id="progressBar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="16" aria-label="프레젠테이션 진행률"></div>
 
   <div class="presentation" id="presentation" role="main">
 
@@ -1216,8 +1216,33 @@
       </div>
     </div>
 
-    <!-- ═══ Slide 13: 활동 ═══ -->
-    <div class="slide" data-slide="12" role="region" aria-label="슬라이드 13: 활동">
+    <!-- ═══ Slide 13: 원본 결과물 ═══ -->
+    <div class="slide" data-slide="12" role="region" aria-label="슬라이드 13: 원본 결과물">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+          <span class="topbar-title">AI Output — 이 결과물을 만든 프롬프트는?</span>
+        </div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">◆</span> 원본 결과물</h2>
+            <p class="section-subtitle">아래 AI 출력물을 관찰하고, 어떤 프롬프트로 생성되었는지 역추론하세요</p>
+            <hr class="section-rule">
+          </div>
+          <div style="background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:0.6rem;padding:0.7rem 1rem;font-size:0.85rem;line-height:1.6;">
+            <strong style="font-size:0.95rem;">온실효과와 지구온난화</strong><br>
+            <strong>1. 태양 에너지 흡수</strong> — 태양에서 방출된 빛 에너지가 대기를 통과하여 지구 표면에 도달합니다. 지표면은 이 에너지를 흡수하여 따뜻해집니다.<br>
+            <strong>2. 적외선 방출</strong> — 따뜻해진 지표면은 흡수한 에너지를 적외선(열복사) 형태로 대기 중으로 다시 방출합니다.<br>
+            <strong>3. 온실가스의 역할</strong> — 대기 중의 온실가스(CO₂, CH₄, N₂O 등)가 이 적외선을 흡수하고 사방으로 재방출합니다. 이 과정에서 열이 대기 안에 갇히게 됩니다.<br>
+            <strong>4. 온도 상승</strong> — 갇힌 열로 인해 지구의 평균 기온이 상승합니다. 이것이 바로 '온실효과'이며, 인간 활동으로 온실가스가 증가하면서 지구온난화가 가속되고 있습니다.<br>
+            <em style="color:var(--style-accent);">※ 핵심 정리: 태양 에너지 → 지표면 가열 → 적외선 방출 → 온실가스 흡수 → 온도 상승</em>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Slide 14: 활동 ═══ -->
+    <div class="slide" data-slide="13" role="region" aria-label="슬라이드 14: 활동">
       <div class="browser-card">
         <div class="browser-topbar" aria-hidden="true">
           <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
@@ -1263,8 +1288,8 @@
       </div>
     </div>
 
-    <!-- ═══ Slide 14: 유사도 측정기 ═══ -->
-    <div class="slide" data-slide="13" role="region" aria-label="슬라이드 14: 유사도 측정기">
+    <!-- ═══ Slide 15: 유사도 측정기 ═══ -->
+    <div class="slide" data-slide="14" role="region" aria-label="슬라이드 15: 유사도 측정기">
       <div class="browser-card" style="max-width:1400px;">
         <div class="browser-topbar" aria-hidden="true">
           <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
@@ -1276,8 +1301,8 @@
       </div>
     </div>
 
-    <!-- ═══ Slide 15: 마무리 ═══ -->
-    <div class="slide" data-slide="14" role="region" aria-label="슬라이드 15: 마무리">
+    <!-- ═══ Slide 16: 마무리 ═══ -->
+    <div class="slide" data-slide="15" role="region" aria-label="슬라이드 16: 마무리">
       <div class="browser-card browser-card--frameless">
         <div class="browser-content end-slide">
           <div class="end-header">
@@ -1307,7 +1332,7 @@
     </button>
     <span class="nav-counter" aria-label="슬라이드 위치">
       <input type="text" class="slide-input" id="slideInput" value="1" aria-label="슬라이드 번호 입력" inputmode="numeric" pattern="[0-9]*">
-      / <span id="totalSlides" aria-hidden="true">15</span>
+      / <span id="totalSlides" aria-hidden="true">16</span>
     </span>
     <button class="nav-btn" id="nextBtn" aria-label="다음 슬라이드">
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>

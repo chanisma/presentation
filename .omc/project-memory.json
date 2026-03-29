@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1774351551641,
+  "lastScanned": 1774747260160,
   "projectRoot": "E:\\presentation",
   "techStack": {
     "languages": [
@@ -49,14 +49,14 @@
       "path": "AI전문적학습동아리",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1774351550648,
+      "lastAccessed": 1774747259918,
       "keyFiles": []
     },
     "test": {
       "path": "test",
       "purpose": "Test files",
       "fileCount": 34,
-      "lastAccessed": 1774351550659,
+      "lastAccessed": 1774747259926,
       "keyFiles": [
         "bash.exe.stackdump",
         "cycle4-image-report.json",
@@ -69,102 +69,330 @@
       "path": "인공지능과피지컬컴퓨팅",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1774351550695,
+      "lastAccessed": 1774747259931,
       "keyFiles": []
     },
     "정보": {
       "path": "정보",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1774351550715,
+      "lastAccessed": 1774747259937,
       "keyFiles": []
     },
     "정보화부": {
       "path": "정보화부",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1774351550752,
+      "lastAccessed": 1774747259945,
       "keyFiles": []
     },
     "프로그래밍": {
       "path": "프로그래밍",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1774351550789,
+      "lastAccessed": 1774747259955,
       "keyFiles": []
     }
   },
   "hotPaths": [
     {
-      "path": "프로그래밍\\7차시-예제를통해배우는CSS1\\index.html",
-      "accessCount": 19,
-      "lastAccessed": 1774420173527,
+      "path": "정보\\LLM의원리\\index.html",
+      "accessCount": 26,
+      "lastAccessed": 1774773716220,
+      "type": "file"
+    },
+    {
+      "path": "정보\\이미지생성의기초개념\\index.html",
+      "accessCount": 15,
+      "lastAccessed": 1774764532430,
+      "type": "file"
+    },
+    {
+      "path": ".claude\\commands\\references\\html-template.md",
+      "accessCount": 7,
+      "lastAccessed": 1774766009186,
       "type": "file"
     },
     {
       "path": "pages.json",
       "accessCount": 6,
-      "lastAccessed": 1774420419151,
+      "lastAccessed": 1774766309123,
       "type": "file"
     },
     {
-      "path": ".claude\\commands\\references\\html-template.md",
+      "path": "_pptx_analysis\\slide-preview-08.png",
       "accessCount": 4,
-      "lastAccessed": 1774358706316,
+      "lastAccessed": 1774764571368,
       "type": "file"
-    },
-    {
-      "path": "인공지능과피지컬컴퓨팅\\피지컬AI-아두이노연동\\index.html",
-      "accessCount": 3,
-      "lastAccessed": 1774419645507,
-      "type": "directory"
     },
     {
       "path": ".claude\\commands\\references\\styles.md",
+      "accessCount": 4,
+      "lastAccessed": 1774765994605,
+      "type": "directory"
+    },
+    {
+      "path": "_pptx_analysis\\slide-preview-03.png",
+      "accessCount": 3,
+      "lastAccessed": 1774763768408,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide-preview-04.png",
+      "accessCount": 3,
+      "lastAccessed": 1774763769416,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide-preview-06.png",
+      "accessCount": 3,
+      "lastAccessed": 1774764569615,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide-preview-15.png",
+      "accessCount": 3,
+      "lastAccessed": 1774764572682,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide05_Google Shape;121;p17.png",
       "accessCount": 2,
-      "lastAccessed": 1774358650449,
+      "lastAccessed": 1774762714015,
       "type": "file"
     },
     {
-      "path": "인공지능과피지컬컴퓨팅\\YOLO\\index.html",
-      "accessCount": 1,
-      "lastAccessed": 1774358687313,
+      "path": "_pptx_analysis\\slide08_Google Shape;185;p20.png",
+      "accessCount": 2,
+      "lastAccessed": 1774762717056,
       "type": "file"
     },
     {
-      "path": "인공지능과피지컬컴퓨팅\\Teachable-Machine\\index.html",
-      "accessCount": 1,
-      "lastAccessed": 1774359005315,
+      "path": "_pptx_analysis\\slide11_Google Shape;231;p23.png",
+      "accessCount": 2,
+      "lastAccessed": 1774762717552,
       "type": "file"
     },
     {
-      "path": "인공지능과피지컬컴퓨팅\\피지컬AI-아두이노연동\\smart_light.ino",
-      "accessCount": 1,
-      "lastAccessed": 1774419026083,
+      "path": "_pptx_analysis\\slide15_Google Shape;302;p27.png",
+      "accessCount": 2,
+      "lastAccessed": 1774762728204,
       "type": "file"
     },
     {
-      "path": "프로그래밍\\8차시-예제를통해배우는CSS2\\index.html",
-      "accessCount": 1,
-      "lastAccessed": 1774420385585,
+      "path": "_pptx_analysis\\slide03_Google Shape;91;p15.png",
+      "accessCount": 2,
+      "lastAccessed": 1774762728401,
       "type": "file"
     },
     {
-      "path": ".playwright-cli\\page-2026-03-25T12-25-47-063Z.yml",
-      "accessCount": 1,
-      "lastAccessed": 1774441579769,
+      "path": "_pptx_analysis\\slide-preview-02.png",
+      "accessCount": 2,
+      "lastAccessed": 1774763767441,
       "type": "file"
     },
     {
-      "path": ".playwright-cli\\page-2026-03-25T12-27-17-752Z.yml",
-      "accessCount": 1,
-      "lastAccessed": 1774441666709,
+      "path": "_pptx_analysis\\slide-preview-05.png",
+      "accessCount": 2,
+      "lastAccessed": 1774763769528,
       "type": "file"
     },
     {
-      "path": "todomvc-test.png",
+      "path": "_pptx_analysis\\slide-preview-09.png",
+      "accessCount": 2,
+      "lastAccessed": 1774763779009,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide-preview-11.png",
+      "accessCount": 2,
+      "lastAccessed": 1774763785356,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide-preview-12.png",
+      "accessCount": 2,
+      "lastAccessed": 1774763787011,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide-preview-13.png",
+      "accessCount": 2,
+      "lastAccessed": 1774763787609,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide-preview-07.png",
+      "accessCount": 2,
+      "lastAccessed": 1774764571032,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide-preview-10.png",
+      "accessCount": 2,
+      "lastAccessed": 1774764572054,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide-preview-14.png",
+      "accessCount": 2,
+      "lastAccessed": 1774764572491,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide01_Google Shape;71;p13.png",
       "accessCount": 1,
-      "lastAccessed": 1774441757933,
+      "lastAccessed": 1774748026016,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide06_Google Shape;136;p18.png",
+      "accessCount": 1,
+      "lastAccessed": 1774748028977,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide09_Google Shape;200;p21.png",
+      "accessCount": 1,
+      "lastAccessed": 1774748036623,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide10_Google Shape;219;p22.jpeg",
+      "accessCount": 1,
+      "lastAccessed": 1774748038676,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide12_Google Shape;256;p24.png",
+      "accessCount": 1,
+      "lastAccessed": 1774748040722,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide13_Google Shape;274;p25.png",
+      "accessCount": 1,
+      "lastAccessed": 1774748041129,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\preview-slide01.png",
+      "accessCount": 1,
+      "lastAccessed": 1774748787089,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\capture-slides.js",
+      "accessCount": 1,
+      "lastAccessed": 1774748797465,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide06_Google Shape;138;p18.png",
+      "accessCount": 1,
+      "lastAccessed": 1774762715126,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide14_Google Shape;290;p26.png",
+      "accessCount": 1,
+      "lastAccessed": 1774762718314,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide16_Google Shape;314;p28.png",
+      "accessCount": 1,
+      "lastAccessed": 1774762718405,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide13_Google Shape;272;p25.png",
+      "accessCount": 1,
+      "lastAccessed": 1774762726522,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide11_Google Shape;232;p23.png",
+      "accessCount": 1,
+      "lastAccessed": 1774762728524,
+      "type": "file"
+    },
+    {
+      "path": "_pptx_analysis\\slide-preview-01.png",
+      "accessCount": 1,
+      "lastAccessed": 1774763767133,
+      "type": "file"
+    },
+    {
+      "path": "unpacked-llm\\ppt\\media\\image11.png",
+      "accessCount": 1,
+      "lastAccessed": 1774765788339,
+      "type": "file"
+    },
+    {
+      "path": "unpacked-llm\\ppt\\media\\image10.png",
+      "accessCount": 1,
+      "lastAccessed": 1774765788944,
+      "type": "file"
+    },
+    {
+      "path": "unpacked-llm\\ppt\\media\\image7.png",
+      "accessCount": 1,
+      "lastAccessed": 1774765789756,
+      "type": "file"
+    },
+    {
+      "path": "unpacked-llm\\ppt\\media\\image9.png",
+      "accessCount": 1,
+      "lastAccessed": 1774765789960,
+      "type": "file"
+    },
+    {
+      "path": "unpacked-llm\\ppt\\media\\image1.png",
+      "accessCount": 1,
+      "lastAccessed": 1774765797167,
+      "type": "file"
+    },
+    {
+      "path": "unpacked-llm\\ppt\\media\\image3.png",
+      "accessCount": 1,
+      "lastAccessed": 1774765799203,
+      "type": "file"
+    },
+    {
+      "path": "unpacked-llm\\ppt\\media\\image4.png",
+      "accessCount": 1,
+      "lastAccessed": 1774765799667,
+      "type": "file"
+    },
+    {
+      "path": "unpacked-llm\\ppt\\media\\image5.png",
+      "accessCount": 1,
+      "lastAccessed": 1774765800303,
+      "type": "file"
+    },
+    {
+      "path": "unpacked-llm\\ppt\\media\\image6.png",
+      "accessCount": 1,
+      "lastAccessed": 1774765800800,
+      "type": "file"
+    },
+    {
+      "path": "unpacked-llm\\ppt\\media\\image8.png",
+      "accessCount": 1,
+      "lastAccessed": 1774765800967,
+      "type": "file"
+    },
+    {
+      "path": "정보\\LLM의원리\\screenshot-slide01.png",
+      "accessCount": 1,
+      "lastAccessed": 1774766369449,
+      "type": "file"
+    },
+    {
+      "path": "정보\\LLM의원리\\screenshot-slide02.png",
+      "accessCount": 1,
+      "lastAccessed": 1774766370383,
       "type": "file"
     }
   ],

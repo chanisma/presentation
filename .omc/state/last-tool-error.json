@@ -1,7 +1,7 @@
 {
-  "tool_name": "Read",
-  "tool_input_preview": "{\"file_path\":\"E:/presentation/.claude/commands/references/html-template.md\"}",
-  "error": "File content (12345 tokens) exceeds maximum allowed tokens (10000). Use offset and limit parameters to read specific portions of the file, or search for specific content instead of reading the whole file.",
-  "timestamp": "2026-03-24T13:23:54.318Z",
-  "retry_count": 3
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd E:/presentation && rm -f 정보/LLM의원리/chk-original*.png 정보/LLM의원리/chk-sim-embed.png && git add \\\"정보/LLM의원리/index.html\\\" \\\"정보/LLM의원리/similarity.html\\\" \\\"정보/LLM의원리/form-setup.gs\\\" && git com...",
+  "error": "Exit code 1\nwarning: in the working copy of '정보/LLM의원리/index.html', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of '정보/LLM의원리/similarity.html', LF will be replaced by CRLF the next time Git touches it\nThe following paths are ignored by one of your .gitignore files:\n정보/LLM의원리/form-setup.gs\nhint: Use -f if you really want to add them.\nhint: Turn this message off by running\nhint: \"git config advice.addIgnoredFile false\"",
+  "timestamp": "2026-03-29T08:42:47.375Z",
+  "retry_count": 1
 }
