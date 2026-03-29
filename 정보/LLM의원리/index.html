@@ -542,7 +542,61 @@
       to { opacity:1; transform:translateY(0) scale(1); }
     }
 
-    /* ═══ 10. Nav Bar (Dark Theme) ═══ */
+    /* ═══ 10. Prompt Flow Visualization ═══ */
+    .prompt-flow { display: flex; flex-direction: column; gap: 0.2rem; }
+    .prompt-flow-step { }
+    .prompt-flow-label {
+      font-size: 0.82rem; font-weight: 600;
+      color: var(--style-accent);
+      margin-bottom: 0.2rem;
+      font-family: 'Poppins', sans-serif;
+    }
+    .prompt-flow-box {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 0.6rem;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.88rem;
+      line-height: 1.8;
+      display: flex; flex-direction: column; gap: 0.15rem;
+    }
+    .prompt-flow-box--attn {
+      border-color: rgba(167,139,250,0.3);
+      background: rgba(167,139,250,0.06);
+    }
+    .prompt-flow-box--output {
+      border-color: rgba(52,211,153,0.3);
+      background: rgba(52,211,153,0.06);
+    }
+    .prompt-flow-box--output span {
+      padding: 0.15rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .prompt-flow-box--output span:last-child { border-bottom: none; }
+    .prompt-tag {
+      display: inline-block;
+      padding: 0.1rem 0.4rem;
+      border-radius: 0.25rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-right: 0.3rem;
+      vertical-align: middle;
+    }
+    .prompt-tag--role { background: rgba(167,139,250,0.25); color: #c4b5fd; }
+    .prompt-tag--context { background: rgba(103,232,249,0.2); color: #67E8F9; }
+    .prompt-tag--task { background: rgba(52,211,153,0.2); color: #6ee7b7; }
+    .prompt-tag--format { background: rgba(251,191,36,0.2); color: #fbbf24; }
+    .prompt-attn-item {
+      padding: 0.1rem 0;
+      font-size: 0.88rem;
+    }
+    .slide.active .prompt-flow-step {
+      animation: popUp 0.4s ease-out both;
+    }
+    .slide.active .prompt-flow-step:nth-child(3) { animation-delay: 0.3s; }
+    .slide.active .prompt-flow-step:nth-child(5) { animation-delay: 0.6s; }
+
+    /* ═══ 11. Nav Bar (Dark Theme) ═══ */
     .nav-bar {
       position: fixed; bottom: 0; left: 0; right: 0;
       display: flex; align-items: center; justify-content: center;
@@ -607,7 +661,7 @@
 </head>
 <body>
   <a href="#presentation" class="skip-link">본문으로 바로가기</a>
-  <div class="progress-bar" id="progressBar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="12" aria-label="프레젠테이션 진행률"></div>
+  <div class="progress-bar" id="progressBar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="14" aria-label="프레젠테이션 진행률"></div>
 
   <div class="presentation" id="presentation" role="main">
 
@@ -1006,8 +1060,110 @@
       </div>
     </div>
 
-    <!-- ═══ Slide 10: 멀티모달 ═══ -->
-    <div class="slide" data-slide="9" role="region" aria-label="슬라이드 10: GPT의 멀티모달">
+    <!-- ═══ Slide 10: 프롬프트가 중요한 이유 ═══ -->
+    <div class="slide" data-slide="9" role="region" aria-label="슬라이드 10: 프롬프트가 중요한 이유">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+          <span class="topbar-title">Prompt Engineering</span>
+        </div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">◆</span> 프롬프트가 중요한 이유</h2>
+            <p class="section-subtitle">같은 LLM이라도 질문 방식에 따라 결과가 완전히 달라진다</p>
+            <hr class="section-rule">
+          </div>
+          <div class="two-col">
+            <div class="col-left">
+              <h3 class="col-title" style="color:#f87171;">단순한 프롬프트</h3>
+              <div class="sentence-display" style="font-size:0.92rem;">
+                <span class="token">기후변화에</span>
+                <span class="token">대해</span>
+                <span class="token">알려줘</span>
+              </div>
+              <div style="background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.2);border-radius:0.5rem;padding:0.5rem 0.7rem;margin-top:0.4rem;font-size:0.88rem;color:var(--style-text-secondary);">
+                → 너무 광범위한 응답<br>
+                → 원하는 수준/형식 불명확<br>
+                → 불필요한 정보 다수 포함
+              </div>
+            </div>
+            <div class="col-divider" aria-hidden="true"></div>
+            <div class="col-right">
+              <h3 class="col-title" style="color:var(--style-accent);">구조화된 프롬프트</h3>
+              <div class="sentence-display" style="font-size:0.88rem;">
+                <span class="token token--predicted">역할:</span>
+                <span class="token">환경 전문가로서</span>
+                <span class="token token--predicted">주제:</span>
+                <span class="token">기후변화의 원인 3가지</span>
+                <span class="token token--predicted">형식:</span>
+                <span class="token">표로 정리</span>
+              </div>
+              <div style="background:rgba(103,232,249,0.1);border:1px solid rgba(103,232,249,0.2);border-radius:0.5rem;padding:0.5rem 0.7rem;margin-top:0.4rem;font-size:0.88rem;color:var(--style-text-secondary);">
+                → 전문적이고 정확한 응답<br>
+                → 원하는 형식으로 출력<br>
+                → 핵심만 간결하게 정리
+              </div>
+            </div>
+          </div>
+          <div class="highlight-box" role="note" style="margin-top:0.5rem;">
+            <p>프롬프트는 LLM에게 주는 <strong>지시문</strong>입니다. 구체적이고 구조화된 프롬프트일수록 원하는 결과를 정확히 얻을 수 있습니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Slide 11: 구조화된 프롬프트의 작동 과정 ═══ -->
+    <div class="slide" data-slide="10" role="region" aria-label="슬라이드 11: 구조화된 프롬프트의 작동 과정">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+          <span class="topbar-title">Prompt → Transformer → Output</span>
+        </div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> 구조화된 프롬프트의 작동 과정</h2>
+            <p class="section-subtitle">프롬프트가 트랜스포머 내부에서 처리되는 흐름</p>
+            <hr class="section-rule">
+          </div>
+          <div class="prompt-flow">
+            <div class="prompt-flow-step">
+              <div class="prompt-flow-label">① 입력 프롬프트</div>
+              <div class="prompt-flow-box" style="display:grid;grid-template-columns:1fr 1fr;gap:0.2rem 0.6rem;line-height:1.5;">
+                <span><span class="prompt-tag prompt-tag--role">역할</span> 과학 교사 (고등학생 수준)</span>
+                <span><span class="prompt-tag prompt-tag--context">맥락</span> 기후변화 수업 자료</span>
+                <span><span class="prompt-tag prompt-tag--task">지시</span> 온실효과 원인 3단계</span>
+                <span><span class="prompt-tag prompt-tag--format">형식</span> 번호 목록, 50자 이내</span>
+              </div>
+            </div>
+            <div style="text-align:center;padding:0.1rem 0;"><span class="token-step-arrow">▼</span></div>
+            <div class="prompt-flow-step">
+              <div class="prompt-flow-label">② 셀프 어텐션이 구조를 파악</div>
+              <div class="prompt-flow-box prompt-flow-box--attn" style="display:grid;grid-template-columns:1fr 1fr;gap:0.15rem 0.6rem;line-height:1.5;">
+                <span><strong>역할</strong> → 쉬운 단어 선택</span>
+                <span><strong>맥락</strong> → 과학 지식 활성화</span>
+                <span><strong>지시</strong> → 범위 한정 (3단계)</span>
+                <span><strong>형식</strong> → 번호+글자수 구조</span>
+              </div>
+            </div>
+            <div style="text-align:center;padding:0.1rem 0;"><span class="token-step-arrow">▼</span></div>
+            <div class="prompt-flow-step">
+              <div class="prompt-flow-label">③ 생성 결과</div>
+              <div class="prompt-flow-box prompt-flow-box--output">
+                <span>1. 태양 에너지가 지표면을 데운다</span>
+                <span>2. 지표면이 적외선을 방출한다</span>
+                <span>3. 온실가스가 적외선을 가두어 기온이 상승한다</span>
+              </div>
+            </div>
+          </div>
+          <div class="highlight-box" role="note" style="margin-top:0.4rem;">
+            <p>프롬프트의 각 요소가 트랜스포머의 <strong>어텐션 메커니즘</strong>을 통해 생성 과정에 직접 영향을 미칩니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Slide 12: 멀티모달 ═══ -->
+    <div class="slide" data-slide="11" role="region" aria-label="슬라이드 12: GPT의 멀티모달">
       <div class="browser-card">
         <div class="browser-topbar" aria-hidden="true">
           <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
@@ -1060,8 +1216,8 @@
       </div>
     </div>
 
-    <!-- ═══ Slide 11: 활동 ═══ -->
-    <div class="slide" data-slide="10" role="region" aria-label="슬라이드 11: 활동">
+    <!-- ═══ Slide 13: 활동 ═══ -->
+    <div class="slide" data-slide="12" role="region" aria-label="슬라이드 13: 활동">
       <div class="browser-card">
         <div class="browser-topbar" aria-hidden="true">
           <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
@@ -1106,8 +1262,8 @@
       </div>
     </div>
 
-    <!-- ═══ Slide 12: 마무리 ═══ -->
-    <div class="slide" data-slide="11" role="region" aria-label="슬라이드 12: 마무리">
+    <!-- ═══ Slide 14: 마무리 ═══ -->
+    <div class="slide" data-slide="13" role="region" aria-label="슬라이드 14: 마무리">
       <div class="browser-card browser-card--frameless">
         <div class="browser-content end-slide">
           <div class="end-header">
@@ -1137,7 +1293,7 @@
     </button>
     <span class="nav-counter" aria-label="슬라이드 위치">
       <input type="text" class="slide-input" id="slideInput" value="1" aria-label="슬라이드 번호 입력" inputmode="numeric" pattern="[0-9]*">
-      / <span id="totalSlides" aria-hidden="true">12</span>
+      / <span id="totalSlides" aria-hidden="true">14</span>
     </span>
     <button class="nav-btn" id="nextBtn" aria-label="다음 슬라이드">
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
