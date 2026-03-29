@@ -1125,38 +1125,38 @@
             <p class="section-subtitle">프롬프트가 트랜스포머 내부에서 처리되는 흐름</p>
             <hr class="section-rule">
           </div>
-          <div class="prompt-flow">
+          <div class="prompt-flow" style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0.4rem;align-items:stretch;">
             <div class="prompt-flow-step">
               <div class="prompt-flow-label">① 입력 프롬프트</div>
-              <div class="prompt-flow-box" style="display:grid;grid-template-columns:1fr 1fr;gap:0.2rem 0.6rem;line-height:1.5;">
-                <span><span class="prompt-tag prompt-tag--role">역할</span> 과학 교사 (고등학생 수준)</span>
-                <span><span class="prompt-tag prompt-tag--context">맥락</span> 기후변화 수업 자료</span>
-                <span><span class="prompt-tag prompt-tag--task">지시</span> 온실효과 원인 3단계</span>
-                <span><span class="prompt-tag prompt-tag--format">형식</span> 번호 목록, 50자 이내</span>
+              <div class="prompt-flow-box" style="line-height:1.6;font-size:0.85rem;">
+                <span><span class="prompt-tag prompt-tag--role">역할</span> 과학 교사</span>
+                <span><span class="prompt-tag prompt-tag--context">맥락</span> 기후변화 수업</span>
+                <span><span class="prompt-tag prompt-tag--task">지시</span> 온실효과 3단계</span>
+                <span><span class="prompt-tag prompt-tag--format">형식</span> 번호, 50자 이내</span>
               </div>
             </div>
-            <div style="text-align:center;padding:0.1rem 0;"><span class="token-step-arrow">▼</span></div>
+            <div style="display:flex;align-items:center;color:var(--style-primary);font-size:1.3rem;padding-top:1rem;">→</div>
             <div class="prompt-flow-step">
-              <div class="prompt-flow-label">② 셀프 어텐션이 구조를 파악</div>
-              <div class="prompt-flow-box prompt-flow-box--attn" style="display:grid;grid-template-columns:1fr 1fr;gap:0.15rem 0.6rem;line-height:1.5;">
+              <div class="prompt-flow-label">② 어텐션이 구조 파악</div>
+              <div class="prompt-flow-box prompt-flow-box--attn" style="line-height:1.6;font-size:0.85rem;">
                 <span><strong>역할</strong> → 쉬운 단어 선택</span>
                 <span><strong>맥락</strong> → 과학 지식 활성화</span>
-                <span><strong>지시</strong> → 범위 한정 (3단계)</span>
-                <span><strong>형식</strong> → 번호+글자수 구조</span>
+                <span><strong>지시</strong> → 범위 한정</span>
+                <span><strong>형식</strong> → 출력 구조 결정</span>
               </div>
             </div>
-            <div style="text-align:center;padding:0.1rem 0;"><span class="token-step-arrow">▼</span></div>
+            <div style="display:flex;align-items:center;color:var(--style-accent);font-size:1.3rem;padding-top:1rem;">→</div>
             <div class="prompt-flow-step">
               <div class="prompt-flow-label">③ 생성 결과</div>
-              <div class="prompt-flow-box prompt-flow-box--output">
+              <div class="prompt-flow-box prompt-flow-box--output" style="line-height:1.6;font-size:0.85rem;">
                 <span>1. 태양 에너지가 지표면을 데운다</span>
                 <span>2. 지표면이 적외선을 방출한다</span>
-                <span>3. 온실가스가 적외선을 가두어 기온이 상승한다</span>
+                <span>3. 온실가스가 적외선을 가두어 기온 상승</span>
               </div>
             </div>
           </div>
-          <div class="highlight-box" role="note" style="margin-top:0.4rem;">
-            <p>프롬프트의 각 요소가 트랜스포머의 <strong>어텐션 메커니즘</strong>을 통해 생성 과정에 직접 영향을 미칩니다.</p>
+          <div class="highlight-box" role="note" style="margin-top:0.6rem;">
+            <p>프롬프트의 각 요소(<span class="prompt-tag prompt-tag--role" style="font-size:0.75rem;">역할</span> <span class="prompt-tag prompt-tag--context" style="font-size:0.75rem;">맥락</span> <span class="prompt-tag prompt-tag--task" style="font-size:0.75rem;">지시</span> <span class="prompt-tag prompt-tag--format" style="font-size:0.75rem;">형식</span>)가 어텐션을 통해 생성 과정에 <strong>직접 영향</strong>을 미칩니다. 구조화할수록 결과가 정확해집니다.</p>
           </div>
         </div>
       </div>
