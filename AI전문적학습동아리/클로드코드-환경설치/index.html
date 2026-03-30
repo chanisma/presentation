@@ -861,64 +861,69 @@ p  { font-size: 1rem; line-height: 1.7; color: var(--gray-800); }
     </div>
   </div>
 
-  <!-- ═══ SLIDE 10: 파일 확인 방법 ═══ -->
+  <!-- ═══ SLIDE 10: Node.js 설치 ═══ -->
   <div class="slide" data-slide="9">
     <div class="browser-card">
       <div class="browser-topbar">
         <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
-        <div class="tab-title">파일 확인 방법 — Live Server로 결과 보기</div>
+        <div class="tab-title">2단계 — Node.js 설치 &amp; Claude Code 설치</div>
       </div>
       <div class="browser-content">
         <div class="sec-div">
-          <div class="sec-icon">🌐</div>
+          <div class="sec-icon">🟩</div>
           <div class="sec-title-wrap">
-            <h2>만든 파일 브라우저로 확인하기</h2>
-            <div class="sec-sub">Live Server를 이용하면 클릭 한 번으로 바로 확인!</div>
+            <h2>Node.js 설치하기</h2>
+            <div class="sec-sub">Claude Code를 npm으로 설치하려면 Node.js가 먼저 필요합니다</div>
           </div>
         </div>
         <div class="two-col">
           <div>
-            <div class="highlight-box" style="margin-bottom: 0.8rem;">
-              <div class="big-text">파일 저장 위치</div>
-              <div class="small-text">프레젠테이션은 이 경로에 저장됩니다</div>
-            </div>
-            <div class="code-block">과목명 / 수업명 / index.html</div>
-            <div class="info-box" style="margin-top: 0.7rem;">
-              📂 <strong>예시</strong>:<br>
-              <span class="code-inline">수학/함수개념/index.html</span><br>
-              <span class="code-inline">국어/시해석수업/index.html</span><br>
-              <span class="code-inline">영어/독해전략/index.html</span>
-            </div>
-          </div>
-          <div>
-            <h3 style="margin-bottom: 0.7rem;">🖱️ Live Server로 열기</h3>
+            <h3 style="margin-bottom: 0.7rem;">📥 Node.js 설치 순서</h3>
             <ul class="act-list">
               <li>
                 <span class="emoji">①</span>
                 <div class="details">
-                  <strong>VSCode 왼쪽 파일 탐색기에서 index.html 찾기</strong>
-                  <span>과목명 → 수업명 → index.html</span>
+                  <strong>nodejs.org 접속</strong>
+                  <span>브라우저 주소창에 <span class="code-inline">nodejs.org</span> 입력</span>
                 </div>
               </li>
               <li>
                 <span class="emoji">②</span>
                 <div class="details">
-                  <strong>index.html 파일에서 오른쪽 클릭</strong>
-                  <span></span>
+                  <strong>LTS 버전 (안정 버전) 다운로드</strong>
+                  <span>초록색 <strong>LTS</strong> 버튼 클릭 — 안정적인 권장 버전</span>
                 </div>
               </li>
               <li>
                 <span class="emoji">③</span>
                 <div class="details">
-                  <strong>"Open with Live Server" 클릭</strong>
-                  <span>브라우저가 열리면서 프레젠테이션이 표시됩니다!</span>
+                  <strong>설치 파일 실행</strong>
+                  <span>다운로드된 파일 더블클릭 → <strong>Next</strong>를 계속 클릭</span>
+                </div>
+              </li>
+              <li>
+                <span class="emoji">④</span>
+                <div class="details">
+                  <strong>설치 완료 후 터미널 새로 열기</strong>
+                  <span>기존 터미널 창은 닫고 새 창을 열어야 적용됨</span>
                 </div>
               </li>
             </ul>
-            <div class="info-box blue" style="margin-top: 0.8rem;">
-              💡 <strong>키보드 단축키</strong>:<br>
-              ← → 화살표 키로 슬라이드 이동<br>
-              스페이스바로 다음 슬라이드
+          </div>
+          <div>
+            <h3 style="margin-bottom: 0.7rem;">⚡ Claude Code 설치</h3>
+            <div class="step-box" style="margin-bottom: 0.7rem;">
+              <div class="step-num">터미널(커맨드창)에서 실행</div>
+              <div class="code-block">npm install -g @anthropic-ai/claude-code</div>
+            </div>
+            <div class="info-box" style="margin-bottom: 0.7rem;">
+              💡 <strong>-g 옵션</strong>: 컴퓨터 전체에 설치 (global)<br>
+              어느 폴더에서든 <span class="code-inline">claude</span> 명령어 사용 가능
+            </div>
+            <div class="step-box blue">
+              <div class="step-num">설치 확인</div>
+              <div class="code-block">claude --version</div>
+              <p style="margin-top: 0.4rem; font-size: 0.82rem; color: var(--gray-600);">버전 번호가 출력되면 설치 성공!</p>
             </div>
           </div>
         </div>

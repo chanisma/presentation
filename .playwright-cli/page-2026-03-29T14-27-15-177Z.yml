@@ -1,0 +1,415 @@
+- generic [active] [ref=e1]:
+  - link "본문으로 바로가기" [ref=e2] [cursor=pointer]:
+    - /url: "#presentation"
+  - progressbar "프레젠테이션 진행률" [ref=e3]
+  - main [ref=e4]:
+    - 'region "슬라이드 1: 표지" [ref=e5]':
+      - generic [ref=e7]:
+        - generic [ref=e9]: 인공지능과 피지컬컴퓨팅
+        - heading "웹캠 AI × 엑추에이터 제어" [level=1] [ref=e10]
+        - paragraph [ref=e11]: Teachable Machine 모델로 부저, LED, 서보모터를 제어하자
+        - generic [ref=e13]:
+          - generic [ref=e14]: 전주기전여자고등학교
+          - generic [ref=e15]: ·
+          - time [ref=e17]: 2026년 3월
+        - generic [ref=e18]:
+          - generic [ref=e19]: 📷 웹캠
+          - generic [ref=e20]: 🧠 AI 모델
+          - generic [ref=e21]: ⚡ 아두이노
+    - 'region "슬라이드 2: 지난 시간 복습"':
+      - generic:
+        - generic:
+          - generic: 지난 시간 복습
+        - generic:
+          - generic:
+            - heading "지난 프로젝트 되돌아보기" [level=2]:
+              - generic: ◆
+              - text: 지난 프로젝트 되돌아보기
+            - paragraph: 손동작 인식 스마트 조명 프로젝트
+          - note:
+            - paragraph:
+              - text: Teachable Machine으로 학습시킨 손동작 모델이 웹캠 영상을 분석하고, Web Serial API를 통해 아두이노에 명령을 보내
+              - strong: RGB LED
+              - text: 를 제어했습니다.
+          - list:
+            - listitem:
+              - heading "웹 → 시리얼 통신" [level=3]
+              - paragraph: 브라우저에서 Web Serial API로 아두이노에 문자('R', 'G', 'B', 'O')를 전송
+            - listitem:
+              - heading "아두이노 → LED 제어" [level=3]
+              - paragraph: 시리얼로 받은 문자에 따라 해당 색상 LED를 ON/OFF하는 switch 구문
+            - listitem:
+              - heading "핵심 흐름" [level=3]
+              - paragraph: 웹캠 → AI 분류 → 시리얼 전송 → 아두이노 → LED 동작
+            - listitem:
+              - heading "이번 시간 확장" [level=3]
+              - paragraph: LED 외의 다양한 엑추에이터로 확장하여 더 창의적인 프로젝트 만들기
+    - 'region "슬라이드 3: 학습 목표"':
+      - generic:
+        - generic:
+          - generic: 학습 목표
+        - generic:
+          - generic:
+            - heading "오늘의 학습 목표" [level=2]:
+              - generic: ✦
+              - text: 오늘의 학습 목표
+          - list:
+            - listitem:
+              - generic: "01"
+              - text: 다양한 엑추에이터의 종류와 특성을 이해한다
+            - listitem:
+              - generic: "02"
+              - text: 서보모터 회로를 연결하고 동작을 확인한다
+            - listitem:
+              - generic: "03"
+              - text: AI를 활용해 아두이노 코드를 생성하고 응용한다
+          - note:
+            - paragraph:
+              - text: 지난 시간의
+              - strong: LED 제어
+              - text: 코드 구조를 그대로 활용하되, 엑추에이터만 바꿔서 다양한 프로젝트를 만듭니다. AI에게 코드를 요청하는
+              - strong: 프롬프트 작성법
+              - text: 도 함께 연습합니다.
+    - 'region "슬라이드 4: 엑추에이터란"':
+      - generic:
+        - generic:
+          - generic: 엑추에이터 소개
+        - generic:
+          - generic:
+            - heading "엑추에이터란?" [level=2]:
+              - generic: ⊕
+              - text: 엑추에이터란?
+            - paragraph: 전기 신호를 물리적 동작으로 바꾸는 출력 장치
+          - list:
+            - listitem:
+              - heading "피에조 부저" [level=3]
+              - paragraph:
+                - text: 전기 신호 →
+                - strong: 소리
+                - text: 출력. tone() 함수로 주파수 조절 가능. 경고음, 멜로디 등에 활용
+              - generic: 난이도 ★☆☆
+            - listitem:
+              - heading "LED (발광 다이오드)" [level=3]
+              - paragraph:
+                - text: 전기 신호 →
+                - strong: 빛
+                - text: 출력. analogWrite()로 밝기 조절(PWM). 지난 시간에 사용한 부품
+              - generic: 난이도 ★☆☆
+            - listitem:
+              - heading "SG90 서보모터" [level=3]
+              - paragraph:
+                - text: 전기 신호 →
+                - strong: 회전
+                - text: 동작. 0°~180° 각도 제어. 문 개폐, 팔 움직임 등 동작 표현
+              - generic: 난이도 ★★☆
+          - note:
+            - paragraph: 이 외에도 DC 모터, 진동 모터, 릴레이 등 다양한 엑추에이터가 있지만, 오늘은 위 세 가지를 활용합니다.
+    - 'region "슬라이드 5: 서보모터 회로 연결"':
+      - generic:
+        - generic:
+          - generic: 서보모터 회로 연결
+        - generic:
+          - generic:
+            - heading "SG90 서보모터 연결 방법" [level=2]:
+              - generic: ※
+              - text: SG90 서보모터 연결 방법
+            - paragraph: 3개의 선만 연결하면 완성됩니다
+          - 'img "SG90 서보모터와 아두이노 UNO 배선도: 갈색선은 GND, 빨간선은 5V, 주황선은 D9 핀에 연결"':
+            - generic:
+              - generic: SG90 서보모터
+              - generic:
+                - generic: 갈색선
+                - generic: GND
+              - generic:
+                - generic: 빨간선
+                - generic: VCC
+              - generic:
+                - generic: 주황선
+                - generic: Signal
+            - generic:
+              - img:
+                - generic: GND
+                - generic: 5V
+                - generic: Signal
+            - generic:
+              - generic: 아두이노 UNO
+              - generic:
+                - generic: GND
+                - generic: 접지
+              - generic:
+                - generic: 5V
+                - generic: 전원
+              - generic:
+                - generic: D9~
+                - generic: PWM
+          - generic:
+            - generic: ⚡
+            - generic:
+              - strong: 전원은 반드시 5V
+              - text: "— SG90은 3.3V로는 힘이 부족합니다. 신호선은 PWM 핀(~표시: D9, D10, D11)에 연결해야 합니다."
+          - generic:
+            - generic: ↻
+            - generic:
+              - strong: 각도 범위 0°~180°
+              - text: — 범위를 초과하면 모터가 손상될 수 있습니다. 제조사마다 선 색상이 다를 수 있으니 확인하세요.
+    - 'region "슬라이드 6: LED 부저 회로 연결"':
+      - generic:
+        - generic:
+          - generic: LED · 부저 회로 연결
+        - generic:
+          - generic:
+            - heading "LED와 피에조 부저 연결 방법" [level=2]:
+              - generic: ⊕
+              - text: LED와 피에조 부저 연결 방법
+            - paragraph: 가장 쉬운 엑추에이터 2종의 배선
+          - generic:
+            - generic:
+              - 'img "LED 배선도: 긴 다리(+)는 220옴 저항을 거쳐 D9 핀에, 짧은 다리(-)는 GND에 연결"':
+                - generic:
+                  - generic: LED (발광 다이오드)
+                  - generic:
+                    - generic: 긴 다리 (+)
+                    - generic: Anode
+                  - generic:
+                    - generic: 짧은 다리 (−)
+                    - generic: Cathode
+                - generic:
+                  - img:
+                    - generic: 220Ω
+                    - generic: D9~
+                    - generic: GND
+                - generic:
+                  - generic: 아두이노
+                  - generic:
+                    - generic: D9~
+                    - generic: PWM
+                  - generic:
+                    - generic: GND
+                    - generic: 접지
+              - generic:
+                - generic: ✦
+                - generic:
+                  - strong: 220Ω 저항 필수
+                  - text: — LED의 긴 다리(+)와 디지털 핀 사이에 저항을 연결합니다. 저항 없이 연결하면 LED가 타버릴 수 있습니다.
+            - generic:
+              - 'img "피에조 부저 배선도: 플러스 단자는 D8 핀에, 마이너스 단자는 GND에 연결"':
+                - generic:
+                  - generic: 피에조 부저
+                  - generic:
+                    - generic: + 단자
+                    - generic: Signal
+                  - generic:
+                    - generic: − 단자
+                    - generic: GND
+                - generic:
+                  - img:
+                    - generic: D8
+                    - generic: GND
+                - generic:
+                  - generic: 아두이노
+                  - generic:
+                    - generic: D8
+                    - generic: Digital
+                  - generic:
+                    - generic: GND
+                    - generic: 접지
+              - generic:
+                - generic: ✦
+                - generic:
+                  - strong: 저항 불필요
+                  - text: — 피에조 부저는 저항 없이 바로 연결합니다. +/− 극성 표시를 확인하세요. tone() 함수로 소리를 제어합니다.
+    - 'region "슬라이드 7: 프로젝트 아이디어"':
+      - generic:
+        - generic:
+          - generic: 프로젝트 아이디어
+        - generic:
+          - generic:
+            - heading "웹캠 상태별 프로젝트 아이디어" [level=2]:
+              - generic: ✦
+              - text: 웹캠 상태별 프로젝트 아이디어
+            - paragraph: Teachable Machine 클래스에 따라 다른 동작을 매핑합니다
+          - list:
+            - listitem:
+              - heading "감정 인식 알리미" [level=3]
+              - paragraph: 표정(웃음/무표정/찡그림)에 따라 부저가 다른 멜로디를 재생
+              - generic: 부저
+            - listitem:
+              - heading "손동작 방향 표시기" [level=3]
+              - paragraph: 손가락 방향(좌/우/정면)에 따라 서보모터가 해당 방향을 가리킴
+              - generic: 서보모터
+            - listitem:
+              - heading "자세 경고 시스템" [level=3]
+              - paragraph: 바른 자세/구부정한 자세를 인식하여 LED 색상 변경 + 경고음
+              - generic: LED + 부저
+            - listitem:
+              - heading "나만의 아이디어" [level=3]
+              - paragraph: 웹캠이 인식할 수 있는 것이라면 무엇이든! 사물, 동작, 색상 등
+              - generic: 자유 선택
+    - 'region "슬라이드 8: AI 프롬프트 가이드"':
+      - generic:
+        - generic:
+          - generic: AI 프롬프트 가이드
+        - generic:
+          - generic:
+            - heading "AI에게 코드를 잘 요청하는 법" [level=2]:
+              - generic: ◆
+              - text: AI에게 코드를 잘 요청하는 법
+            - paragraph: ChatGPT, Claude 등에 아두이노 코드를 요청할 때의 핵심 요소
+          - list:
+            - listitem:
+              - generic: ①
+              - generic:
+                - heading "역할 지정" [level=3]
+                - paragraph: "\"아두이노 프로그래밍 전문가로서\" — AI에게 맥락을 제공합니다"
+            - listitem:
+              - generic: ②
+              - generic:
+                - heading "기존 코드 제공" [level=3]
+                - paragraph: 지난 시간의 코드를 붙여넣고 "이 코드를 기반으로"라고 시작합니다
+            - listitem:
+              - generic: ③
+              - generic:
+                - heading "구체적 요구사항 명시" [level=3]
+                - paragraph: 사용할 엑추에이터, 핀 번호, 동작 조건을 명확하게 작성합니다
+          - note:
+            - paragraph:
+              - text: "핵심:"
+              - strong: 기존 코드 구조(시리얼 수신 → switch 분기)
+              - text: 를 기본 틀로 제공하면 AI가 훨씬 정확한 코드를 생성합니다.
+    - 'region "슬라이드 9: 부저 프롬프트 예시"':
+      - generic:
+        - generic:
+          - generic: 프롬프트 예시 — 부저
+        - generic:
+          - generic:
+            - 'heading "프롬프트 예시: 피에조 부저 제어" [level=2]':
+              - generic: ✦
+              - text: "프롬프트 예시: 피에조 부저 제어"
+          - generic:
+            - generic: AI에게 보낼 프롬프트
+            - text: 아두이노 프로그래밍 전문가로서, 아래 코드를 기반으로 수정해 주세요.
+            - text: "[기존 코드 구조]"
+            - text: 시리얼로 문자를 수신하면 switch문으로 분기하는 구조입니다.
+            - text: "[요청 사항]"
+            - text: "✦ 엑추에이터: 피에조 부저 (8번 핀 연결)"
+            - text: "✦ 동작 조건:"
+            - text: "- 'A' 수신 → 도레미 멜로디 재생"
+            - text: "- 'B' 수신 → 경고음(높은 주파수 반복)"
+            - text: "- 'C' 수신 → 소리 정지"
+            - text: ✦ tone() 함수를 사용해 주세요.
+          - generic: "// 기본 코드 틀 (이 코드를 프롬프트에 함께 붙여넣기) const int BUZZER_PIN = 8; void setup() { Serial.begin(9600); pinMode(BUZZER_PIN, OUTPUT); } void loop() { if (Serial.available() > 0) { char cmd = Serial.read(); switch (cmd) { case 'A': /* 멜로디 재생 */ break; case 'B': /* 경고음 */ break; case 'C': noTone(BUZZER_PIN); break; } } }"
+    - 'region "슬라이드 10: 서보모터 프롬프트 예시"':
+      - generic:
+        - generic:
+          - generic: 프롬프트 예시 — 서보모터
+        - generic:
+          - generic:
+            - 'heading "프롬프트 예시: SG90 서보모터 제어" [level=2]':
+              - generic: ◆
+              - text: "프롬프트 예시: SG90 서보모터 제어"
+          - generic:
+            - generic: AI에게 보낼 프롬프트
+            - text: 아두이노 전문가로서, 아래 코드를 기반으로 수정해 주세요.
+            - text: "[요청 사항]"
+            - text: "✦ 엑추에이터: SG90 서보모터 (9번 핀 연결)"
+            - text: ✦ Servo 라이브러리를 사용해 주세요.
+            - text: "✦ 동작 조건:"
+            - text: "- 'L' 수신 → 서보 0° (왼쪽)"
+            - text: "- 'C' 수신 → 서보 90° (중앙)"
+            - text: "- 'R' 수신 → 서보 180° (오른쪽)"
+            - text: ✦ 각도 이동은 부드럽게(10ms 딜레이로 점진 이동)
+          - generic: "// 기본 코드 틀 (이 코드를 프롬프트에 함께 붙여넣기) #include <Servo.h> Servo myServo; const int SERVO_PIN = 9; int currentAngle = 90; void setup() { Serial.begin(9600); myServo.attach(SERVO_PIN); myServo.write(90); // 중앙 위치로 초기화 } void loop() { if (Serial.available() > 0) { char cmd = Serial.read(); switch (cmd) { case 'L': /* 0도로 이동 */ break; case 'C': /* 90도로 이동 */ break; case 'R': /* 180도로 이동 */ break; } } }"
+    - 'region "슬라이드 11: 실습 진행 안내"':
+      - generic:
+        - generic:
+          - generic: 실습 안내
+        - generic:
+          - generic:
+            - heading "실습 진행 순서" [level=2]:
+              - generic: ✦
+              - text: 실습 진행 순서
+            - paragraph: 단계별로 따라 하면 완성됩니다
+          - list:
+            - listitem:
+              - generic: "01"
+              - generic:
+                - heading "프로젝트 구상" [level=3]
+                - paragraph: 웹캠으로 인식할 대상(손동작, 표정, 사물 등)과 사용할 엑추에이터를 결정합니다.
+            - listitem:
+              - generic: "02"
+              - generic:
+                - heading "Teachable Machine 모델 준비" [level=3]
+                - paragraph: 지난 시간에 만든 모델을 재사용하거나, 새 모델을 학습시킵니다. 클래스를 3개 이상 만드세요.
+            - listitem:
+              - generic: "03"
+              - generic:
+                - heading "AI로 아두이노 코드 생성" [level=3]
+                - paragraph: 앞서 배운 프롬프트 예시를 참고하여 AI에게 코드를 요청하고, 생성된 코드를 아두이노에 업로드합니다.
+            - listitem:
+              - generic: "04"
+              - generic:
+                - heading "회로 연결 + 테스트" [level=3]
+                - paragraph: 엑추에이터를 아두이노에 연결하고, 웹 앱에서 시리얼 연결 후 동작을 확인합니다.
+    - 'region "슬라이드 12: 트러블슈팅"':
+      - generic:
+        - generic:
+          - generic: 트러블슈팅
+        - generic:
+          - generic:
+            - heading "자주 발생하는 문제 해결" [level=2]:
+              - generic: ※
+              - text: 자주 발생하는 문제 해결
+          - region "트러블슈팅 가이드":
+            - table "문제별 원인과 해결 방법":
+              - caption: 문제별 원인과 해결 방법
+              - rowgroup:
+                - row "증상 원인 해결 방법":
+                  - columnheader "증상"
+                  - columnheader "원인"
+                  - columnheader "해결 방법"
+              - rowgroup:
+                - row "시리얼 연결 안 됨 아두이노 IDE 시리얼 모니터가 열려 있음 시리얼 모니터를 닫고 웹에서 다시 연결":
+                  - rowheader "시리얼 연결 안 됨"
+                  - cell "아두이노 IDE 시리얼 모니터가 열려 있음"
+                  - cell "시리얼 모니터를 닫고 웹에서 다시 연결"
+                - row "서보모터가 떨림 전원 부족 또는 명령 연속 전송 USB 전원 확인 / 명령 전송 간격 늘리기":
+                  - rowheader "서보모터가 떨림"
+                  - cell "전원 부족 또는 명령 연속 전송"
+                  - cell "USB 전원 확인 / 명령 전송 간격 늘리기"
+                - row "부저에서 소리 안 남 극성 반대 또는 핀 번호 불일치 +/- 확인, 코드의 핀 번호와 실제 연결 대조":
+                  - rowheader "부저에서 소리 안 남"
+                  - cell "극성 반대 또는 핀 번호 불일치"
+                  - cell "+/- 확인, 코드의 핀 번호와 실제 연결 대조"
+                - row "AI 인식이 부정확 학습 데이터 부족 또는 조명 차이 클래스당 200장 이상 촬영, 실습 환경에서 학습":
+                  - rowheader "AI 인식이 부정확"
+                  - cell "학습 데이터 부족 또는 조명 차이"
+                  - cell "클래스당 200장 이상 촬영, 실습 환경에서 학습"
+                - row "웹 앱에서 포트 선택 불가 Chrome이 아니거나 드라이버 미설치 Chrome 브라우저 사용 + CH340 드라이버 설치":
+                  - rowheader "웹 앱에서 포트 선택 불가"
+                  - cell "Chrome이 아니거나 드라이버 미설치"
+                  - cell "Chrome 브라우저 사용 + CH340 드라이버 설치"
+    - 'region "슬라이드 13: 마무리"':
+      - generic:
+        - generic:
+          - generic: 🚀
+          - heading "오늘의 수업 완료!" [level=2]
+          - paragraph: 웹캠 AI와 엑추에이터를 연결하는 피지컬 AI의 세계
+          - complementary "핵심 요약":
+            - heading "오늘의 핵심" [level=3]
+            - list:
+              - listitem: ✦ 엑추에이터는 전기 신호를 물리적 동작(소리, 빛, 회전)으로 변환하는 장치
+              - listitem: ✦ 서보모터는 3선(GND, 5V, Signal) 연결로 0°~180° 각도 제어 가능
+              - listitem: ✦ AI에게 코드를 요청할 때는 기존 코드 + 구체적 요구사항을 함께 제공
+              - listitem: ✦ 웹캠 AI 분류 결과 → 시리얼 전송 → 아두이노 → 엑추에이터 동작
+  - generic [ref=e22]: 슬라이드 1 / 13
+  - navigation "슬라이드 네비게이션" [ref=e23]:
+    - button "이전 슬라이드" [disabled] [ref=e24]:
+      - img [ref=e25]
+    - generic "슬라이드 위치" [ref=e27]:
+      - textbox "슬라이드 번호 입력" [ref=e28] [cursor=pointer]: "1"
+      - text: /
+      - generic [ref=e29]: "13"
+    - button "다음 슬라이드" [ref=e30] [cursor=pointer]:
+      - img [ref=e31]
+    - button "전체화면 전환" [ref=e33] [cursor=pointer]:
+      - img [ref=e34]

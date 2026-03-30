@@ -1,7 +1,7 @@
 {
   "tool_name": "Bash",
-  "tool_input_preview": "{\"command\":\"cd E:/presentation && rm -f 정보/LLM의원리/chk-original*.png 정보/LLM의원리/chk-sim-embed.png && git add \\\"정보/LLM의원리/index.html\\\" \\\"정보/LLM의원리/similarity.html\\\" \\\"정보/LLM의원리/form-setup.gs\\\" && git com...",
-  "error": "Exit code 1\nwarning: in the working copy of '정보/LLM의원리/index.html', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of '정보/LLM의원리/similarity.html', LF will be replaced by CRLF the next time Git touches it\nThe following paths are ignored by one of your .gitignore files:\n정보/LLM의원리/form-setup.gs\nhint: Use -f if you really want to add them.\nhint: Turn this message off by running\nhint: \"git config advice.addIgnoredFile false\"",
-  "timestamp": "2026-03-29T08:42:47.375Z",
+  "tool_input_preview": "{\"command\":\"cd \\\"E:\\\\presentation\\\" && python -c \\\"\\nfrom pptx import Presentation\\nfrom pptx.opc.constants import RELATIONSHIP_TYPE as RT\\nimport re\\n\\nprs = Presentation('이미지 생성의 기초 개념.pptx')\\n\\n# C...",
+  "error": "Exit code 1\nTraceback (most recent call last):\r\n  File \"<string>\", line 15, in <module>\r\n    if hasattr(shape, 'click_action') and shape.click_action and shape.click_action.hyperlink and shape.click_action.hyperlink.address:\r\n       ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Users\\chani\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\pptx\\util.py\", line 191, in __get__\r\n    value = self._fget(obj)\r\n  File \"C:\\Users\\chani\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\site-packages\\pptx\\sh...",
+  "timestamp": "2026-03-29T15:38:48.880Z",
   "retry_count": 1
 }
