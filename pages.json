@@ -591,6 +591,18 @@
             { "label": "AI글쓰기", "color": "orange" }
           ],
           "gradient": "linear-gradient(90deg, #7C3AED, #C4B5FD)"
+        },
+        {
+          "title": "에이전틱 AI, 직접 체험하기",
+          "path": "정보/에이전틱AI-NotebookLM/index.html",
+          "emoji": "🤖",
+          "description": "에이전트의 3단계 루프(감지→판단→행동)를 이해하고, NotebookLM으로 같은 자료를 다른 목표(마인드맵/퀴즈/보고서)로 변환하는 체험 활동을 포함합니다.",
+          "tags": [
+            { "label": "에이전틱AI", "color": "blue" },
+            { "label": "NotebookLM", "color": "purple" },
+            { "label": "1차시", "color": "orange" }
+          ],
+          "gradient": "linear-gradient(90deg, #2563EB, #F97316)"
         }
       ]
     },
