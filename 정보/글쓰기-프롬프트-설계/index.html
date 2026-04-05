@@ -9,152 +9,154 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    /* ── 1. Reset & CSS Variables ── */
+    /* ── 1. Reset & CSS Variables (디지털 교과서 스타일) ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --style-bg: #F8F8F2;
-      --style-primary: #1A1A2E;
-      --style-accent: #E8FF3B;
-      --style-accent2: #FF6B6B;
-      --style-accent3: #4ECDC4;
-      --style-accent4: #C4B5FD;
-      --style-purple: #7C3AED;
-      --style-text: #1A1A2E;
-      --style-text-secondary: #4A4A4A;
-      --cell-radius: 1rem;
-      --cell-gap: 0.5rem;
+      --style-bg: #FFFFFF;
+      --style-primary: #F27321;
+      --style-accent: #1B7ED4;
+      --style-text: #222222;
+      --style-text-secondary: #666666;
+      --cell-radius: 0.5rem;
+      --cell-gap: 0.6rem;
     }
 
     /* ── 2. Base Typography ── */
     html, body {
       font-size: clamp(16px, 1.5vw, 28px);
-      font-family: 'Inter', 'Noto Sans KR', sans-serif;
+      font-family: 'Noto Sans KR', 'Inter', sans-serif;
       background: var(--style-bg);
       color: var(--style-text);
       overflow: hidden;
       height: 100%;
     }
-    h1 { font-family: 'Inter', 'Noto Sans KR', sans-serif; font-size: 2.4rem; font-weight: 800; line-height: 1.2; }
-    h2 { font-family: 'Inter', 'Noto Sans KR', sans-serif; font-size: 1.5rem; font-weight: 700; line-height: 1.3; }
-    h3 { font-family: 'Inter', 'Noto Sans KR', sans-serif; font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
+    h1 { font-family: 'Noto Sans KR', 'Inter', sans-serif; font-size: 2.4rem; font-weight: 800; line-height: 1.2; }
+    h2 { font-family: 'Noto Sans KR', 'Inter', sans-serif; font-size: 1.5rem; font-weight: 700; line-height: 1.3; }
+    h3 { font-family: 'Noto Sans KR', 'Inter', sans-serif; font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
     p, li { line-height: 1.7; }
 
     /* ── 3. Accessibility ── */
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
     .skip-link { position: absolute; top: -40px; left: 0; background: var(--style-primary); color: #fff; padding: 8px 16px; z-index: 9999; font-size: 14px; border-radius: 0 0 4px 0; transition: top 0.2s; text-decoration: none; }
     .skip-link:focus { top: 0; }
-    :focus-visible { outline: 3px solid var(--style-purple); outline-offset: 2px; border-radius: 4px; }
+    :focus-visible { outline: 3px solid var(--style-primary); outline-offset: 2px; border-radius: 4px; }
     :focus:not(:focus-visible) { outline: none; }
-    @media (prefers-contrast: high) { :root { --style-primary: #000; --style-text: #000; --style-bg: #fff; } .browser-card { border: 2px solid #000; } }
+    @media (prefers-contrast: high) { :root { --style-primary: #C05020; --style-text: #000; --style-bg: #fff; } .browser-card { border: 2px solid #000; } }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 
     /* ── 4. Slide Container ── */
-    .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--style-purple); z-index: 100; transition: width 0.3s ease; transform: translateZ(0); will-change: width; }
+    .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--style-primary); z-index: 100; transition: width 0.3s ease; transform: translateZ(0); will-change: width; }
     .presentation { height: calc(100vh - 42px); position: relative; overflow: hidden; }
     .slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 0.8rem 1.2rem; opacity: 0; pointer-events: none; transform: translateZ(0); backface-visibility: hidden; transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
     .slide.active { opacity: 1; pointer-events: auto; }
 
     /* ── 5. Browser Card ── */
-    .browser-card { width: 100%; max-width: 1200px; max-height: calc(100vh - 4.8rem); display: flex; flex-direction: column; overflow: hidden; background: #fff; border-radius: 1.2rem; box-shadow: 0 8px 32px rgba(26,26,46,0.08); }
-    .browser-card--frameless { background: transparent; box-shadow: none; }
-    .browser-topbar { display: flex; align-items: center; padding: 0.5rem 1rem; background: var(--style-primary); border-radius: 1.2rem 1.2rem 0 0; min-height: 35px; }
+    .browser-card { width: 100%; max-width: 1200px; max-height: calc(100vh - 4.8rem); display: flex; flex-direction: column; overflow: hidden; background: #fff; border-radius: 0.8rem; box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04); border: 1px solid #E8E8E8; }
+    .browser-card--frameless { background: transparent; box-shadow: none; border: none; }
+    .browser-topbar { display: flex; align-items: center; padding: 0.5rem 1rem; background: var(--style-primary); border-radius: 0.8rem 0.8rem 0 0; min-height: 35px; }
     .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
-    .dot.red { background: #FF6B6B; }
-    .dot.yellow { background: #FFE66D; }
-    .dot.green { background: #4ECDC4; }
-    .topbar-title { margin: 0 auto; color: rgba(255,255,255,0.7); font-size: 0.82rem; font-weight: 500; }
+    .dot.red { background: rgba(255,255,255,0.45); }
+    .dot.yellow { background: rgba(255,255,255,0.65); }
+    .dot.green { background: rgba(255,255,255,0.9); }
+    .topbar-title { margin: 0 auto; color: rgba(255,255,255,0.92); font-size: 0.82rem; font-weight: 600; }
     .browser-content { flex: 1; overflow-y: auto; padding: 1.2rem 2rem 1rem; }
 
     /* ── 6. Section Header ── */
-    .section-header { margin-bottom: 0.8rem; }
-    .section-header h2 { display: flex; align-items: center; }
-    .section-icon { display: inline; font-size: 1.2em; margin-right: 0.4em; vertical-align: -0.1em; }
-    .section-subtitle { color: var(--style-text-secondary); font-size: 0.88rem; margin-top: 0.2rem; }
+    .section-header { margin-bottom: 0.8rem; border-bottom: 2px solid #F0F0F0; padding-bottom: 0.5rem; }
+    .section-header h2 { display: flex; align-items: center; color: var(--style-text); }
+    .section-icon { display: inline; font-size: 1.1em; margin-right: 0.4em; vertical-align: -0.05em; color: var(--style-primary); }
+    .section-subtitle { color: var(--style-text-secondary); font-size: 0.88rem; margin-top: 0.25rem; }
 
-    /* ── 7. Bento Grid Cells ── */
+    /* ── 7. Content Cards ── */
     .bento-grid { display: grid; gap: var(--cell-gap); }
     .bento-grid-2 { grid-template-columns: 1fr 1fr; }
     .bento-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
-    .bento-cell { border-radius: var(--cell-radius); padding: 0.8rem 1rem; display: flex; flex-direction: column; gap: 0.3rem; }
-    .bento-cell--dark { background: var(--style-primary); color: #fff; }
-    .bento-cell--accent { background: var(--style-accent); color: var(--style-primary); }
-    .bento-cell--coral { background: var(--style-accent2); color: #fff; }
-    .bento-cell--teal { background: var(--style-accent3); color: var(--style-primary); }
-    .bento-cell--purple { background: var(--style-purple); color: #fff; }
-    .bento-cell--lavender { background: var(--style-accent4); color: var(--style-primary); }
-    .bento-cell--light { background: #F0F0F0; color: var(--style-primary); }
+    .bento-cell { border-radius: var(--cell-radius); padding: 0.8rem 1rem; display: flex; flex-direction: column; gap: 0.3rem; background: #fff; border: 1px solid #E8E8E8; }
+    /* 오렌지 강조 카드 (역할·주요 개념) */
+    .bento-cell--dark { background: #FFF8F3; border-left: 4px solid var(--style-primary); border-top: none; border-right: none; border-bottom: none; }
+    /* 정의 박스 (크림+노란 테두리) */
+    .bento-cell--accent { background: #FFFDE7; border-left: 4px solid #FFD600; border-top: none; border-right: none; border-bottom: none; }
+    /* 경고·보조 오렌지 */
+    .bento-cell--coral { background: #FFF3E0; border-left: 4px solid var(--style-primary); border-top: none; border-right: none; border-bottom: none; }
+    /* 핵심 요약 박스 (라이트 블루+파란 테두리) */
+    .bento-cell--teal { background: #E3F2FD; border-left: 4px solid var(--style-accent); border-top: none; border-right: none; border-bottom: none; }
+    /* 주요 강조 카드 (오렌지 솔리드) */
+    .bento-cell--purple { background: var(--style-primary); color: #fff; border: none; }
+    /* 보조 블루 카드 */
+    .bento-cell--lavender { background: #EEF4FF; border-left: 4px solid var(--style-accent); border-top: none; border-right: none; border-bottom: none; }
+    /* 섹션 구분 배경 */
+    .bento-cell--light { background: #F5F7FA; border: 1px solid #E8E8E8; }
     .bento-cell--span2 { grid-column: span 2; }
-    .bento-cell h3 { font-size: 1rem; font-weight: 700; }
+    .bento-cell h3 { font-size: 1rem; font-weight: 700; color: var(--style-text); }
+    .bento-cell--purple h3 { color: #fff; }
     .bento-cell p { font-size: 0.88rem; line-height: 1.5; }
     .bento-cell ul { padding-left: 1.1rem; font-size: 0.86rem; }
     .bento-cell li { margin-bottom: 0.2rem; }
-    .bento-cell code { font-family: 'Consolas', 'Courier New', monospace; font-size: 0.82rem; background: rgba(0,0,0,0.08); padding: 0.1em 0.35em; border-radius: 4px; }
-    .bento-cell--dark code, .bento-cell--purple code { background: rgba(255,255,255,0.15); }
-    .bento-cell--accent code, .bento-cell--lavender code, .bento-cell--teal code { background: rgba(0,0,0,0.1); }
+    .bento-cell code { font-family: 'Consolas', 'Courier New', monospace; font-size: 0.82rem; background: rgba(0,0,0,0.06); padding: 0.1em 0.35em; border-radius: 4px; }
+    .bento-cell--purple code { background: rgba(255,255,255,0.2); }
 
     /* ── 8. Stat Grid ── */
     .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--cell-gap); }
     .stat-item { border-radius: var(--cell-radius); padding: 0.8rem; text-align: center; }
-    .stat-num { font-size: 1.7rem; font-weight: 800; display: block; }
-    .stat-label { font-size: 0.82rem; margin-top: 0.2rem; display: block; line-height: 1.4; }
-    .stat-item.bento-cell--dark .stat-label { color: rgba(255,255,255,0.75); }
-    .stat-item.bento-cell--teal .stat-label,
-    .stat-item.bento-cell--lavender .stat-label { color: var(--style-primary); opacity: 0.75; }
-    .stat-item.bento-cell--purple .stat-label { color: rgba(255,255,255,0.8); }
+    .stat-num { font-size: 1.7rem; font-weight: 800; display: block; color: var(--style-primary); }
+    .stat-label { font-size: 0.82rem; margin-top: 0.2rem; display: block; line-height: 1.4; color: var(--style-text-secondary); }
+    .stat-item.bento-cell--purple .stat-num { color: #fff; }
+    .stat-item.bento-cell--purple .stat-label { color: rgba(255,255,255,0.85); }
+    .stat-item.bento-cell--teal .stat-num { color: var(--style-accent); }
 
     /* ── 9. Task List ── */
     .task-list { display: flex; flex-direction: column; gap: 0.5rem; }
-    .task-item { display: flex; gap: 0.6rem; align-items: flex-start; padding: 0.6rem 0.8rem; border-radius: 0.6rem; background: #F0F0F0; }
+    .task-item { display: flex; gap: 0.6rem; align-items: flex-start; padding: 0.65rem 0.9rem; border-radius: 0.5rem; background: #fff; border: 1px solid #E8E8E8; border-left: 4px solid var(--style-primary); }
     .task-num { background: var(--style-primary); color: #fff; width: 1.6rem; height: 1.6rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; margin-top: 0.1rem; }
-    .task-num--purple { background: var(--style-purple); }
-    .task-item h3 { font-size: 0.95rem; margin-bottom: 0.1rem; }
+    .task-num--purple { background: var(--style-primary); }
+    .task-item h3 { font-size: 0.95rem; margin-bottom: 0.1rem; color: var(--style-text); }
     .task-item p { font-size: 0.85rem; color: var(--style-text-secondary); }
 
     /* ── 10. Two Column ── */
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
-    .col-box { background: #F0F0F0; border-radius: var(--cell-radius); padding: 0.8rem 1rem; }
-    .col-box--dark { background: var(--style-primary); color: #fff; }
-    .col-box--bad { background: #FFF0F0; border-left: 4px solid var(--style-accent2); }
-    .col-box--good { background: #F0FFF9; border-left: 4px solid var(--style-accent3); }
+    .col-box { background: #F5F7FA; border-radius: var(--cell-radius); padding: 0.8rem 1rem; border: 1px solid #E8E8E8; }
+    .col-box--dark { background: #FFF8F3; border-left: 4px solid var(--style-primary); border-top: 1px solid #FFE8D0; border-right: 1px solid #FFE8D0; border-bottom: 1px solid #FFE8D0; }
+    .col-box--bad { background: #FFF5F5; border-left: 4px solid #E53935; }
+    .col-box--good { background: #F0FFF9; border-left: 4px solid var(--style-accent); }
 
     /* ── 11. Comparison Table ── */
-    .comp-table { width: 100%; border-collapse: collapse; border-radius: 0.6rem; overflow: hidden; font-size: 0.86rem; }
+    .comp-table { width: 100%; border-collapse: collapse; border-radius: 0.5rem; overflow: hidden; font-size: 0.86rem; }
     .comp-table th { background: var(--style-primary); color: #fff; padding: 0.45rem 0.8rem; text-align: left; font-weight: 600; }
     .comp-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #E8E8E8; vertical-align: middle; }
-    .comp-table tr:nth-child(even) td { background: #F5F5F5; }
-    .comp-table code { font-size: 0.8rem; background: rgba(26,26,46,0.06); padding: 0.1em 0.3em; border-radius: 3px; font-family: 'Consolas', monospace; }
+    .comp-table tr:nth-child(even) td { background: #F5F7FA; }
+    .comp-table code { font-size: 0.8rem; background: rgba(0,0,0,0.06); padding: 0.1em 0.3em; border-radius: 3px; font-family: 'Consolas', monospace; }
 
-    /* ── 12. Highlight Box ── */
-    .highlight-box { background: var(--style-accent); color: var(--style-primary); padding: 0.55rem 1rem; border-radius: 0.6rem; font-size: 0.88rem; font-weight: 500; }
-    .highlight-box code { background: rgba(0,0,0,0.1); font-family: 'Consolas', monospace; font-size: 0.82rem; padding: 0.1em 0.3em; border-radius: 3px; }
-    .highlight-box--purple { background: var(--style-purple); color: #fff; }
+    /* ── 12. Highlight Box (핵심 요약 박스) ── */
+    .highlight-box { background: #E3F2FD; border-left: 4px solid var(--style-accent); color: var(--style-text); padding: 0.65rem 1rem 0.65rem 1.2rem; border-radius: 0 0.5rem 0.5rem 0; font-size: 0.88rem; font-weight: 500; }
+    .highlight-box code { background: rgba(27,126,212,0.1); font-family: 'Consolas', monospace; font-size: 0.82rem; padding: 0.1em 0.3em; border-radius: 3px; }
+    .highlight-box--purple { background: var(--style-primary); color: #fff; border-left-color: #C05A18; }
 
-    /* ── 13. Prompt Block ── */
-    .prompt-block { background: rgba(26,26,46,0.04); border: 1px solid rgba(26,26,46,0.12); border-left: 4px solid var(--style-accent3); border-radius: 0 0.5rem 0.5rem 0; padding: 0.55rem 0.8rem; font-size: 0.82rem; line-height: 1.75; margin-top: 0.3rem; }
-    .prompt-block--bad { border-left-color: var(--style-accent2); background: rgba(255,107,107,0.04); }
-    .prompt-block .ptag { color: #1A7A6A; font-weight: 700; font-size: 0.75rem; display: inline-block; min-width: 3.5em; }
+    /* ── 13. Prompt Block (정의 박스 스타일) ── */
+    .prompt-block { background: #FFFDE7; border: 1px solid rgba(255,214,0,0.35); border-left: 4px solid #FFD600; border-radius: 0 0.5rem 0.5rem 0; padding: 0.55rem 0.8rem; font-size: 0.82rem; line-height: 1.75; margin-top: 0.3rem; }
+    .prompt-block--bad { border-left-color: #E53935; background: #FFF5F5; border-color: rgba(229,57,53,0.2); }
+    .prompt-block .ptag { color: #B45309; font-weight: 700; font-size: 0.75rem; display: inline-block; min-width: 3.5em; }
     .prompt-block .pval { color: var(--style-text); }
-    .col-box--dark .prompt-block { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); }
-    .col-box--dark .prompt-block .ptag { color: #4ECDC4; }
-    .col-box--dark .prompt-block .pval { color: rgba(255,255,255,0.9); }
-    .col-box--dark .prompt-block--bad { border-left-color: var(--style-accent2); background: rgba(255,107,107,0.08); }
+    .col-box--dark .prompt-block { background: #FFFDE7; border-left: 4px solid #FFD600; border-top: 1px solid rgba(255,214,0,0.3); border-right: 1px solid rgba(255,214,0,0.3); border-bottom: 1px solid rgba(255,214,0,0.3); }
+    .col-box--dark .prompt-block .ptag { color: #B45309; }
+    .col-box--dark .prompt-block .pval { color: var(--style-text); }
+    .col-box--dark .prompt-block--bad { border-left-color: #E53935; background: #FFF5F5; border-color: rgba(229,57,53,0.2); }
 
     /* ── 14. Status Badge ── */
     .status-badge { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 0.3rem; font-size: 0.72rem; font-weight: 700; margin-bottom: 0.4rem; letter-spacing: 0.02em; }
-    .status-badge--bad { background: var(--style-accent2); color: #fff; }
-    .status-badge--good { background: var(--style-accent3); color: var(--style-primary); }
+    .status-badge--bad { background: #E53935; color: #fff; }
+    .status-badge--good { background: var(--style-accent); color: #fff; }
 
-    /* ── 15. Issue List (for bad prompt) ── */
+    /* ── 15. Issue List ── */
     .issue-list { list-style: none; padding: 0; margin-top: 0.4rem; font-size: 0.82rem; }
     .issue-list li { padding: 0.15rem 0; padding-left: 1.2em; position: relative; color: var(--style-text-secondary); }
-    .issue-list li::before { content: "✗"; position: absolute; left: 0; color: var(--style-accent2); font-weight: 700; }
+    .issue-list li::before { content: "✗"; position: absolute; left: 0; color: #E53935; font-weight: 700; }
 
     /* ── 16. Cover ── */
     .cover-slide { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 100%; }
-    .cover-badge { display: inline-block; background: var(--style-purple); color: #fff; padding: 0.3rem 1rem; border-radius: 2rem; font-size: 0.82rem; font-weight: 700; margin-bottom: 1.2rem; letter-spacing: 0.05em; }
+    .cover-badge { display: inline-block; background: var(--style-primary); color: #fff; padding: 0.3rem 1rem; border-radius: 2rem; font-size: 0.82rem; font-weight: 700; margin-bottom: 1.2rem; letter-spacing: 0.05em; }
     .cover-title { margin-bottom: 0.6rem; }
     .cover-subtitle { color: var(--style-text-secondary); font-size: 1.05rem; font-weight: 400; margin-bottom: 1.5rem; }
-    .cover-divider { width: 60px; height: 4px; background: var(--style-purple); border-radius: 2px; margin: 0 auto 1rem; }
+    .cover-divider { width: 60px; height: 4px; background: var(--style-primary); border-radius: 2px; margin: 0 auto 1rem; }
     .cover-meta { font-size: 0.88rem; color: var(--style-text-secondary); display: flex; gap: 0.5rem; justify-content: center; }
 
     /* ── 17. End Slide ── */
@@ -165,23 +167,23 @@
     .end-summary li { padding: 0.25rem 0; font-size: 0.9rem; line-height: 1.5; }
 
     /* ── 18. Animations ── */
-    @keyframes popUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes popUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     .slide.active .bento-cell,
     .slide.active .stat-item,
-    .slide.active .task-item { animation: popUp 0.5s ease-out both; }
+    .slide.active .task-item { animation: popUp 0.4s ease-out both; }
     .slide.active .bento-cell:nth-child(2),
     .slide.active .stat-item:nth-child(2),
-    .slide.active .task-item:nth-child(2) { animation-delay: 0.08s; }
+    .slide.active .task-item:nth-child(2) { animation-delay: 0.07s; }
     .slide.active .bento-cell:nth-child(3),
     .slide.active .stat-item:nth-child(3),
-    .slide.active .task-item:nth-child(3) { animation-delay: 0.16s; }
+    .slide.active .task-item:nth-child(3) { animation-delay: 0.14s; }
     .slide.active .bento-cell:nth-child(4),
-    .slide.active .task-item:nth-child(4) { animation-delay: 0.24s; }
-    .slide.active .bento-cell:nth-child(5) { animation-delay: 0.32s; }
-    .slide.active .bento-cell:nth-child(6) { animation-delay: 0.40s; }
+    .slide.active .task-item:nth-child(4) { animation-delay: 0.21s; }
+    .slide.active .bento-cell:nth-child(5) { animation-delay: 0.28s; }
+    .slide.active .bento-cell:nth-child(6) { animation-delay: 0.35s; }
 
     /* ── 19. Nav Bar ── */
-    .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 42px; background: var(--style-primary); display: flex; align-items: center; justify-content: center; gap: 0.8rem; z-index: 50; padding: 0 1rem; }
+    .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 42px; background: #2D3748; display: flex; align-items: center; justify-content: center; gap: 0.8rem; z-index: 50; padding: 0 1rem; }
     .nav-btn { background: none; border: none; cursor: pointer; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: background 0.2s; }
     .nav-btn:hover { background: rgba(255,255,255,0.15); }
     .nav-btn:disabled { opacity: 0.3; cursor: default; }
@@ -189,7 +191,7 @@
     .nav-btn svg { width: 18px; height: 18px; fill: #fff; }
     .nav-counter { color: rgba(255,255,255,0.7); font-size: 14px; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 2px; }
     .slide-input { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; width: 28px; text-align: center; font-size: 14px; font-family: 'Inter', sans-serif; border-radius: 4px; padding: 2px; }
-    .slide-input:focus { outline: 2px solid var(--style-purple); }
+    .slide-input:focus { outline: 2px solid var(--style-primary); }
 
     /* ── 20. Responsive ── */
     @media (max-width: 1024px) { html, body { font-size: clamp(15px, 2vw, 22px); } }
@@ -345,7 +347,7 @@
                 <span class="ptag">[과제]</span><span class="pval"> 국어 교과 세특을 작성해줘.</span><br>
                 <span class="ptag">[형식]</span><span class="pval"> 200자 이내, 3인칭으로.</span>
               </div>
-              <p style="font-size:0.82rem;color:#2A7A4A;margin-top:0.5rem;font-weight:600;">→ 구체적인 내 경험이 담긴 세특 초안 생성!</p>
+              <p style="font-size:0.82rem;color:#1B7ED4;margin-top:0.5rem;font-weight:600;">→ 구체적인 내 경험이 담긴 세특 초안 생성!</p>
             </div>
           </div>
           <div class="highlight-box" style="margin-top:0.7rem;">
