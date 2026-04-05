@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1774845819511,
+  "lastScanned": 1775369493517,
   "projectRoot": "E:\\presentation",
   "techStack": {
     "languages": [
@@ -55,14 +55,14 @@
       "path": "AI전문적학습동아리",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1774845819290,
+      "lastAccessed": 1775369493463,
       "keyFiles": []
     },
     "test": {
       "path": "test",
       "purpose": "Test files",
       "fileCount": 34,
-      "lastAccessed": 1774845819314,
+      "lastAccessed": 1775369493465,
       "keyFiles": [
         "bash.exe.stackdump",
         "cycle4-image-report.json",
@@ -75,7 +75,7 @@
       "path": "unpacked-llm",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1774845819324,
+      "lastAccessed": 1775369493481,
       "keyFiles": [
         "[Content_Types].xml"
       ]
@@ -84,7 +84,7 @@
       "path": "_pptx_analysis",
       "purpose": null,
       "fileCount": 46,
-      "lastAccessed": 1774845819335,
+      "lastAccessed": 1775369493482,
       "keyFiles": [
         "capture-slides.js",
         "preview-slide01.png",
@@ -97,49 +97,85 @@
       "path": "인공지능과피지컬컴퓨팅",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1774845819341,
+      "lastAccessed": 1775369493483,
       "keyFiles": []
     },
     "정보": {
       "path": "정보",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1774845819345,
+      "lastAccessed": 1775369493483,
       "keyFiles": []
     },
     "정보화부": {
       "path": "정보화부",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1774845819366,
+      "lastAccessed": 1775369493485,
       "keyFiles": []
     },
     "프로그래밍": {
       "path": "프로그래밍",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1774845819378,
+      "lastAccessed": 1775369493485,
       "keyFiles": []
     }
   },
   "hotPaths": [
     {
-      "path": "AI전문적학습동아리\\에이전틱-인공지능을-활용한-교육-혁신\\index.html",
-      "accessCount": 11,
-      "lastAccessed": 1774846922695,
-      "type": "directory"
+      "path": "정보\\글쓰기-프롬프트-설계\\index.html",
+      "accessCount": 36,
+      "lastAccessed": 1775379117522,
+      "type": "file"
     },
     {
-      "path": "AI전문적학습동아리\\클로드코드-환경설치\\index.html",
-      "accessCount": 10,
-      "lastAccessed": 1774846515813,
-      "type": "directory"
+      "path": "pages.json",
+      "accessCount": 11,
+      "lastAccessed": 1775385045165,
+      "type": "file"
+    },
+    {
+      "path": ".claude\\commands\\references\\styles.md",
+      "accessCount": 8,
+      "lastAccessed": 1775383784282,
+      "type": "file"
+    },
+    {
+      "path": "C:\\Users\\chani\\.claude\\commands\\references\\styles.md",
+      "accessCount": 5,
+      "lastAccessed": 1775374996996,
+      "type": "file"
+    },
+    {
+      "path": ".claude\\commands\\references\\html-template.md",
+      "accessCount": 4,
+      "lastAccessed": 1775383794582,
+      "type": "file"
+    },
+    {
+      "path": "프로그래밍\\9차시-예제를통해배우는CSS3\\index.html",
+      "accessCount": 3,
+      "lastAccessed": 1775369751127,
+      "type": "file"
     },
     {
       "path": "",
-      "accessCount": 1,
-      "lastAccessed": 1774846358976,
+      "accessCount": 3,
+      "lastAccessed": 1775383766971,
       "type": "directory"
+    },
+    {
+      "path": "정보\\에이전틱AI-NotebookLM\\index.html",
+      "accessCount": 2,
+      "lastAccessed": 1775385064928,
+      "type": "file"
+    },
+    {
+      "path": "프로그래밍\\10차시-JavaScript기초1\\index.html",
+      "accessCount": 1,
+      "lastAccessed": 1775370527572,
+      "type": "file"
     }
   ],
   "userDirectives": []
