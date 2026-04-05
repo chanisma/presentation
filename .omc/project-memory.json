@@ -131,14 +131,20 @@
     },
     {
       "path": "pages.json",
-      "accessCount": 13,
-      "lastAccessed": 1775389787045,
+      "accessCount": 17,
+      "lastAccessed": 1775390753231,
       "type": "file"
     },
     {
       "path": ".claude\\commands\\references\\styles.md",
       "accessCount": 8,
       "lastAccessed": 1775383784282,
+      "type": "file"
+    },
+    {
+      "path": "프로그래밍\\10차시-JavaScript기초1\\index.html",
+      "accessCount": 6,
+      "lastAccessed": 1775390724588,
       "type": "file"
     },
     {
@@ -154,33 +160,27 @@
       "type": "file"
     },
     {
+      "path": "",
+      "accessCount": 4,
+      "lastAccessed": 1775390078373,
+      "type": "directory"
+    },
+    {
       "path": "프로그래밍\\9차시-예제를통해배우는CSS3\\index.html",
       "accessCount": 3,
       "lastAccessed": 1775369751127,
       "type": "file"
     },
     {
-      "path": "",
+      "path": "프로그래밍\\11차시-JavaScript기초2\\index.html",
       "accessCount": 3,
-      "lastAccessed": 1775383766971,
-      "type": "directory"
-    },
-    {
-      "path": "프로그래밍\\10차시-JavaScript기초1\\index.html",
-      "accessCount": 3,
-      "lastAccessed": 1775388594780,
+      "lastAccessed": 1775390094342,
       "type": "file"
     },
     {
       "path": "정보\\에이전틱AI-NotebookLM\\index.html",
       "accessCount": 2,
       "lastAccessed": 1775385064928,
-      "type": "file"
-    },
-    {
-      "path": "프로그래밍\\11차시-JavaScript기초2\\index.html",
-      "accessCount": 1,
-      "lastAccessed": 1775389774566,
       "type": "file"
     }
   ],

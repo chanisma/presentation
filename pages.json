@@ -196,7 +196,7 @@
           "title": "10차시 - JavaScript 기초 1",
           "path": "프로그래밍/10차시-JavaScript기초1/index.html",
           "emoji": "⚡",
-          "description": "JavaScript 소개와 용도, script 태그 위치, 변수(let/const), 연산자, 조건문을 Python과 비교하며 배웁니다. 나이 계산기 종합 예제 포함.",
+          "description": "JavaScript 역할(HTML/CSS/JS 비유), script 태그, 변수(let), 산술·비교·논리 연산자, 조건문(if/else if/else)을 완전 초보 대상으로 배웁니다. 19슬라이드, 실습 중심.",
           "tags": [
             {"label": "JavaScript", "color": "orange"},
             {"label": "변수·연산자", "color": "blue"},
