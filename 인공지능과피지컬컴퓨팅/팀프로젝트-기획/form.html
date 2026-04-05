@@ -342,7 +342,7 @@
   <main class="main" id="main">
 
     <!-- Google Sheets 설정 -->
-    <div class="settings-panel" id="settingsPanel">
+    <div class="settings-panel" id="settingsPanel" style="display:none;">
       <div class="settings-title">
         <svg viewBox="0 0 24 24" fill="currentColor" style="width:1em;height:1em;color:var(--accent)" aria-hidden="true">
           <path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
@@ -554,17 +554,9 @@
   <!-- Action Bar -->
   <div class="action-bar">
     <div class="action-bar-left">
-      <button class="btn btn-success" id="btnSaveSheet">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 3H5c-1.1 0-2 .9-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
-        <span id="btnSaveSheetText">구글 시트에 저장</span>
-      </button>
-      <button class="btn btn-primary" id="btnDownloadJson">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 9h-4V3H9v6H5l7 7 7-7zm-8 2V5h2v6h1.17L12 13.17 9.83 11H11zm-6 7h14v2H5z"/></svg>
-        JSON 저장
-      </button>
-      <button class="btn btn-warn" id="btnPrint">
-        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
-        PDF 저장
+      <button class="btn btn-success" id="btnSave">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17 3H5c-1.1 0-2 .9-2 2v14a2 2 0 002 2h14a2 2 0 002-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+        <span id="btnSaveText">저장하기</span>
       </button>
     </div>
     <div class="action-bar-right">
@@ -843,8 +835,9 @@
     }
 
     /* ─── URL setting ─── */
+    var DEFAULT_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyhLqNp9QTpGMDmEKH6kDo-vexbNqMzkYMJmXpZEEjdTcDTE3E8lg1K2ha7cU6oWmI/exec';
     function loadUrl() {
-      var saved = localStorage.getItem(URL_KEY) || '';
+      var saved = localStorage.getItem(URL_KEY) || DEFAULT_SCRIPT_URL;
       document.getElementById('scriptUrl').value = saved;
       updateUrlStatus(saved);
     }
@@ -865,54 +858,97 @@
       showToast('URL이 저장되었습니다.', 'success');
     });
 
-    /* ─── Google Sheets submit ─── */
-    document.getElementById('btnSaveSheet').addEventListener('click', function() {
-      if (!validate()) { showToast('필수 항목(*)을 모두 입력해 주세요.', 'error'); return; }
-      var url = localStorage.getItem(URL_KEY) || '';
-      if (!url || url.indexOf('script.google.com') === -1) {
-        showToast('먼저 Apps Script URL을 설정하세요.', 'error');
-        document.getElementById('settingsPanel').scrollIntoView({ behavior: 'smooth' });
-        return;
+    /* ─── TXT 생성 ─── */
+    function buildTxt(data) {
+      var lines = [];
+      var now = new Date().toLocaleString('ko-KR');
+      lines.push('═══════════════════════════════════════');
+      lines.push('  AI × 피지컬컴퓨팅 팀 프로젝트 기획서');
+      lines.push('  작성일시: ' + now);
+      lines.push('═══════════════════════════════════════');
+      lines.push('');
+      lines.push('【 1. 팀 정보 】');
+      lines.push('팀명: ' + (data.teamName || ''));
+      var members = [
+        [data.m1name, data.m1role], [data.m2name, data.m2role],
+        [data.m3name, data.m3role], [data.m4name, data.m4role]
+      ];
+      members.forEach(function(m, i) {
+        if (m[0]) lines.push('팀원' + (i+1) + ': ' + m[0] + ' (' + (m[1] || '역할미정') + ')');
+      });
+      lines.push('');
+      lines.push('【 2. 문제 정의 】');
+      lines.push(data.problemDef || '');
+      lines.push('');
+      lines.push('【 3. 데이터 흐름 】');
+      lines.push('입력(인식): ' + (data.flowInput || ''));
+      lines.push('분류(판단): ' + (data.flowClassify || ''));
+      lines.push('출력(제어): ' + (data.flowOutput || ''));
+      lines.push('');
+      lines.push('【 4. 클래스 설계 】');
+      if (data.classes && data.classes.length) {
+        data.classes.forEach(function(c, i) {
+          lines.push((i+1) + '. [' + c.name + '] ' + c.recog + ' → ' + c.action);
+        });
       }
+      lines.push('');
+      lines.push('【 5. 필요 부품 】');
+      lines.push(data.parts || '');
+      lines.push('');
+      lines.push('【 6. 수업 일정 】');
+      lines.push('1차시: ' + (data.sched1 || ''));
+      lines.push('2차시: ' + (data.sched2 || ''));
+      lines.push('3차시: ' + (data.sched3 || ''));
+      lines.push('');
+      lines.push('【 7. 기대 효과 】');
+      lines.push('가치/필요성: ' + (data.effectValue || ''));
+      lines.push('확장 가능성: ' + (data.effectExpand || ''));
+      lines.push('');
+      lines.push('───────────────────────────────────────');
+      return lines.join('\n');
+    }
+
+    function downloadTxt(data) {
+      var txt = buildTxt(data);
+      var blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      var teamName = (data.teamName || '팀프로젝트').replace(/\s+/g, '_');
+      a.download = '기획서_' + teamName + '_' + new Date().toLocaleDateString('ko-KR').replace(/\. /g, '').replace('.', '') + '.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+    }
+
+    /* ─── 통합 저장 버튼 ─── */
+    document.getElementById('btnSave').addEventListener('click', function() {
+      if (!validate()) { showToast('필수 항목(*)을 모두 입력해 주세요.', 'error'); return; }
       var data = getFormData();
       var btn = this;
-      var textEl = document.getElementById('btnSaveSheetText');
+      var textEl = document.getElementById('btnSaveText');
       btn.disabled = true;
       textEl.textContent = '저장 중...';
 
+      /* TXT 다운로드 */
+      downloadTxt(data);
+
+      /* 구글 시트 전송 */
+      var url = localStorage.getItem(URL_KEY) || DEFAULT_SCRIPT_URL;
       fetch(url, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       }).then(function() {
-        showToast('구글 시트에 저장 요청을 전송했습니다. 시트를 확인하세요.', 'success', 4000);
+        showToast('파일 저장 + 구글 시트 전송 완료!', 'success', 4000);
       }).catch(function(err) {
-        showToast('전송 오류: ' + err.message, 'error', 5000);
+        showToast('파일은 저장됐습니다. 시트 전송 오류: ' + err.message, 'error', 5000);
       }).finally(function() {
         btn.disabled = false;
-        textEl.textContent = '구글 시트에 저장';
+        textEl.textContent = '저장하기';
       });
     });
-
-    /* ─── JSON download ─── */
-    document.getElementById('btnDownloadJson').addEventListener('click', function() {
-      if (!validate()) { showToast('필수 항목(*)을 모두 입력해 주세요.', 'error'); return; }
-      var data = getFormData();
-      var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      var a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      var teamName = data.teamName || '팀프로젝트';
-      a.download = '기획서_' + teamName + '_' + new Date().toLocaleDateString('ko-KR').replace(/\. /g, '-').replace('.', '') + '.json';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(a.href);
-      showToast('JSON 파일이 다운로드됩니다.', 'info');
-    });
-
-    /* ─── Print / PDF ─── */
-    document.getElementById('btnPrint').addEventListener('click', function() { window.print(); });
 
     /* ─── Clear ─── */
     document.getElementById('btnClear').addEventListener('click', function() {
