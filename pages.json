@@ -181,6 +181,18 @@
           "gradient": "linear-gradient(90deg, #4ECDC4, #1A1A2E)"
         },
         {
+          "title": "11차시 - JavaScript 기초 2",
+          "path": "프로그래밍/11차시-JavaScript기초2/index.html",
+          "emoji": "⚡",
+          "description": "반복문(for/while), 함수(function/return), DOM 조작, addEventListener 이벤트 처리를 배웁니다. 카운터 앱 종합 실습 포함.",
+          "tags": [
+            {"label": "반복문·함수", "color": "blue"},
+            {"label": "DOM·이벤트", "color": "orange"},
+            {"label": "실습", "color": "purple"}
+          ],
+          "gradient": "linear-gradient(90deg, #1A1A2E, #4ECDC4)"
+        },
+        {
           "title": "10차시 - JavaScript 기초 1",
           "path": "프로그래밍/10차시-JavaScript기초1/index.html",
           "emoji": "⚡",

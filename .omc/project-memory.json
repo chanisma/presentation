@@ -131,8 +131,8 @@
     },
     {
       "path": "pages.json",
-      "accessCount": 11,
-      "lastAccessed": 1775385045165,
+      "accessCount": 13,
+      "lastAccessed": 1775389787045,
       "type": "file"
     },
     {
@@ -166,15 +166,21 @@
       "type": "directory"
     },
     {
+      "path": "프로그래밍\\10차시-JavaScript기초1\\index.html",
+      "accessCount": 3,
+      "lastAccessed": 1775388594780,
+      "type": "file"
+    },
+    {
       "path": "정보\\에이전틱AI-NotebookLM\\index.html",
       "accessCount": 2,
       "lastAccessed": 1775385064928,
       "type": "file"
     },
     {
-      "path": "프로그래밍\\10차시-JavaScript기초1\\index.html",
+      "path": "프로그래밍\\11차시-JavaScript기초2\\index.html",
       "accessCount": 1,
-      "lastAccessed": 1775370527572,
+      "lastAccessed": 1775389774566,
       "type": "file"
     }
   ],
