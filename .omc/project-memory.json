@@ -131,8 +131,8 @@
     },
     {
       "path": "pages.json",
-      "accessCount": 17,
-      "lastAccessed": 1775390753231,
+      "accessCount": 21,
+      "lastAccessed": 1775393344728,
       "type": "file"
     },
     {
@@ -148,6 +148,12 @@
       "type": "file"
     },
     {
+      "path": "",
+      "accessCount": 6,
+      "lastAccessed": 1775391625439,
+      "type": "directory"
+    },
+    {
       "path": "C:\\Users\\chani\\.claude\\commands\\references\\styles.md",
       "accessCount": 5,
       "lastAccessed": 1775374996996,
@@ -160,10 +166,10 @@
       "type": "file"
     },
     {
-      "path": "",
+      "path": "인공지능과피지컬컴퓨팅\\피지컬AI-아두이노연동\\index.html",
       "accessCount": 4,
-      "lastAccessed": 1775390078373,
-      "type": "directory"
+      "lastAccessed": 1775391658519,
+      "type": "file"
     },
     {
       "path": "프로그래밍\\9차시-예제를통해배우는CSS3\\index.html",
@@ -181,6 +187,18 @@
       "path": "정보\\에이전틱AI-NotebookLM\\index.html",
       "accessCount": 2,
       "lastAccessed": 1775385064928,
+      "type": "file"
+    },
+    {
+      "path": "인공지능과피지컬컴퓨팅\\웹캠AI-엑추에이터제어\\index.html",
+      "accessCount": 2,
+      "lastAccessed": 1775391638445,
+      "type": "file"
+    },
+    {
+      "path": "인공지능과피지컬컴퓨팅\\팀프로젝트-기획\\index.html",
+      "accessCount": 1,
+      "lastAccessed": 1775393314691,
       "type": "file"
     }
   ],

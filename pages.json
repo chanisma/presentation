@@ -423,6 +423,27 @@
             }
           ],
           "gradient": "linear-gradient(90deg, #A78BFA, #67E8F9)"
+        },
+        {
+          "title": "AI × 피지컬컴퓨팅 팀 프로젝트 기획",
+          "path": "인공지능과피지컬컴퓨팅/팀프로젝트-기획/index.html",
+          "emoji": "👥",
+          "description": "Teachable Machine + Web Serial API + 아두이노 엑추에이터를 응용한 팀 프로젝트의 주제 선정부터 기획서 작성까지 안내하는 수업 자료입니다.",
+          "tags": [
+            {
+              "label": "팀프로젝트",
+              "color": "purple"
+            },
+            {
+              "label": "기획서",
+              "color": "blue"
+            },
+            {
+              "label": "엑추에이터",
+              "color": "orange"
+            }
+          ],
+          "gradient": "linear-gradient(90deg, #A78BFA, #34D399)"
         }
       ]
     },
