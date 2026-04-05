@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>if(!location.pathname.endsWith('/')&&!location.pathname.endsWith('.html')){var b=document.createElement('base');b.href=location.pathname+'/';document.head.appendChild(b);}</script>
+  <title>10차시 - JavaScript 기초 1 — 웹에 동작을 더하는 언어</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* ── 1. Reset & CSS Variables ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --style-bg: #F8F8F2;
+      --style-primary: #1A1A2E;
+      --style-accent: #E8FF3B;
+      --style-accent2: #FF6B6B;
+      --style-accent3: #4ECDC4;
+      --style-accent4: #FFE66D;
+      --style-text: #1A1A2E;
+      --style-text-secondary: #4A4A4A;
+      --cell-radius: 1rem;
+      --cell-gap: 0.5rem;
+    }
+
+    /* ── 2. Base Typography ── */
+    html, body {
+      font-size: clamp(16px, 1.5vw, 28px);
+      font-family: 'Inter', 'Noto Sans KR', sans-serif;
+      background: var(--style-bg);
+      color: var(--style-text);
+      overflow: hidden;
+      height: 100%;
+    }
+    h1 { font-family: 'Inter', 'Noto Sans KR', sans-serif; font-size: 2.4rem; font-weight: 800; line-height: 1.2; }
+    h2 { font-family: 'Inter', 'Noto Sans KR', sans-serif; font-size: 1.5rem; font-weight: 700; line-height: 1.3; }
+    h3 { font-family: 'Inter', 'Noto Sans KR', sans-serif; font-size: 1.05rem; font-weight: 600; line-height: 1.4; }
+    p, li { line-height: 1.7; }
+
+    /* ── 3. Accessibility ── */
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .skip-link { position: absolute; top: -40px; left: 0; background: var(--style-primary); color: #fff; padding: 8px 16px; z-index: 9999; font-size: 14px; border-radius: 0 0 4px 0; transition: top 0.2s; text-decoration: none; }
+    .skip-link:focus { top: 0; }
+    :focus-visible { outline: 3px solid var(--style-accent3); outline-offset: 2px; border-radius: 4px; }
+    :focus:not(:focus-visible) { outline: none; }
+    @media (prefers-contrast: high) { :root { --style-primary: #000; --style-text: #000; --style-bg: #fff; } .browser-card { border: 2px solid #000; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
+
+    /* ── 4. Slide Container ── */
+    .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--style-accent3); z-index: 100; transition: width 0.3s ease; transform: translateZ(0); will-change: width; }
+    .presentation { height: calc(100vh - 42px); position: relative; overflow: hidden; }
+    .slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 0.8rem 1.2rem; opacity: 0; pointer-events: none; transform: translateZ(0); backface-visibility: hidden; transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+    .slide.active { opacity: 1; pointer-events: auto; }
+
+    /* ── 5. Browser Card ── */
+    .browser-card { width: 100%; max-width: 1200px; max-height: calc(100vh - 4.8rem); display: flex; flex-direction: column; overflow: hidden; background: #fff; border-radius: 1.2rem; box-shadow: 0 8px 32px rgba(26,26,46,0.08); }
+    .browser-card--frameless { background: transparent; box-shadow: none; }
+    .browser-topbar { display: flex; align-items: center; padding: 0.5rem 1rem; background: var(--style-primary); border-radius: 1.2rem 1.2rem 0 0; min-height: 35px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+    .dot.red { background: #FF6B6B; }
+    .dot.yellow { background: #FFE66D; }
+    .dot.green { background: #4ECDC4; }
+    .topbar-title { margin: 0 auto; color: rgba(255,255,255,0.7); font-size: 0.82rem; font-weight: 500; }
+    .browser-content { flex: 1; overflow-y: auto; padding: 1.2rem 2rem 1rem; }
+
+    /* ── 6. Section Header ── */
+    .section-header { margin-bottom: 0.8rem; }
+    .section-header h2 { display: flex; align-items: center; }
+    .section-icon { display: inline; font-size: 1.2em; margin-right: 0.4em; vertical-align: -0.1em; }
+    .section-subtitle { color: var(--style-text-secondary); font-size: 0.88rem; margin-top: 0.2rem; }
+
+    /* ── 7. Bento Grid Cells ── */
+    .bento-grid { display: grid; gap: var(--cell-gap); }
+    .bento-grid-2 { grid-template-columns: 1fr 1fr; }
+    .bento-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .bento-cell { border-radius: var(--cell-radius); padding: 0.8rem 1rem; display: flex; flex-direction: column; gap: 0.3rem; }
+    .bento-cell--dark { background: var(--style-primary); color: #fff; }
+    .bento-cell--accent { background: var(--style-accent); color: var(--style-primary); }
+    .bento-cell--coral { background: var(--style-accent2); color: #fff; }
+    .bento-cell--teal { background: var(--style-accent3); color: var(--style-primary); }
+    .bento-cell--warm { background: var(--style-accent4); color: var(--style-primary); }
+    .bento-cell--light { background: #F0F0F0; color: var(--style-primary); }
+    .bento-cell--span2 { grid-column: span 2; }
+    .bento-cell h3 { font-size: 1rem; font-weight: 700; }
+    .bento-cell p { font-size: 0.88rem; line-height: 1.5; }
+    .bento-cell ul { padding-left: 1.1rem; font-size: 0.86rem; }
+    .bento-cell li { margin-bottom: 0.25rem; }
+    .bento-cell code { font-family: 'Consolas', 'Courier New', monospace; font-size: 0.82rem; background: rgba(0,0,0,0.08); padding: 0.1em 0.35em; border-radius: 4px; }
+    .bento-cell--dark code { background: rgba(255,255,255,0.15); }
+    .bento-cell--accent code, .bento-cell--warm code, .bento-cell--teal code { background: rgba(0,0,0,0.1); }
+
+    /* ── 8. Stat Grid ── */
+    .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--cell-gap); }
+    .stat-item { border-radius: var(--cell-radius); padding: 0.8rem; text-align: center; }
+    .stat-num { font-size: 1.7rem; font-weight: 800; display: block; font-family: 'Consolas', 'Inter', sans-serif; }
+    .stat-label { font-size: 0.82rem; margin-top: 0.2rem; display: block; line-height: 1.4; }
+    .stat-item.bento-cell--dark .stat-label { color: rgba(255,255,255,0.75); }
+    .stat-item.bento-cell--teal .stat-label,
+    .stat-item.bento-cell--warm .stat-label { color: var(--style-primary); opacity: 0.75; }
+
+    /* ── 9. Code Block ── */
+    .code-block { background: var(--style-primary); color: #E8E8E8; border-radius: 0.6rem; padding: 0.65rem 1rem; font-family: 'Consolas', 'Courier New', monospace; font-size: 0.8rem; line-height: 1.58; overflow-x: auto; white-space: pre; }
+    .code-block .kw  { color: #E8FF3B; }
+    .code-block .val { color: #4ECDC4; }
+    .code-block .str { color: #4ECDC4; }
+    .code-block .prop{ color: #FF6B6B; }
+    .code-block .sel { color: #FFE66D; }
+    .code-block .cmt { color: #888; }
+    .code-block--sm  { font-size: 0.72rem; line-height: 1.55; }
+
+    /* ── 10. Task List ── */
+    .task-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .task-item { display: flex; gap: 0.6rem; align-items: flex-start; padding: 0.6rem 0.8rem; border-radius: 0.6rem; background: #F0F0F0; }
+    .task-num { background: var(--style-primary); color: #fff; width: 1.6rem; height: 1.6rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; margin-top: 0.1rem; }
+    .task-item h3 { font-size: 0.95rem; margin-bottom: 0.1rem; }
+    .task-item p { font-size: 0.85rem; color: var(--style-text-secondary); }
+
+    /* ── 11. Two Column ── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    .col-box { background: #F0F0F0; border-radius: var(--cell-radius); padding: 0.8rem 1rem; }
+    .col-box--dark { background: var(--style-primary); color: #fff; }
+    .col-label { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.4rem; }
+
+    /* ── 12. Comparison Table ── */
+    .comp-table { width: 100%; border-collapse: collapse; border-radius: 0.6rem; overflow: hidden; font-size: 0.86rem; }
+    .comp-table th { background: var(--style-primary); color: #fff; padding: 0.45rem 0.8rem; text-align: left; font-weight: 600; }
+    .comp-table td { padding: 0.4rem 0.8rem; border-bottom: 1px solid #E8E8E8; vertical-align: middle; }
+    .comp-table tr:nth-child(even) td { background: #F5F5F0; }
+    .comp-table code { font-size: 0.8rem; background: rgba(26,26,46,0.06); padding: 0.1em 0.3em; border-radius: 3px; font-family: 'Consolas', 'Courier New', monospace; }
+
+    /* ── 13. Highlight Box ── */
+    .highlight-box { background: var(--style-accent); color: var(--style-primary); padding: 0.55rem 1rem; border-radius: 0.6rem; font-size: 0.88rem; font-weight: 500; }
+    .highlight-box code { background: rgba(0,0,0,0.1); font-family: 'Consolas', monospace; font-size: 0.82rem; padding: 0.1em 0.3em; border-radius: 3px; }
+
+    /* ── 14. Language Badge ── */
+    .lang-badge { display: inline-block; padding: 0.15rem 0.55rem; border-radius: 0.3rem; font-size: 0.75rem; font-weight: 700; font-family: 'Consolas', monospace; letter-spacing: 0.02em; }
+    .lang-badge--py { background: #306998; color: #FFD43B; }
+    .lang-badge--js { background: #F0DB4F; color: #323330; }
+
+    /* ── 15. Result Preview ── */
+    .result-preview { background: #1A1A2E; border-radius: 0.6rem; padding: 0.6rem 0.8rem; }
+    .result-preview .rp-label { font-size: 0.72rem; color: rgba(255,255,255,0.5); margin-bottom: 0.3rem; font-family: 'Consolas', monospace; }
+    .result-preview .rp-output { font-family: 'Consolas', monospace; font-size: 0.88rem; color: #4ECDC4; font-weight: 600; }
+
+    /* ── 16. Cover ── */
+    .cover-slide { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 100%; }
+    .cover-badge { display: inline-block; background: var(--style-accent); color: var(--style-primary); padding: 0.3rem 1rem; border-radius: 2rem; font-size: 0.82rem; font-weight: 700; margin-bottom: 1.2rem; letter-spacing: 0.05em; }
+    .cover-title { margin-bottom: 0.6rem; }
+    .cover-subtitle { color: var(--style-text-secondary); font-size: 1.05rem; font-weight: 400; margin-bottom: 1.5rem; }
+    .cover-divider { width: 60px; height: 4px; background: var(--style-accent3); border-radius: 2px; margin: 0 auto 1rem; }
+    .cover-meta { font-size: 0.88rem; color: var(--style-text-secondary); display: flex; gap: 0.5rem; justify-content: center; }
+
+    /* ── 17. End Slide ── */
+    .end-slide { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 100%; }
+    .end-title { font-size: 1.8rem; margin-bottom: 1rem; }
+    .end-summary { max-width: 680px; text-align: left; }
+    .end-summary ul { list-style: none; padding: 0; }
+    .end-summary li { padding: 0.25rem 0; font-size: 0.9rem; line-height: 1.5; }
+
+    /* ── 18. Animations ── */
+    @keyframes popUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .slide.active .bento-cell,
+    .slide.active .stat-item,
+    .slide.active .task-item { animation: popUp 0.5s ease-out both; }
+    .slide.active .bento-cell:nth-child(2),
+    .slide.active .stat-item:nth-child(2),
+    .slide.active .task-item:nth-child(2) { animation-delay: 0.08s; }
+    .slide.active .bento-cell:nth-child(3),
+    .slide.active .stat-item:nth-child(3),
+    .slide.active .task-item:nth-child(3) { animation-delay: 0.16s; }
+    .slide.active .bento-cell:nth-child(4),
+    .slide.active .task-item:nth-child(4) { animation-delay: 0.24s; }
+    .slide.active .bento-cell:nth-child(5) { animation-delay: 0.32s; }
+    .slide.active .bento-cell:nth-child(6) { animation-delay: 0.40s; }
+
+    /* ── 19. Nav Bar ── */
+    .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 42px; background: var(--style-primary); display: flex; align-items: center; justify-content: center; gap: 0.8rem; z-index: 50; padding: 0 1rem; }
+    .nav-btn { background: none; border: none; cursor: pointer; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: background 0.2s; }
+    .nav-btn:hover { background: rgba(255,255,255,0.15); }
+    .nav-btn:disabled { opacity: 0.3; cursor: default; }
+    .nav-btn:disabled:hover { background: none; }
+    .nav-btn svg { width: 18px; height: 18px; fill: #fff; }
+    .nav-counter { color: rgba(255,255,255,0.7); font-size: 14px; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 2px; }
+    .slide-input { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; width: 28px; text-align: center; font-size: 14px; font-family: 'Inter', sans-serif; border-radius: 4px; padding: 2px; }
+    .slide-input:focus { outline: 2px solid var(--style-accent3); }
+
+    /* ── 20. Responsive ── */
+    @media (max-width: 1024px) { html, body { font-size: clamp(15px, 2vw, 22px); } }
+    @media (max-width: 768px) { .bento-grid-2, .bento-grid-3, .stat-grid, .two-col { grid-template-columns: 1fr; } .bento-cell--span2 { grid-column: span 1; } }
+    @media (max-width: 480px) { html, body { font-size: clamp(14px, 3.5vw, 18px); } .browser-content { padding: 0.8rem; } h1 { font-size: 1.7rem; } h2 { font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+  <a href="#presentation" class="skip-link">본문으로 바로가기</a>
+  <div class="progress-bar" id="progressBar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="10" aria-label="프레젠테이션 진행률"></div>
+
+  <div class="presentation" id="presentation" role="main">
+
+    <!-- ═══ Slide 1: Cover ═══ -->
+    <div class="slide active" data-slide="0" role="region" aria-label="슬라이드 1: 표지">
+      <div class="browser-card browser-card--frameless">
+        <div class="browser-content cover-slide">
+          <div class="cover-badge">10차시 · 프로그래밍</div>
+          <h1 class="cover-title">JavaScript 기초 1</h1>
+          <p class="cover-subtitle">웹에 동작을 더하는 프로그래밍 언어</p>
+          <div class="cover-divider" aria-hidden="true"></div>
+          <div class="cover-meta">
+            <span>전주기전여자고등학교</span>
+            <span aria-hidden="true">·</span>
+            <span><time datetime="2026">2026학년도</time></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Slide 2: 오늘 배울 내용 ═══ -->
+    <div class="slide" data-slide="1" role="region" aria-label="슬라이드 2: 오늘 배울 내용">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+          <span class="topbar-title">오늘의 목표</span>
+        </div>
+        <div class="browser-content" tabindex="-1">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">◆</span> 오늘 배울 내용</h2>
+            <p class="section-subtitle">Python에서 배운 프로그래밍 개념을 JavaScript로 확장합니다</p>
+          </div>
+          <div class="stat-grid">
+            <div class="stat-item bento-cell--dark">
+              <span class="stat-num">JS</span>
+              <span class="stat-label">JavaScript란?<br>소개 &amp; 용도</span>
+            </div>
+            <div class="stat-item bento-cell--teal">
+              <span class="stat-num">&lt;/&gt;</span>
+              <span class="stat-label">script 태그<br>HTML에서 JS 작성 위치</span>
+            </div>
+            <div class="stat-item bento-cell--warm">
+              <span class="stat-num">let</span>
+              <span class="stat-label">변수 선언<br>Python과 비교</span>
+            </div>
+          </div>
+          <div class="bento-grid bento-grid-2" style="margin-top:0.5rem;">
+            <div class="bento-cell bento-cell--coral">
+              <h3>연산자</h3>
+              <p>산술 <code>+ - * / % **</code>, 비교 <code>== === &gt;= &lt;=</code>, 논리 <code>&amp;&amp; || !</code></p>
+            </div>
+            <div class="bento-cell bento-cell--accent">
+              <h3>조건문</h3>
+              <p><code>if / else if / else</code> — Python의 <code>if / elif / else</code>와 비교하며 배웁니다</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Slide 3: JavaScript란? ═══ -->
+    <div class="slide" data-slide="2" role="region" aria-label="슬라이드 3: JavaScript란">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+          <span class="topbar-title">JavaScript 소개</span>
+        </div>
+        <div class="browser-content" tabindex="-1">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> JavaScript란?</h2>
+            <p class="section-subtitle">웹 브라우저 안에서 직접 실행되는 프로그래밍 언어</p>
+          </div>
+          <div class="bento-grid bento-grid-3">
+            <div class="bento-cell bento-cell--light" style="border-top:3px solid var(--style-accent2);">
+              <h3>HTML</h3>
+              <p>웹 페이지의 <strong>뼈대</strong><br>내용과 구조를 담당</p>
+            </div>
+            <div class="bento-cell bento-cell--light" style="border-top:3px solid var(--style-accent3);">
+              <h3>CSS</h3>
+              <p>웹 페이지의 <strong>디자인</strong><br>색상과 레이아웃 담당</p>
+            </div>
+            <div class="bento-cell bento-cell--dark" style="border-top:3px solid var(--style-accent);">
+              <h3>JavaScript</h3>
+              <p>웹 페이지의 <strong>동작</strong><br>클릭 반응, 계산, 화면 변경</p>
+            </div>
+          </div>
+          <div class="bento-grid bento-grid-2" style="margin-top:0.5rem;">
+            <div class="bento-cell bento-cell--light">
+              <h3>JavaScript 주요 용도</h3>
+              <ul>
+                <li>버튼 클릭 시 화면 내용 변경</li>
+                <li>입력값 검증 (빈칸 확인, 형식 체크)</li>
+                <li>데이터 계산 후 결과 즉시 표시</li>
+                <li>애니메이션 &amp; 슬라이드 효과</li>
+              </ul>
+            </div>
+            <div class="bento-cell bento-cell--teal">
+              <h3>Python과의 차이점</h3>
+              <ul>
+                <li>Python → 서버·데이터 분석에 강점</li>
+                <li>JavaScript → 브라우저에서 즉시 실행</li>
+                <li>변수·조건문·반복문 개념은 공통</li>
+                <li>문법(syntax)만 조금 다릅니다!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Slide 4: script 태그 위치 ═══ -->
+    <div class="slide" data-slide="3" role="region" aria-label="슬라이드 4: script 태그 위치">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+          <span class="topbar-title">&lt;script&gt; 태그</span>
+        </div>
+        <div class="browser-content" tabindex="-1">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">◆</span> HTML에서 JavaScript 작성하는 위치</h2>
+            <p class="section-subtitle"><code>&lt;script&gt;</code> 태그 안에 JavaScript 코드를 작성합니다</p>
+          </div>
+          <div class="bento-grid bento-grid-2">
+            <div class="bento-cell bento-cell--dark">
+              <h3>방법 1 — 내부 방식 <span style="font-size:0.75rem;color:var(--style-accent);font-weight:400;">(이 수업에서 사용)</span></h3>
+              <div class="code-block code-block--sm" style="margin-top:0.3rem;">&lt;body&gt;
+  &lt;h1&gt;내 페이지&lt;/h1&gt;
+  &lt;p&gt;내용...&lt;/p&gt;
+
+  <span class="cmt">&lt;!-- body 맨 끝에 작성 ✓ --&gt;</span>
+  <span class="kw">&lt;script&gt;</span>
+    <span class="kw">let</span> name = <span class="str">"김철수"</span>;
+    console.<span class="sel">log</span>(name);
+  <span class="kw">&lt;/script&gt;</span>
+&lt;/body&gt;</div>
+            </div>
+            <div class="bento-cell bento-cell--dark">
+              <h3>방법 2 — 외부 파일 연결</h3>
+              <div class="code-block code-block--sm" style="margin-top:0.3rem;"><span class="cmt">&lt;!-- HTML 파일 --&gt;</span>
+&lt;body&gt;
+  &lt;h1&gt;내 페이지&lt;/h1&gt;
+
+  <span class="kw">&lt;script</span> <span class="prop">src</span>=<span class="str">"app.js"</span><span class="kw">&gt;&lt;/script&gt;</span>
+&lt;/body&gt;
+
+<span class="cmt">// app.js 파일 (별도 파일)</span>
+<span class="kw">let</span> name = <span class="str">"김철수"</span>;
+console.<span class="sel">log</span>(name);</div>
+            </div>
+          </div>
+          <div class="bento-cell bento-cell--accent bento-cell--span2" style="margin-top:0.5rem;border-radius:var(--cell-radius);">
+            <h3>권장 위치: <code>&lt;/body&gt;</code> 바로 앞</h3>
+            <p>HTML이 먼저 모두 로딩된 뒤 JS가 실행 → 오류가 줄어듭니다. <code>console.log()</code>는 개발자 도구(F12) 콘솔 탭에서 확인합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Slide 5: JavaScript 변수 ═══ -->
+    <div class="slide" data-slide="4" role="region" aria-label="슬라이드 5: JavaScript 변수">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+          <span class="topbar-title">변수 (Variable)</span>
+        </div>
+        <div class="browser-content" tabindex="-1">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> JavaScript 변수</h2>
+            <p class="section-subtitle">데이터를 저장하는 그릇 — Python과 비교하며 배웁니다</p>
+          </div>
+          <div class="two-col">
+            <div class="col-box col-box--dark">
+              <div class="col-label">
+                <span class="lang-badge lang-badge--py">Python</span>
+                <span style="color:rgba(255,255,255,0.65);font-size:0.82rem;">변수 선언</span>
+              </div>
+              <div class="code-block code-block--sm"><span class="cmt"># 변수 선언 — 키워드 없이 대입</span>
+name = <span class="str">"김철수"</span>
+age  = <span class="val">17</span>
+pi   = <span class="val">3.14</span>
+is_student = <span class="kw">True</span>
+
+<span class="cmt"># 값 변경 — 항상 가능</span>
+age = <span class="val">18</span></div>
+            </div>
+            <div class="col-box col-box--dark">
+              <div class="col-label">
+                <span class="lang-badge lang-badge--js">JavaScript</span>
+                <span style="color:rgba(255,255,255,0.65);font-size:0.82rem;">변수 선언</span>
+              </div>
+              <div class="code-block code-block--sm"><span class="cmt">// let — 나중에 값 변경 가능</span>
+<span class="kw">let</span> name = <span class="str">"김철수"</span>;
+<span class="kw">let</span> age  = <span class="val">17</span>;
+<span class="kw">let</span> isStudent = <span class="kw">true</span>;
+
+<span class="cmt">// const — 상수, 변경 불가</span>
+<span class="kw">const</span> PI = <span class="val">3.14</span>;
+<span class="cmt">// PI = 3; ← 오류 발생!</span></div>
+            </div>
+          </div>
+          <div class="highlight-box" style="margin-top:0.7rem;">
+            <strong>let</strong> 재할당 가능 &nbsp;|&nbsp; <strong>const</strong> 한 번 정하면 변경 불가 &nbsp;|&nbsp; 문장 끝에 <strong>;</strong> 세미콜론 &nbsp;|&nbsp; 불리언: Python <code>True/False</code> → JS <code>true/false</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Slide 6: JavaScript 연산자 ═══ -->
+    <div class="slide" data-slide="5" role="region" aria-label="슬라이드 6: JavaScript 연산자">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+          <span class="topbar-title">연산자 (Operator)</span>
+        </div>
+        <div class="browser-content" tabindex="-1">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">◆</span> JavaScript 연산자</h2>
+            <p class="section-subtitle">Python과 거의 동일합니다 — 기호 문법이 같아요!</p>
+          </div>
+          <div class="bento-grid bento-grid-3">
+            <div class="bento-cell bento-cell--dark">
+              <h3>산술 연산자</h3>
+              <div class="code-block code-block--sm" style="margin-top:0.3rem;"><span class="kw">let</span> a = <span class="val">10</span>, b = <span class="val">3</span>;
+a <span class="prop">+</span> b   <span class="cmt">// 13</span>
+a <span class="prop">-</span> b   <span class="cmt">// 7</span>
+a <span class="prop">*</span> b   <span class="cmt">// 30</span>
+a <span class="prop">/</span> b   <span class="cmt">// 3.33...</span>
+a <span class="prop">%</span> b   <span class="cmt">// 1 (나머지)</span>
+a <span class="prop">**</span> b  <span class="cmt">// 1000 (거듭제곱)</span></div>
+            </div>
+            <div class="bento-cell bento-cell--dark">
+              <h3>비교 연산자</h3>
+              <div class="code-block code-block--sm" style="margin-top:0.3rem;"><span class="cmt">// 결과: true / false</span>
+a <span class="prop">&gt;</span> b    <span class="cmt">// true</span>
+a <span class="prop">&lt;</span> b    <span class="cmt">// false</span>
+a <span class="prop">&gt;=</span> <span class="val">10</span>  <span class="cmt">// true</span>
+a <span class="prop">==</span> <span class="val">10</span>  <span class="cmt">// 값만 비교</span>
+a <span class="prop">===</span> <span class="val">10</span> <span class="cmt">// 값+타입 비교 ✓</span>
+a <span class="prop">!==</span> b  <span class="cmt">// true</span></div>
+            </div>
+            <div class="bento-cell bento-cell--dark">
+              <h3>논리 연산자</h3>
+              <div class="code-block code-block--sm" style="margin-top:0.3rem;"><span class="cmt">// Python → JavaScript</span>
+<span class="cmt">// and  →  &amp;&amp;</span>
+<span class="cmt">// or   →  ||</span>
+<span class="cmt">// not  →  !</span>
+
+a<span class="prop">&gt;</span><span class="val">5</span> <span class="prop">&amp;&amp;</span> b<span class="prop">&lt;</span><span class="val">5</span>  <span class="cmt">// 둘 다 참</span>
+a<span class="prop">&gt;</span><span class="val">5</span> <span class="prop">||</span> b<span class="prop">&gt;</span><span class="val">9</span>  <span class="cmt">// 하나만 참</span>
+<span class="prop">!</span>(a <span class="prop">===</span> b)   <span class="cmt">// 반대</span></div>
+            </div>
+          </div>
+          <div class="bento-cell bento-cell--accent bento-cell--span2" style="margin-top:0.5rem;border-radius:var(--cell-radius);">
+            <p><strong>Python과 차이:</strong> 산술·비교 연산자는 동일! 논리 연산자만 달라요 → <code>and</code>→<code>&amp;&amp;</code>, <code>or</code>→<code>||</code>, <code>not</code>→<code>!</code> &nbsp;|&nbsp; <code>===</code> 권장 (값과 자료형을 함께 비교)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Slide 7: JavaScript 조건문 ═══ -->
+    <div class="slide" data-slide="6" role="region" aria-label="슬라이드 7: JavaScript 조건문">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+          <span class="topbar-title">조건문 (Conditional)</span>
+        </div>
+        <div class="browser-content" tabindex="-1">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> JavaScript 조건문</h2>
+            <p class="section-subtitle">Python의 <code>if / elif / else</code> ↔ JavaScript의 <code>if / else if / else</code></p>
+          </div>
+          <div class="two-col">
+            <div class="col-box col-box--dark">
+              <div class="col-label">
+                <span class="lang-badge lang-badge--py">Python</span>
+              </div>
+              <div class="code-block code-block--sm">score = <span class="val">85</span>
+
+<span class="kw">if</span> score <span class="prop">&gt;=</span> <span class="val">90</span>:
+    grade = <span class="str">"A"</span>
+<span class="kw">elif</span> score <span class="prop">&gt;=</span> <span class="val">80</span>:
+    grade = <span class="str">"B"</span>
+<span class="kw">elif</span> score <span class="prop">&gt;=</span> <span class="val">70</span>:
+    grade = <span class="str">"C"</span>
+<span class="kw">else</span>:
+    grade = <span class="str">"F"</span>
+
+<span class="sel">print</span>(grade)  <span class="cmt"># B</span></div>
+            </div>
+            <div class="col-box col-box--dark">
+              <div class="col-label">
+                <span class="lang-badge lang-badge--js">JavaScript</span>
+              </div>
+              <div class="code-block code-block--sm"><span class="kw">let</span> score = <span class="val">85</span>;
+<span class="kw">let</span> grade;
+
+<span class="kw">if</span> (score <span class="prop">&gt;=</span> <span class="val">90</span>) {
+  grade = <span class="str">"A"</span>;
+} <span class="kw">else if</span> (score <span class="prop">&gt;=</span> <span class="val">80</span>) {
+  grade = <span class="str">"B"</span>;
+} <span class="kw">else if</span> (score <span class="prop">&gt;=</span> <span class="val">70</span>) {
+  grade = <span class="str">"C"</span>;
+} <span class="kw">else</span> {
+  grade = <span class="str">"F"</span>;
+}
+
+console.<span class="sel">log</span>(grade);  <span class="cmt">// B</span></div>
+            </div>
+          </div>
+          <div class="highlight-box" style="margin-top:0.7rem;">
+            조건을 <strong>( )</strong>로 감싸고 &nbsp;|&nbsp; 실행 코드를 <strong>{ }</strong>로 묶기 &nbsp;|&nbsp; <code>elif</code> → <code>else if</code> (두 단어) &nbsp;|&nbsp; 들여쓰기 대신 중괄호가 블록을 구분합니다
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Slide 8: 종합 예제 ═══ -->
+    <div class="slide" data-slide="7" role="region" aria-label="슬라이드 8: 종합 예제">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+          <span class="topbar-title">종합 예제</span>
+        </div>
+        <div class="browser-content" tabindex="-1">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">◆</span> 종합 예제: 나이 계산기</h2>
+            <p class="section-subtitle">변수 · 연산자 · 조건문을 모두 활용 — 내 개인 페이지에 바로 추가 가능!</p>
+          </div>
+          <div class="two-col">
+            <div class="col-box col-box--dark">
+              <div class="col-label">
+                <span class="lang-badge lang-badge--js">JavaScript</span>
+                <span style="color:rgba(255,255,255,0.6);font-size:0.78rem;">&lt;/body&gt; 바로 앞에 작성</span>
+              </div>
+              <div class="code-block code-block--sm"><span class="kw">&lt;script&gt;</span>
+  <span class="cmt">// ① 변수 선언</span>
+  <span class="kw">let</span> birthYear = <span class="val">2008</span>;
+  <span class="kw">let</span> currentYear = <span class="val">2026</span>;
+
+  <span class="cmt">// ② 연산자로 나이 계산</span>
+  <span class="kw">let</span> age = currentYear <span class="prop">-</span> birthYear;
+
+  <span class="cmt">// ③ 조건문으로 메시지 결정</span>
+  <span class="kw">let</span> msg;
+  <span class="kw">if</span> (age <span class="prop">&gt;=</span> <span class="val">19</span>) {
+    msg = <span class="str">"성인입니다"</span>;
+  } <span class="kw">else if</span> (age <span class="prop">&gt;=</span> <span class="val">16</span>) {
+    msg = <span class="str">"고등학생입니다"</span>;
+  } <span class="kw">else</span> {
+    msg = <span class="str">"중학생 이하입니다"</span>;
+  }
+
+  <span class="cmt">// ④ 화면에 출력</span>
+  document.<span class="sel">getElementById</span>(<span class="str">"result"</span>)
+    .textContent = age <span class="prop">+</span> <span class="str">"세 · "</span> <span class="prop">+</span> msg;
+<span class="kw">&lt;/script&gt;</span></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:0.5rem;">
+              <div class="bento-cell bento-cell--light">
+                <h3>HTML 구조</h3>
+                <div class="code-block code-block--sm" style="margin-top:0.3rem;"><span class="cmt">&lt;!-- 결과를 표시할 요소 --&gt;</span>
+<span class="kw">&lt;p</span> <span class="prop">id</span>=<span class="str">"result"</span><span class="kw">&gt;</span>로딩 중...<span class="kw">&lt;/p&gt;</span></div>
+              </div>
+              <div class="bento-cell bento-cell--teal">
+                <h3>실행 결과</h3>
+                <div class="result-preview" style="margin-top:0.3rem;">
+                  <div class="rp-label">&gt; result.textContent</div>
+                  <div class="rp-output">18세 · 고등학생입니다</div>
+                </div>
+              </div>
+              <div class="bento-cell bento-cell--accent">
+                <h3>응용 아이디어</h3>
+                <p style="font-size:0.82rem;"><code>birthYear</code>를 바꿔보세요!<br>2007 → 19세 · 성인입니다<br>2010 → 16세 · 고등학생입니다</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Slide 9: 실습 안내 ═══ -->
+    <div class="slide" data-slide="8" role="region" aria-label="슬라이드 9: 실습 안내">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+          <span class="topbar-title">실습</span>
+        </div>
+        <div class="browser-content" tabindex="-1">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> 실습: 나이 계산기 내 페이지에 추가하기</h2>
+            <p class="section-subtitle">예제 코드를 따라 쓰고, 직접 수정해봅시다</p>
+          </div>
+          <div class="task-list">
+            <div class="task-item">
+              <span class="task-num">1</span>
+              <div>
+                <h3>HTML 파일 열기</h3>
+                <p>지난 수업에서 만든 개인 페이지 HTML 파일을 VS Code에서 열어주세요</p>
+              </div>
+            </div>
+            <div class="task-item">
+              <span class="task-num">2</span>
+              <div>
+                <h3>result 요소 추가</h3>
+                <p>원하는 위치에 <code>&lt;p id="result"&gt;로딩 중...&lt;/p&gt;</code> 추가하기</p>
+              </div>
+            </div>
+            <div class="task-item">
+              <span class="task-num">3</span>
+              <div>
+                <h3>script 코드 붙여넣기 &amp; 수정</h3>
+                <p>예제 코드를 <code>&lt;/body&gt;</code> 바로 앞에 붙여넣고, <code>birthYear</code>를 내 출생연도로 바꿔주세요</p>
+              </div>
+            </div>
+            <div class="task-item">
+              <span class="task-num">4</span>
+              <div>
+                <h3>도전: 이름도 함께 출력하기</h3>
+                <p><code>let name = "내 이름";</code> 변수를 추가하고, 출력 결과를 <strong>"홍길동 · 18세 · 고등학생입니다"</strong> 형태로 바꿔보세요</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Slide 10: 마무리 ═══ -->
+    <div class="slide" data-slide="9" role="region" aria-label="슬라이드 10: 마무리">
+      <div class="browser-card browser-card--frameless">
+        <div class="browser-content end-slide">
+          <h2 class="end-title">오늘의 핵심 정리</h2>
+          <div class="highlight-box end-summary">
+            <ul>
+              <li>✅ <strong>JavaScript</strong> = HTML(뼈대) + CSS(디자인) + <strong>JS(동작)</strong> — 브라우저에서 바로 실행</li>
+              <li>✅ <code>&lt;script&gt;</code> 태그를 <strong>&lt;/body&gt; 바로 앞</strong>에 작성</li>
+              <li>✅ <strong>let</strong>(변경 가능) / <strong>const</strong>(상수) 로 변수 선언, 문장 끝 <strong>;</strong></li>
+              <li>✅ 논리 연산자: <code>and → &amp;&amp;</code>, <code>or → ||</code>, <code>not → !</code></li>
+              <li>✅ 조건문: <code>if (조건) { } else if (조건) { } else { }</code> — <code>elif</code> 대신 <code>else if</code></li>
+            </ul>
+          </div>
+          <p style="margin-top:1rem;color:var(--style-text-secondary);font-size:0.9rem;">다음 시간: JavaScript 기초 2 — 함수(function)와 이벤트(event)</p>
+          <div class="cover-divider" style="margin-top:1rem;" aria-hidden="true"></div>
+          <div class="cover-meta">
+            <span>전주기전여자고등학교 프로그래밍</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="slideAnnounce" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+
+  <nav class="nav-bar" aria-label="슬라이드 네비게이션">
+    <button class="nav-btn" id="prevBtn" disabled aria-label="이전 슬라이드">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+    </button>
+    <span class="nav-counter">
+      <input type="text" class="slide-input" id="slideInput" value="1" aria-label="슬라이드 번호 입력" inputmode="numeric" pattern="[0-9]*">
+      / <span id="totalSlides">10</span>
+    </span>
+    <button class="nav-btn" id="nextBtn" aria-label="다음 슬라이드">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/></svg>
+    </button>
+  </nav>
+
+  <script>
+    /* ── Navigation Logic ── */
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    let currentSlide = 0;
+    const progressBar = document.getElementById('progressBar');
+    const slideInput = document.getElementById('slideInput');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    function announceSlide(c, t) {
+      const el = document.getElementById('slideAnnounce');
+      if (el) el.textContent = '슬라이드 ' + (c + 1) + ' / ' + t;
+    }
+
+    function updateNav() {
+      const pct = ((currentSlide + 1) / totalSlides) * 100;
+      progressBar.style.width = pct + '%';
+      progressBar.setAttribute('aria-valuenow', currentSlide + 1);
+      slideInput.value = currentSlide + 1;
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === totalSlides - 1;
+    }
+
+    function goToSlide(index) {
+      if (index < 0 || index >= totalSlides) return;
+      slides[currentSlide].classList.remove('active');
+      currentSlide = index;
+      slides[currentSlide].classList.add('active');
+      updateNav();
+      announceSlide(currentSlide, totalSlides);
+      var content = slides[currentSlide].querySelector('.browser-content');
+      if (content) { content.scrollTop = 0; content.focus(); }
+    }
+
+    function nextSlide() { goToSlide(currentSlide + 1); }
+    function prevSlide() { goToSlide(currentSlide - 1); }
+
+    /* Keyboard */
+    document.addEventListener('keydown', function(e) {
+      if (e.target === slideInput) return;
+      if (['ArrowRight','ArrowDown',' ','PageDown'].indexOf(e.key) !== -1) { e.preventDefault(); nextSlide(); }
+      else if (['ArrowLeft','ArrowUp','PageUp'].indexOf(e.key) !== -1) { e.preventDefault(); prevSlide(); }
+      else if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+      else if (e.key === 'End') { e.preventDefault(); goToSlide(totalSlides - 1); }
+    });
+
+    /* Mouse wheel (debounced) */
+    var wheelLocked = false;
+    document.addEventListener('wheel', function(e) {
+      e.preventDefault();
+      if (wheelLocked) return;
+      wheelLocked = true;
+      if (e.deltaY > 0) nextSlide(); else if (e.deltaY < 0) prevSlide();
+      setTimeout(function() { wheelLocked = false; }, 600);
+    }, { passive: false });
+
+    /* Touch swipe */
+    var touchStartX = 0;
+    document.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+    document.addEventListener('touchend', function(e) {
+      var diff = touchStartX - e.changedTouches[0].screenX;
+      if (Math.abs(diff) > 50) { if (diff > 0) nextSlide(); else prevSlide(); }
+    }, { passive: true });
+
+    /* Slide input */
+    slideInput.addEventListener('focus', function() { this.select(); });
+    slideInput.addEventListener('keydown', function(e) {
+      e.stopPropagation();
+      if (e.key === 'Enter') { var n = parseInt(this.value); if (n >= 1 && n <= totalSlides) goToSlide(n - 1); this.blur(); }
+      else if (e.key === 'Escape') { this.value = currentSlide + 1; this.blur(); }
+    });
+    slideInput.addEventListener('blur', function() {
+      var n = parseInt(this.value);
+      if (n >= 1 && n <= totalSlides) goToSlide(n - 1);
+      else this.value = currentSlide + 1;
+    });
+
+    /* Nav buttons */
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+
+    /* Init */
+    updateNav();
+    document.getElementById('totalSlides').textContent = totalSlides;
+  </script>
+</body>
+</html>

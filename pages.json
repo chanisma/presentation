@@ -179,6 +179,18 @@
             {"label": "실습", "color": "orange"}
           ],
           "gradient": "linear-gradient(90deg, #4ECDC4, #1A1A2E)"
+        },
+        {
+          "title": "10차시 - JavaScript 기초 1",
+          "path": "프로그래밍/10차시-JavaScript기초1/index.html",
+          "emoji": "⚡",
+          "description": "JavaScript 소개와 용도, script 태그 위치, 변수(let/const), 연산자, 조건문을 Python과 비교하며 배웁니다. 나이 계산기 종합 예제 포함.",
+          "tags": [
+            {"label": "JavaScript", "color": "orange"},
+            {"label": "변수·연산자", "color": "blue"},
+            {"label": "조건문", "color": "purple"}
+          ],
+          "gradient": "linear-gradient(90deg, #F0DB4F, #1A1A2E)"
         }
       ]
     },
