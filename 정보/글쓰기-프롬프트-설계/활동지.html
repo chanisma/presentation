@@ -595,7 +595,7 @@ function scheduleDraft() {
 }
 function saveDraft() {
   try {
-    sessionStorage.setItem(DRAFT_KEY, JSON.stringify(getFormData()));
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(getFormData()));
     var now = new Date();
     document.getElementById('draftLabel').textContent =
       '임시저장: ' + now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
@@ -603,7 +603,7 @@ function saveDraft() {
 }
 function loadDraft() {
   try {
-    var raw = sessionStorage.getItem(DRAFT_KEY);
+    var raw = localStorage.getItem(DRAFT_KEY);
     if (!raw) return;
     setFormData(JSON.parse(raw));
     showToast('이전 작성 내용을 불러왔습니다.', 'info', 3000);
@@ -861,7 +861,7 @@ document.getElementById('btnClear').addEventListener('click', function() {
   document.querySelectorAll('input[type="radio"]').forEach(function(el) { el.checked = false; el.closest('.radio-opt').classList.remove('selected'); });
   ['advBlock1','advBlock2','advBlock3'].forEach(function(id) { document.getElementById(id).style.display = 'none'; });
   document.getElementById('draftLabel').textContent = '임시저장: 대기 중';
-  try { sessionStorage.removeItem(DRAFT_KEY); } catch(e) {}
+  try { localStorage.removeItem(DRAFT_KEY); } catch(e) {}
   updatePreview();
   showToast('초기화되었습니다.', 'info');
 });
