@@ -125,9 +125,33 @@
   "hotPaths": [
     {
       "path": "정보\\글쓰기-프롬프트-설계\\활동지.html",
-      "accessCount": 17,
-      "lastAccessed": 1775464073665,
+      "accessCount": 18,
+      "lastAccessed": 1775465781715,
       "type": "file"
+    },
+    {
+      "path": "정보\\에이전틱AI-NotebookLM\\활동지.html",
+      "accessCount": 3,
+      "lastAccessed": 1775465779196,
+      "type": "file"
+    },
+    {
+      "path": "정보\\글쓰기-프롬프트-설계\\apps-script.js",
+      "accessCount": 2,
+      "lastAccessed": 1775465518216,
+      "type": "file"
+    },
+    {
+      "path": "정보\\apps-script.js",
+      "accessCount": 1,
+      "lastAccessed": 1775465543122,
+      "type": "file"
+    },
+    {
+      "path": "정보",
+      "accessCount": 1,
+      "lastAccessed": 1775465774419,
+      "type": "directory"
     }
   ],
   "userDirectives": []
