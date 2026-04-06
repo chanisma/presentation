@@ -186,12 +186,13 @@
       padding: 0.1rem 0.45rem; border-radius: 0.3rem;
     }
     .copy-btn {
-      align-self: flex-end; padding: 0.3rem 0.75rem;
-      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 0.4rem; color: #E2E8F0; font-size: 0.78rem; cursor: pointer;
-      font-family: inherit; transition: background 0.15s;
+      padding: 0.3rem 0.85rem;
+      background: var(--primary); border: none;
+      border-radius: 0.4rem; color: #FFFFFF; font-size: 0.8rem; font-weight: 600;
+      cursor: pointer; font-family: inherit; transition: background 0.15s;
+      white-space: nowrap; flex-shrink: 0;
     }
-    .copy-btn:hover { background: rgba(255,255,255,0.2); }
+    .copy-btn:hover { background: #E06010; }
 
     /* ── 고급 기법 블록 ── */
     .adv-block {
@@ -430,16 +431,6 @@
           <textarea id="elemFormat" rows="2" placeholder="200자 이내, 1인칭, 활동·배운 점·느낀 점 포함."></textarea>
         </div>
       </div>
-      <!-- 미리보기 -->
-      <div style="display:flex;flex-direction:column;gap:0.3rem;">
-        <div class="preview-label">
-          완성된 프롬프트 미리보기 <span>자동 생성</span>
-        </div>
-        <div class="preview-box" id="promptPreview">4가지 요소를 입력하면 여기에 프롬프트가 완성됩니다.</div>
-        <div style="display:flex;justify-content:flex-end;">
-          <button class="copy-btn" id="btnCopyPrompt">📋 복사</button>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -500,6 +491,16 @@
           <textarea id="advEx3" rows="4" placeholder="내가 직접 쓴 보고서 내용, 성찰 메모 등을 붙여넣으세요. AI가 이 내용을 바탕으로 자기평가문을 작성합니다."></textarea>
         </div>
         <p class="hint">프롬프트에 [재료] 항목을 추가하고, [과제]에 "위 재료를 바탕으로 작성해줘"를 넣으세요.</p>
+      </div>
+      <!-- 미리보기 -->
+      <div style="display:flex;flex-direction:column;gap:0.4rem;margin-top:0.4rem;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div class="preview-label" style="margin-bottom:0;">
+            완성된 프롬프트 미리보기 <span>자동 생성</span>
+          </div>
+          <button class="copy-btn" id="btnCopyPrompt">📋 복사하기</button>
+        </div>
+        <div class="preview-box" id="promptPreview">3~4단계를 입력하면 여기에 완성된 프롬프트가 표시됩니다.</div>
       </div>
     </div>
   </div>
@@ -594,7 +595,7 @@ function scheduleDraft() {
 }
 function saveDraft() {
   try {
-    localStorage.setItem(DRAFT_KEY, JSON.stringify(getFormData()));
+    sessionStorage.setItem(DRAFT_KEY, JSON.stringify(getFormData()));
     var now = new Date();
     document.getElementById('draftLabel').textContent =
       '임시저장: ' + now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
@@ -602,7 +603,7 @@ function saveDraft() {
 }
 function loadDraft() {
   try {
-    var raw = localStorage.getItem(DRAFT_KEY);
+    var raw = sessionStorage.getItem(DRAFT_KEY);
     if (!raw) return;
     setFormData(JSON.parse(raw));
     showToast('이전 작성 내용을 불러왔습니다.', 'info', 3000);
@@ -860,7 +861,7 @@ document.getElementById('btnClear').addEventListener('click', function() {
   document.querySelectorAll('input[type="radio"]').forEach(function(el) { el.checked = false; el.closest('.radio-opt').classList.remove('selected'); });
   ['advBlock1','advBlock2','advBlock3'].forEach(function(id) { document.getElementById(id).style.display = 'none'; });
   document.getElementById('draftLabel').textContent = '임시저장: 대기 중';
-  try { localStorage.removeItem(DRAFT_KEY); } catch(e) {}
+  try { sessionStorage.removeItem(DRAFT_KEY); } catch(e) {}
   updatePreview();
   showToast('초기화되었습니다.', 'info');
 });
