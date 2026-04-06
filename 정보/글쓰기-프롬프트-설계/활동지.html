@@ -410,7 +410,7 @@
           <div class="elem-label">
             <span class="elem-badge eb-role">역할 Role</span>
           </div>
-          <textarea id="elemRole" rows="2" placeholder="예: 메타인지가 뛰어난 고등학교 학생&#10;예: 학생의 장점을 잘 찾는 객관적인 고등학교 교사&#10;예: 나는 고2 학생이야."></textarea>
+          <textarea id="elemRole" rows="2" placeholder="예: 메타인지가 뛰어난 고등학교 학생&#10;예: 학생의 장점을 잘 찾는 객관적인 고등학교 교사"></textarea>
         </div>
         <div class="elem-card">
           <div class="elem-label">
@@ -429,7 +429,7 @@
           <div class="elem-label">
             <span class="elem-badge eb-format">형식 Format</span>
           </div>
-          <textarea id="elemFormat" rows="2" placeholder="예: 500자 이내, 1인칭, 활동·배운 점·느낀 점 포함&#10;예: 3인칭, 개조식 어미, 300자 이내&#10;예: 200자 이내, 자연스러운 문장체"></textarea>
+          <textarea id="elemFormat" rows="2" placeholder="예: 3인칭, 개조식 어미, 300자 이내&#10;예: 200자 이내, 자연스러운 문장체"></textarea>
         </div>
       </div>
     </div>
@@ -493,15 +493,35 @@
         </div>
         <p class="hint">프롬프트에 [재료] 항목을 추가하고, [과제]에 "위 재료를 바탕으로 작성해줘"를 넣으세요.</p>
       </div>
-      <!-- 미리보기 -->
-      <div style="display:flex;flex-direction:column;gap:0.4rem;margin-top:0.4rem;">
-        <div style="display:flex;align-items:center;justify-content:space-between;">
-          <div class="preview-label" style="margin-bottom:0;">
-            완성된 프롬프트 미리보기 <span>자동 생성</span>
-          </div>
+    </div>
+  </div>
+
+  <!-- ── 완성된 프롬프트 미리보기 ── -->
+  <div class="form-card">
+    <div class="form-card-header">
+      <span class="form-card-num blue">📋</span>
+      <span class="form-card-title">완성된 프롬프트 미리보기</span>
+      <span class="form-card-step tag-blue">자동 생성</span>
+    </div>
+    <div class="form-card-body">
+      <div style="display:flex;flex-direction:column;gap:0.4rem;">
+        <div style="display:flex;align-items:center;justify-content:flex-end;">
           <button class="copy-btn" id="btnCopyPrompt">📋 복사하기</button>
         </div>
         <div class="preview-box" id="promptPreview">3~4단계를 입력하면 여기에 완성된 프롬프트가 표시됩니다.</div>
+      </div>
+      <div class="hint blue" style="display:flex;align-items:center;gap:0.8rem;flex-wrap:wrap;margin-top:0.2rem;">
+        <span style="flex:1;min-width:180px;">위 프롬프트를 복사한 뒤, AI 도구에 붙여넣어 자기평가문 초안을 받아 보세요.</span>
+        <div style="display:flex;gap:0.5rem;flex-shrink:0;">
+          <a href="https://gemini.google.com" target="_blank" rel="noopener"
+             style="display:inline-flex;align-items:center;gap:0.3rem;padding:0.3rem 0.8rem;border-radius:0.4rem;background:#E8F0FE;border:1px solid #A8C7FA;color:#1A73E8;font-size:0.82rem;font-weight:600;text-decoration:none;">
+            <img src="https://www.google.com/favicon.ico" width="14" height="14" alt="" style="border-radius:2px;"> Gemini 열기
+          </a>
+          <a href="https://chatgpt.com" target="_blank" rel="noopener"
+             style="display:inline-flex;align-items:center;gap:0.3rem;padding:0.3rem 0.8rem;border-radius:0.4rem;background:#E9F6EC;border:1px solid #A7D7AC;color:#1A7F37;font-size:0.82rem;font-weight:600;text-decoration:none;">
+            <img src="https://chatgpt.com/favicon.ico" width="14" height="14" alt="" style="border-radius:2px;"> ChatGPT 열기
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -673,19 +693,26 @@ document.getElementById('btnCopyPrompt').addEventListener('click', function() {
 
 /* ── STEP2 맥락 가져오기 ── */
 document.getElementById('btnImportContext').addEventListener('click', function() {
+  var subject      = document.getElementById('subject').value.trim();
+  var activityName = document.getElementById('activityName').value.trim();
+  var activityDate = document.getElementById('activityDate').value.trim();
   var memo1 = document.getElementById('memo1').value.trim();
   var memo2 = document.getElementById('memo2').value.trim();
   var memo3 = document.getElementById('memo3').value.trim();
   var memo4 = document.getElementById('memo4').value.trim();
   var parts = [];
+  // STEP1
+  var step1 = [subject, activityName, activityDate].filter(Boolean).join(', ');
+  if (step1) parts.push('활동: ' + step1);
+  // STEP2
   if (memo1) parts.push('무엇을 했나: ' + memo1);
   if (memo2) parts.push('어떻게 했나: ' + memo2);
   if (memo3) parts.push('배운 점: ' + memo3);
   if (memo4) parts.push('느낀 점: ' + memo4);
-  if (!parts.length) { showToast('STEP 2를 먼저 작성해 주세요.', 'error', 2500); return; }
+  if (!parts.length) { showToast('STEP 1·2를 먼저 작성해 주세요.', 'error', 2500); return; }
   document.getElementById('elemContext').value = parts.join('\n');
   updatePreview();
-  showToast('STEP 2 내용을 가져왔습니다.', 'success', 2000);
+  showToast('STEP 1·2 내용을 가져왔습니다.', 'success', 2000);
 });
 
 /* ── 고급 기법 라디오 ── */
