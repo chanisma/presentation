@@ -572,6 +572,7 @@
   </div>
   <div class="action-bar-right">
     <span class="draft-label" id="draftLabel">임시저장: 대기 중</span>
+    <button class="btn" id="btnDraft" style="background:#EFF6FF;border-color:#93C5FD;color:#1D4ED8;">💾 임시저장</button>
     <button class="btn btn-danger" id="btnClear">초기화</button>
   </div>
 </div>
@@ -850,6 +851,13 @@ document.getElementById('btnSave').addEventListener('click', function() {
   saveDraft();
   var url = localStorage.getItem(URL_KEY) || DEFAULT_URL;
   showToast(url ? '저장 완료! TXT + 구글 시트 전송' : '저장 완료! TXT 파일 다운로드', 'success', 4000);
+});
+
+/* ── 초기화 버튼 ── */
+/* ── 임시저장 버튼 ── */
+document.getElementById('btnDraft').addEventListener('click', function() {
+  saveDraft();
+  showToast('임시저장되었습니다.', 'info', 2500);
 });
 
 /* ── 초기화 버튼 ── */
