@@ -125,8 +125,8 @@
   "hotPaths": [
     {
       "path": "정보\\글쓰기-프롬프트-설계\\index.html",
-      "accessCount": 36,
-      "lastAccessed": 1775379117522,
+      "accessCount": 64,
+      "lastAccessed": 1775438023299,
       "type": "file"
     },
     {
@@ -136,9 +136,21 @@
       "type": "file"
     },
     {
+      "path": "정보\\에이전틱AI-NotebookLM\\활동지.html",
+      "accessCount": 20,
+      "lastAccessed": 1775436262091,
+      "type": "file"
+    },
+    {
       "path": "인공지능과피지컬컴퓨팅\\팀프로젝트-기획\\form.html",
       "accessCount": 18,
       "lastAccessed": 1775396633381,
+      "type": "file"
+    },
+    {
+      "path": "정보\\에이전틱AI-NotebookLM\\index.html",
+      "accessCount": 16,
+      "lastAccessed": 1775433034319,
       "type": "file"
     },
     {
@@ -190,21 +202,39 @@
       "type": "file"
     },
     {
-      "path": "정보\\에이전틱AI-NotebookLM\\index.html",
-      "accessCount": 2,
-      "lastAccessed": 1775385064928,
-      "type": "file"
-    },
-    {
       "path": "인공지능과피지컬컴퓨팅\\웹캠AI-엑추에이터제어\\index.html",
       "accessCount": 2,
       "lastAccessed": 1775391638445,
       "type": "file"
     },
     {
+      "path": "정보\\글쓰기-프롬프트-설계\\활동지.html",
+      "accessCount": 2,
+      "lastAccessed": 1775439910647,
+      "type": "file"
+    },
+    {
       "path": "인공지능과피지컬컴퓨팅\\팀프로젝트-기획\\index.html",
       "accessCount": 1,
       "lastAccessed": 1775393314691,
+      "type": "file"
+    },
+    {
+      "path": "정보\\에이전틱AI-NotebookLM\\apps-script.js",
+      "accessCount": 1,
+      "lastAccessed": 1775436284223,
+      "type": "file"
+    },
+    {
+      "path": "정보\\글쓰기-프롬프트-설계",
+      "accessCount": 1,
+      "lastAccessed": 1775438011869,
+      "type": "directory"
+    },
+    {
+      "path": "정보\\글쓰기-프롬프트-설계\\apps-script.js",
+      "accessCount": 1,
+      "lastAccessed": 1775439571236,
       "type": "file"
     }
   ],
