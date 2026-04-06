@@ -612,20 +612,42 @@ function loadDraft() {
 
 /* ── 프롬프트 미리보기 자동 생성 ── */
 function updatePreview() {
-  var role    = document.getElementById('elemRole').value.trim();
-  var ctx     = document.getElementById('elemContext').value.trim();
-  var task    = document.getElementById('elemTask').value.trim();
-  var format  = document.getElementById('elemFormat').value.trim();
+  var role   = document.getElementById('elemRole').value.trim();
+  var ctx    = document.getElementById('elemContext').value.trim();
+  var task   = document.getElementById('elemTask').value.trim();
+  var format = document.getElementById('elemFormat').value.trim();
+  var adv    = (document.querySelector('input[name="advTech"]:checked') || {}).value || '';
+  var ex1    = document.getElementById('advEx1').value.trim();
+  var ex2    = document.getElementById('advEx2').value.trim();
+  var ex3    = document.getElementById('advEx3').value.trim();
+
   var parts = [];
-  if (role)   parts.push('[역할] ' + role);
-  if (ctx)    parts.push('[맥락] ' + ctx);
-  if (task)   parts.push('[과제] ' + task);
+  if (role) parts.push('[역할] ' + role);
+  if (ctx)  parts.push('[맥락] ' + ctx);
+
+  // 재료 제공: [재료]를 [맥락] 뒤, [과제] 앞에 삽입
+  if (adv === '재료 제공' && ex3) parts.push('[재료]\n' + ex3);
+
+  if (task) {
+    var taskLine = '[과제] ' + task;
+    if (adv === '예시 제시' && ex1)
+      taskLine += '\n아래 예시 문체로 작성해줘.\n[예시]\n' + ex1;
+    else if (adv === '절차 설명' && ex2)
+      taskLine += '\n' + ex2;
+    else if (adv === '재료 제공' && ex3)
+      taskLine += ' (위 재료를 바탕으로 작성해줘.)';
+    parts.push(taskLine);
+  }
+
   if (format) parts.push('[형식] ' + format);
+
   var preview = document.getElementById('promptPreview');
-  preview.textContent = parts.length ? parts.join('\n') : '4가지 요소를 입력하면 여기에 프롬프트가 완성됩니다.';
+  preview.textContent = parts.length
+    ? parts.join('\n')
+    : '4가지 요소를 입력하면 여기에 프롬프트가 완성됩니다.';
   scheduleDraft();
 }
-['elemRole','elemContext','elemTask','elemFormat'].forEach(function(id) {
+['elemRole','elemContext','elemTask','elemFormat','advEx1','advEx2','advEx3'].forEach(function(id) {
   document.getElementById(id).addEventListener('input', updatePreview);
 });
 
@@ -659,6 +681,7 @@ document.querySelectorAll('input[name="advTech"]').forEach(function(radio) {
       r.closest('.radio-opt').classList.toggle('selected', r.checked);
     });
     showAdvBlock(this.value);
+    updatePreview();
     scheduleDraft();
   });
 });
