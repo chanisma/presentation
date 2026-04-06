@@ -410,11 +410,12 @@
           <div class="elem-label">
             <span class="elem-badge eb-role">역할 Role</span>
           </div>
-          <textarea id="elemRole" rows="2" placeholder="나는 고2 학생이야."></textarea>
+          <textarea id="elemRole" rows="2" placeholder="예: 메타인지가 뛰어난 고등학교 학생&#10;예: 학생의 장점을 잘 찾는 객관적인 고등학교 교사&#10;예: 나는 고2 학생이야."></textarea>
         </div>
         <div class="elem-card">
           <div class="elem-label">
             <span class="elem-badge eb-ctx">맥락 Context</span>
+            <button type="button" id="btnImportContext" style="margin-left:auto;font-size:0.72rem;padding:0.1rem 0.5rem;border-radius:0.3rem;background:var(--accent-light);border:1px solid var(--accent-border);color:var(--accent);cursor:pointer;font-family:inherit;font-weight:600;white-space:nowrap;">STEP2 가져오기</button>
           </div>
           <textarea id="elemContext" rows="2" placeholder="2번에서 메모한 활동 내용을 여기에 요약해서 입력하세요."></textarea>
         </div>
@@ -422,13 +423,13 @@
           <div class="elem-label">
             <span class="elem-badge eb-task">과제 Task</span>
           </div>
-          <textarea id="elemTask" rows="2" placeholder="이 활동에 대한 자기평가문을 작성해줘."></textarea>
+          <textarea id="elemTask" rows="2" placeholder="예: 협업 능력이 뛰어난 학생의 자기평가문 작성&#10;예: 발표력이 인상적인 학생의 자기평가문 작성&#10;예: 문제 해결 역량이 드러나는 자기평가문 작성"></textarea>
         </div>
         <div class="elem-card">
           <div class="elem-label">
             <span class="elem-badge eb-format">형식 Format</span>
           </div>
-          <textarea id="elemFormat" rows="2" placeholder="200자 이내, 1인칭, 활동·배운 점·느낀 점 포함."></textarea>
+          <textarea id="elemFormat" rows="2" placeholder="예: 500자 이내, 1인칭, 활동·배운 점·느낀 점 포함&#10;예: 3인칭, 개조식 어미, 300자 이내&#10;예: 200자 이내, 자연스러운 문장체"></textarea>
         </div>
       </div>
     </div>
@@ -524,8 +525,8 @@
           <textarea id="fixError" rows="3" placeholder="AI가 잘못 표현하거나 과장한 내용을 적어보세요.&#10;(없으면 '없음')"></textarea>
         </div>
         <div class="field">
-          <label for="fixAdd">내 말로 추가할 내용</label>
-          <textarea id="fixAdd" rows="3" placeholder="AI 초안에 없는 실제 내 감정·경험·구체적 사실을 적어보세요."></textarea>
+          <label for="fixAdd">추가할 내용</label>
+          <textarea id="fixAdd" rows="3" placeholder="AI가 글로 작성하지 못한 중요한 내용을 적어 보세요."></textarea>
         </div>
       </div>
       <div class="field">
@@ -668,6 +669,23 @@ document.getElementById('btnCopyPrompt').addEventListener('click', function() {
     document.body.removeChild(ta);
     showToast('프롬프트가 복사되었습니다!', 'success', 2500);
   }
+});
+
+/* ── STEP2 맥락 가져오기 ── */
+document.getElementById('btnImportContext').addEventListener('click', function() {
+  var memo1 = document.getElementById('memo1').value.trim();
+  var memo2 = document.getElementById('memo2').value.trim();
+  var memo3 = document.getElementById('memo3').value.trim();
+  var memo4 = document.getElementById('memo4').value.trim();
+  var parts = [];
+  if (memo1) parts.push('무엇을 했나: ' + memo1);
+  if (memo2) parts.push('어떻게 했나: ' + memo2);
+  if (memo3) parts.push('배운 점: ' + memo3);
+  if (memo4) parts.push('느낀 점: ' + memo4);
+  if (!parts.length) { showToast('STEP 2를 먼저 작성해 주세요.', 'error', 2500); return; }
+  document.getElementById('elemContext').value = parts.join('\n');
+  updatePreview();
+  showToast('STEP 2 내용을 가져왔습니다.', 'success', 2000);
 });
 
 /* ── 고급 기법 라디오 ── */

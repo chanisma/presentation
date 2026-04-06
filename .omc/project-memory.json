@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1775369493517,
+  "lastScanned": 1775462653663,
   "projectRoot": "E:\\presentation",
   "techStack": {
     "languages": [
@@ -55,14 +55,14 @@
       "path": "AI전문적학습동아리",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1775369493463,
+      "lastAccessed": 1775462653584,
       "keyFiles": []
     },
     "test": {
       "path": "test",
       "purpose": "Test files",
       "fileCount": 34,
-      "lastAccessed": 1775369493465,
+      "lastAccessed": 1775462653611,
       "keyFiles": [
         "bash.exe.stackdump",
         "cycle4-image-report.json",
@@ -75,7 +75,7 @@
       "path": "unpacked-llm",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1775369493481,
+      "lastAccessed": 1775462653613,
       "keyFiles": [
         "[Content_Types].xml"
       ]
@@ -84,7 +84,7 @@
       "path": "_pptx_analysis",
       "purpose": null,
       "fileCount": 46,
-      "lastAccessed": 1775369493482,
+      "lastAccessed": 1775462653618,
       "keyFiles": [
         "capture-slides.js",
         "preview-slide01.png",
@@ -97,144 +97,36 @@
       "path": "인공지능과피지컬컴퓨팅",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1775369493483,
+      "lastAccessed": 1775462653620,
       "keyFiles": []
     },
     "정보": {
       "path": "정보",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1775369493483,
+      "lastAccessed": 1775462653624,
       "keyFiles": []
     },
     "정보화부": {
       "path": "정보화부",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1775369493485,
+      "lastAccessed": 1775462653626,
       "keyFiles": []
     },
     "프로그래밍": {
       "path": "프로그래밍",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1775369493485,
+      "lastAccessed": 1775462653627,
       "keyFiles": []
     }
   },
   "hotPaths": [
     {
-      "path": "정보\\글쓰기-프롬프트-설계\\index.html",
-      "accessCount": 64,
-      "lastAccessed": 1775438023299,
-      "type": "file"
-    },
-    {
-      "path": "pages.json",
-      "accessCount": 21,
-      "lastAccessed": 1775393344728,
-      "type": "file"
-    },
-    {
-      "path": "정보\\에이전틱AI-NotebookLM\\활동지.html",
-      "accessCount": 20,
-      "lastAccessed": 1775436262091,
-      "type": "file"
-    },
-    {
-      "path": "인공지능과피지컬컴퓨팅\\팀프로젝트-기획\\form.html",
-      "accessCount": 18,
-      "lastAccessed": 1775396633381,
-      "type": "file"
-    },
-    {
-      "path": "정보\\에이전틱AI-NotebookLM\\index.html",
-      "accessCount": 16,
-      "lastAccessed": 1775433034319,
-      "type": "file"
-    },
-    {
-      "path": ".claude\\commands\\references\\styles.md",
-      "accessCount": 8,
-      "lastAccessed": 1775383784282,
-      "type": "file"
-    },
-    {
-      "path": "프로그래밍\\10차시-JavaScript기초1\\index.html",
-      "accessCount": 6,
-      "lastAccessed": 1775390724588,
-      "type": "file"
-    },
-    {
-      "path": "",
-      "accessCount": 6,
-      "lastAccessed": 1775391625439,
-      "type": "directory"
-    },
-    {
-      "path": "C:\\Users\\chani\\.claude\\commands\\references\\styles.md",
-      "accessCount": 5,
-      "lastAccessed": 1775374996996,
-      "type": "file"
-    },
-    {
-      "path": ".claude\\commands\\references\\html-template.md",
-      "accessCount": 4,
-      "lastAccessed": 1775383794582,
-      "type": "file"
-    },
-    {
-      "path": "인공지능과피지컬컴퓨팅\\피지컬AI-아두이노연동\\index.html",
-      "accessCount": 4,
-      "lastAccessed": 1775391658519,
-      "type": "file"
-    },
-    {
-      "path": "프로그래밍\\9차시-예제를통해배우는CSS3\\index.html",
-      "accessCount": 3,
-      "lastAccessed": 1775369751127,
-      "type": "file"
-    },
-    {
-      "path": "프로그래밍\\11차시-JavaScript기초2\\index.html",
-      "accessCount": 3,
-      "lastAccessed": 1775390094342,
-      "type": "file"
-    },
-    {
-      "path": "인공지능과피지컬컴퓨팅\\웹캠AI-엑추에이터제어\\index.html",
-      "accessCount": 2,
-      "lastAccessed": 1775391638445,
-      "type": "file"
-    },
-    {
       "path": "정보\\글쓰기-프롬프트-설계\\활동지.html",
-      "accessCount": 2,
-      "lastAccessed": 1775439910647,
-      "type": "file"
-    },
-    {
-      "path": "인공지능과피지컬컴퓨팅\\팀프로젝트-기획\\index.html",
-      "accessCount": 1,
-      "lastAccessed": 1775393314691,
-      "type": "file"
-    },
-    {
-      "path": "정보\\에이전틱AI-NotebookLM\\apps-script.js",
-      "accessCount": 1,
-      "lastAccessed": 1775436284223,
-      "type": "file"
-    },
-    {
-      "path": "정보\\글쓰기-프롬프트-설계",
-      "accessCount": 1,
-      "lastAccessed": 1775438011869,
-      "type": "directory"
-    },
-    {
-      "path": "정보\\글쓰기-프롬프트-설계\\apps-script.js",
-      "accessCount": 1,
-      "lastAccessed": 1775439571236,
+      "accessCount": 11,
+      "lastAccessed": 1775463632281,
       "type": "file"
     }
   ],
