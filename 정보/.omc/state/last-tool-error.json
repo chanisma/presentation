@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"cd \\\"E:/presentation/정보\\\" && clasp push 2>&1\",\"description\":\"Push apps-script.js to Apps Script\"}",
+  "error": "Exit code 1\nUser has not enabled the Apps Script API. Enable it by visiting https://script.google.com/home/usersettings then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+  "timestamp": "2026-04-06T09:03:39.355Z",
+  "retry_count": 1
+}

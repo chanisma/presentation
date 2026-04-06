@@ -149,7 +149,12 @@
       "Bash(git add:*)",
       "Bash(git commit -m ':*)",
       "Bash(git push:*)",
-      "Skill(commit-commands:commit-push-pr)"
+      "Skill(commit-commands:commit-push-pr)",
+      "Bash(clasp --version)",
+      "Bash(clasp clone:*)",
+      "Bash(clasp deployments:*)",
+      "Bash(clasp push:*)",
+      "Bash(clasp deploy:*)"
     ]
   }
 }

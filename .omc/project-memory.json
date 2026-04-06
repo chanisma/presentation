@@ -152,6 +152,12 @@
       "accessCount": 1,
       "lastAccessed": 1775465774419,
       "type": "directory"
+    },
+    {
+      "path": "정보\\.claspignore",
+      "accessCount": 1,
+      "lastAccessed": 1775466204129,
+      "type": "file"
     }
   ],
   "userDirectives": []
