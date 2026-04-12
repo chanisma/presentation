@@ -157,6 +157,12 @@
       "type": "file"
     },
     {
+      "path": "정보\\딥러닝기초\\활동지.html",
+      "accessCount": 3,
+      "lastAccessed": 1776000137667,
+      "type": "file"
+    },
+    {
       "path": "프로그래밍\\10차시-JavaScript기초1\\index.html",
       "accessCount": 2,
       "lastAccessed": 1775993860775,
@@ -175,10 +181,10 @@
       "type": "directory"
     },
     {
-      "path": "정보\\딥러닝기초\\활동지.html",
+      "path": "정보",
       "accessCount": 1,
-      "lastAccessed": 1775999217051,
-      "type": "file"
+      "lastAccessed": 1776000104059,
+      "type": "directory"
     }
   ],
   "userDirectives": []
