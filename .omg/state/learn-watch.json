@@ -1,9 +1,12 @@
 {
-  "last_session_id": "381f97ab-45b1-4333-a006-efcece1f268a",
-  "last_event_key": "381f97ab-45b1-4333-a006-efcece1f268a:transcript:e11e19ff36f6c3c015e50df1d7fb844e13e2f91c83197e6fe5a92c0b3e2bb7c2",
+  "last_session_id": "5b8b2932-75c5-4915-bd57-5fbae703bd33",
+  "last_event_key": "5b8b2932-75c5-4915-bd57-5fbae703bd33:transcript:91e922ce19ab2c6511823a0ae208c15de5be90c90d4d2550aed8c859e09268a9",
   "last_prompted_session_id": "381f97ab-45b1-4333-a006-efcece1f268a",
-  "last_reason": "already-prompted-this-session",
-  "last_user_message_count": 32,
-  "last_actionable_message_count": 5,
-  "updated_at": "2026-03-29T13:19:31.743Z"
+  "last_reason": "short-session",
+  "last_prompted_at": "",
+  "last_user_message_count": 3,
+  "last_actionable_message_count": 0,
+  "deep_interview_lock_active": false,
+  "deep_interview_lock_source": "E:\\presentation\\.omg\\state\\deep-interview.json",
+  "updated_at": "2026-04-09T15:43:35.494Z"
 }

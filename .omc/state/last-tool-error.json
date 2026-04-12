@@ -1,7 +1,7 @@
 {
-  "tool_name": "Read",
-  "tool_input_preview": "{\"file_path\":\"E:\\\\presentation\\\\인공지능과피지컬컴퓨팅\\\\팀프로젝트-기획\\\\form.html\"}",
-  "error": "File content (17183 tokens) exceeds maximum allowed tokens (10000). Use offset and limit parameters to read specific portions of the file, or search for specific content instead of reading the whole file.",
-  "timestamp": "2026-04-07T04:58:24.468Z",
+  "tool_name": "mcp__claude-in-chrome__navigate",
+  "tool_input_preview": "{\"url\":\"file:///E:/presentation/정보/딥러닝기초/index.html\",\"tabId\":1878971492}",
+  "error": "Permission denied by user",
+  "timestamp": "2026-04-12T12:46:07.392Z",
   "retry_count": 1
 }

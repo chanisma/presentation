@@ -7,6 +7,7 @@
  * [등록된 활동지]
  *   - 'writing-prompt' (기본) → 자기평가문활동지 시트
  *   - 'notebooklm'            → 에이전틱AI활동지 시트
+ *   - 'deeplearning'          → 딥러닝기초활동지 시트 (이미지 3장 → Drive 저장)
  *
  * [새 활동지 추가 방법]
  *   1. 활동지 HTML의 getFormData()에 source: '식별자' 추가
@@ -29,7 +30,47 @@ function doPost(e) {
     var data = JSON.parse(e.postData.contents);
     var ss   = SpreadsheetApp.getActiveSpreadsheet();
 
-    if (data.source === 'notebooklm') {
+    if (data.source === 'deeplearning') {
+      // ── 딥러닝 기초 활동지 (이미지 3장 포함) ──
+      var sheet3 = ss.getSheetByName('딥러닝기초활동지') || ss.insertSheet('딥러닝기초활동지');
+      if (sheet3.getLastRow() === 0) {
+        sheet3.appendRow([
+          '제출시각', '이름', '반/번호', '날짜',
+          '테스트결과1', '테스트결과2', '테스트결과3',
+          'Q1_틀린이유', 'Q2_데이터양', 'Q3_고양이', 'Q4_전이학습'
+        ]);
+        var h3 = sheet3.getRange(1, 1, 1, 11);
+        h3.setBackground('#1E2033');
+        h3.setFontColor('#FFFFFF');
+        h3.setFontWeight('bold');
+        sheet3.setFrozenRows(1);
+      }
+
+      // 이미지 처리 (최대 3장)
+      var imgUrl1 = data.image1 ? saveImageToDrive(data.image1, (data.studentName || 'unknown') + '_1') : '';
+      var imgUrl2 = data.image2 ? saveImageToDrive(data.image2, (data.studentName || 'unknown') + '_2') : '';
+      var imgUrl3 = data.image3 ? saveImageToDrive(data.image3, (data.studentName || 'unknown') + '_3') : '';
+
+      sheet3.appendRow([
+        new Date().toLocaleString('ko-KR'),
+        data.studentName || '',
+        data.classInfo   || '',
+        data.today       || '',
+        imgUrl1 ? '=IMAGE("' + imgUrl1 + '")' : '',
+        imgUrl2 ? '=IMAGE("' + imgUrl2 + '")' : '',
+        imgUrl3 ? '=IMAGE("' + imgUrl3 + '")' : '',
+        data.q1 || '',
+        data.q2 || '',
+        data.q3 || '',
+        data.q4 || ''
+      ]);
+
+      // 이미지가 있으면 행 높이 키우기
+      if (imgUrl1 || imgUrl2 || imgUrl3) {
+        sheet3.setRowHeight(sheet3.getLastRow(), 150);
+      }
+
+    } else if (data.source === 'notebooklm') {
       // ── 에이전틱AI·NotebookLM 활동지 ──
       var sheet2 = ss.getSheetByName('에이전틱AI활동지') || ss.insertSheet('에이전틱AI활동지');
       if (sheet2.getLastRow() === 0) {
@@ -140,4 +181,26 @@ function doPost(e) {
       .createTextOutput(JSON.stringify({ status: 'error', message: err.message }))
       .setMimeType(ContentService.MimeType.JSON);
   }
+}
+
+/**
+ * base64 이미지를 Google Drive에 저장하고 공유 URL 반환
+ * @param {string} base64String - "data:image/jpeg;base64,..." 형태
+ * @param {string} prefix - 파일명 앞에 붙일 구분자 (학번 등)
+ */
+function saveImageToDrive(base64String, prefix) {
+  var match = base64String.match(/^data:([^;]+);base64,(.+)$/);
+  if (!match) return '';
+
+  var mimeType = match[1];
+  var ext = mimeType.split('/')[1] === 'jpeg' ? 'jpg' : mimeType.split('/')[1];
+  var blob = Utilities.newBlob(
+    Utilities.base64Decode(match[2]),
+    mimeType,
+    prefix + '_' + new Date().getTime() + '.' + ext
+  );
+
+  var file = DriveApp.createFile(blob);
+  file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  return file.getUrl();
 }
