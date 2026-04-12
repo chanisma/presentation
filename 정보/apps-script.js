@@ -46,19 +46,20 @@ function doPost(e) {
         sheet3.setFrozenRows(1);
       }
 
-      // 이미지 처리 (최대 3장)
-      var imgUrl1 = data.image1 ? saveImageToDrive(data.image1, (data.studentName || 'unknown') + '_1') : '';
-      var imgUrl2 = data.image2 ? saveImageToDrive(data.image2, (data.studentName || 'unknown') + '_2') : '';
-      var imgUrl3 = data.image3 ? saveImageToDrive(data.image3, (data.studentName || 'unknown') + '_3') : '';
+      // 이미지 처리 (각각 try-catch로 감싸서 실패해도 텍스트는 저장)
+      var imgUrl1 = '', imgUrl2 = '', imgUrl3 = '';
+      try { if (data.image1) imgUrl1 = saveImageToDrive(data.image1, (data.studentName || 'unknown') + '_1'); } catch(imgErr1) { imgUrl1 = '이미지저장실패'; }
+      try { if (data.image2) imgUrl2 = saveImageToDrive(data.image2, (data.studentName || 'unknown') + '_2'); } catch(imgErr2) { imgUrl2 = '이미지저장실패'; }
+      try { if (data.image3) imgUrl3 = saveImageToDrive(data.image3, (data.studentName || 'unknown') + '_3'); } catch(imgErr3) { imgUrl3 = '이미지저장실패'; }
 
       sheet3.appendRow([
         new Date().toLocaleString('ko-KR'),
         data.studentName || '',
         data.classInfo   || '',
         data.today       || '',
-        imgUrl1 ? '=IMAGE("' + imgUrl1 + '")' : '',
-        imgUrl2 ? '=IMAGE("' + imgUrl2 + '")' : '',
-        imgUrl3 ? '=IMAGE("' + imgUrl3 + '")' : '',
+        imgUrl1 && imgUrl1 !== '이미지저장실패' ? '=IMAGE("' + imgUrl1 + '")' : imgUrl1,
+        imgUrl2 && imgUrl2 !== '이미지저장실패' ? '=IMAGE("' + imgUrl2 + '")' : imgUrl2,
+        imgUrl3 && imgUrl3 !== '이미지저장실패' ? '=IMAGE("' + imgUrl3 + '")' : imgUrl3,
         data.q1 || '',
         data.q2 || '',
         data.q3 || '',
