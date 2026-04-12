@@ -203,6 +203,18 @@
             {"label": "조건문", "color": "purple"}
           ],
           "gradient": "linear-gradient(90deg, #F0DB4F, #1A1A2E)"
+        },
+        {
+          "title": "12차시 - JavaScript 실전: addEventListener",
+          "path": "프로그래밍/12차시-JavaScript실전-addEventListener/index.html",
+          "emoji": "🎯",
+          "description": "classList, 다크 모드 토글, input 이벤트 글자 수 카운터, FAQ 아코디언(querySelectorAll+forEach), keydown 키보드 단축키 등 실전 addEventListener 패턴 5가지를 실습합니다.",
+          "tags": [
+            {"label": "addEventListener", "color": "orange"},
+            {"label": "classList", "color": "blue"},
+            {"label": "실전 패턴", "color": "purple"}
+          ],
+          "gradient": "linear-gradient(90deg, #1A1A2E, #E8FF3B)"
         }
       ]
     },
