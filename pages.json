@@ -648,6 +648,18 @@
             { "label": "1차시", "color": "orange" }
           ],
           "gradient": "linear-gradient(90deg, #2563EB, #F97316)"
+        },
+        {
+          "title": "딥러닝 기초",
+          "path": "정보/딥러닝기초/index.html",
+          "emoji": "🧠",
+          "description": "AI/ML/DL 개념 구분, 인공신경망 시각화, 전이학습 원리를 배우고 Teachable Machine으로 치와와-머핀 분류 AI를 직접 만드는 실습 수업입니다.",
+          "tags": [
+            { "label": "딥러닝", "color": "purple" },
+            { "label": "Teachable Machine", "color": "blue" },
+            { "label": "지도학습", "color": "orange" }
+          ],
+          "gradient": "linear-gradient(90deg, #1E2033, #2DD4A8)"
         }
       ]
     },
