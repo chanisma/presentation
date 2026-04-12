@@ -646,15 +646,8 @@ darkBtn.<span class="fn">addEventListener</span>(<span class="str">"click"</span
           <div class="anatomy-box">
             <span class="ah-el">textarea</span><span class="ah-plain">.</span><span class="ah-name">addEventListener</span><span class="ah-plain">(</span><span class="ah-ev">"input"</span><span class="ah-plain">, </span><span class="ah-kw">function</span><span class="ah-plain">() { ... });</span>
           </div>
-          <div class="bento-grid bento-grid-2">
-            <div class="bento-cell bento-cell--teal">
-              <h3><code>event</code> 객체</h3>
-              <p>이벤트가 발생하면 브라우저가 자동으로 <strong>event 객체</strong>를 전달합니다</p>
-            </div>
-            <div class="bento-cell bento-cell--dark">
-              <h3><code>event.target.value</code></h3>
-              <p>현재 입력 필드에 적힌 <strong>텍스트 전체</strong>를 가져옵니다</p>
-            </div>
+          <div class="highlight-box">
+            <code>input</code> 이벤트 안에서 <code>textarea.value</code>를 쓰면 <strong>현재 입력된 텍스트 전체</strong>를 가져올 수 있습니다
           </div>
         </div>
       </div>
@@ -685,12 +678,6 @@ darkBtn.<span class="fn">addEventListener</span>(<span class="str">"click"</span
 textArea.<span class="fn">addEventListener</span>(<span class="str">"input"</span>, <span class="kw">function</span>() {
   <span class="kw">let</span> length = textArea.<span class="prop">value</span>.<span class="prop">length</span>;
   counter.<span class="prop">textContent</span> = length + <span class="str">" / 100"</span>;
-
-  <span class="kw">if</span> (length > <span class="val">80</span>) {
-    counter.<span class="prop">style</span>.<span class="prop">color</span> = <span class="str">"#FF6B6B"</span>;
-  } <span class="kw">else</span> {
-    counter.<span class="prop">style</span>.<span class="prop">color</span> = <span class="str">"#4A4A4A"</span>;
-  }
 });</div>
             </div>
             <div>
@@ -727,24 +714,23 @@ textArea.<span class="fn">addEventListener</span>(<span class="str">"input"</spa
             <h2><span class="section-icon" aria-hidden="true">◉</span> 챌린지 — 기능 업그레이드</h2>
           </div>
           <div class="challenge-box">
-            <div class="chal-label">CHALLENGE A</div>
-            <div class="chal-title">80자 초과 시 배경색도 경고색으로 변경</div>
+            <div class="chal-label">CHALLENGE</div>
+            <div class="chal-title">80자 넘으면 글자 색을 빨간색으로 바꾸기</div>
             <div class="chal-desc">
-              힌트: <code>textArea.style.backgroundColor</code>를 조건에 따라 바꿔보세요<br>
-              경고색 추천: <code>"#FFF0F0"</code> (연한 빨강)
+              힌트: <code>if (length > 80)</code> 조건문 안에서 <code>counter.style.color</code>를 변경하세요
             </div>
           </div>
-          <div class="challenge-box">
-            <div class="chal-label">CHALLENGE B</div>
-            <div class="chal-title">"남은 글자 수"로 표시 변경</div>
-            <div class="chal-desc">
-              현재: <code>23 / 100</code> → 변경: <code>77자 남음</code><br>
-              힌트: <code>100 - length</code> 를 활용하세요
-            </div>
-          </div>
-          <div class="code-block" style="margin-top:0.3rem;"><span class="cmt">// Challenge B 힌트</span>
-<span class="kw">let</span> remaining = <span class="val">100</span> - length;
-counter.<span class="prop">textContent</span> = remaining + <span class="str">"자 남음"</span>;</div>
+          <div class="code-block" style="margin-top:0.3rem;">textArea.<span class="fn">addEventListener</span>(<span class="str">"input"</span>, <span class="kw">function</span>() {
+  <span class="kw">let</span> length = textArea.<span class="prop">value</span>.<span class="prop">length</span>;
+  counter.<span class="prop">textContent</span> = length + <span class="str">" / 100"</span>;
+
+  <span class="cmt">// 👇 여기를 채워보세요!</span>
+  <span class="kw">if</span> (length > <span class="val">80</span>) {
+    counter.<span class="prop">style</span>.<span class="prop">color</span> = <span class="str">"______"</span>;  <span class="cmt">// 빨간색</span>
+  } <span class="kw">else</span> {
+    counter.<span class="prop">style</span>.<span class="prop">color</span> = <span class="str">"______"</span>;  <span class="cmt">// 기본 색</span>
+  }
+});</div>
         </div>
       </div>
     </div>
@@ -765,13 +751,11 @@ counter.<span class="prop">textContent</span> = remaining + <span class="str">"�
           <div class="two-col">
             <div>
               <div class="vs-label vs-label--bad">BAD — 하나씩 등록</div>
-              <div class="code-block code-block--sm"><span class="cmt">// 5개면 5번 반복... 😩</span>
-<span class="kw">let</span> q1 = document.<span class="fn">getElementById</span>(<span class="str">"q1"</span>);
-<span class="kw">let</span> q2 = document.<span class="fn">getElementById</span>(<span class="str">"q2"</span>);
-<span class="kw">let</span> q3 = document.<span class="fn">getElementById</span>(<span class="str">"q3"</span>);
+              <div class="code-block code-block--sm"><span class="cmt">// 5개면 5번 반복...</span>
 q1.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, ...);
 q2.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, ...);
-q3.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, ...);</div>
+q3.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, ...);
+<span class="cmt">// ... 계속 반복 😩</span></div>
             </div>
             <div>
               <div class="vs-label vs-label--good">GOOD — 한꺼번에 등록</div>
@@ -882,29 +866,22 @@ questions.<span class="fn">forEach</span>(<span class="kw">function</span>(q) {
                 <div class="task-item">
                   <div class="task-num">1</div>
                   <div>
-                    <h3>모든 .faq-question 선택</h3>
+                    <h3>모든 질문 요소 선택</h3>
                     <p><code>querySelectorAll</code>로 한꺼번에</p>
                   </div>
                 </div>
                 <div class="task-item">
                   <div class="task-num task-num--teal">2</div>
                   <div>
-                    <h3>각 질문에 click 이벤트 등록</h3>
-                    <p><code>forEach</code>로 반복 등록</p>
+                    <h3>forEach로 이벤트 등록</h3>
+                    <p>각 질문에 click 이벤트 연결</p>
                   </div>
                 </div>
                 <div class="task-item">
                   <div class="task-num">3</div>
                   <div>
-                    <h3>부모에 active 토글</h3>
-                    <p><code>parentElement</code>로 부모 찾기</p>
-                  </div>
-                </div>
-                <div class="task-item">
-                  <div class="task-num task-num--teal">4</div>
-                  <div>
-                    <h3>CSS가 자동 애니메이션</h3>
-                    <p><code>transition</code>으로 부드럽게</p>
+                    <h3>active 클래스 토글</h3>
+                    <p>CSS가 자동으로 펼침/접힘</p>
                   </div>
                 </div>
               </div>
@@ -929,30 +906,14 @@ questions.<span class="fn">forEach</span>(<span class="kw">function</span>(q) {
           </div>
           <div class="challenge-box">
             <div class="chal-label">CHALLENGE</div>
-            <div class="chal-title">하나를 열면 나머지는 닫히게 만들기</div>
+            <div class="chal-title">FAQ 항목을 3개 이상으로 늘려보기</div>
             <div class="chal-desc">
-              현재: 여러 개를 동시에 열 수 있음<br>
-              목표: 하나를 클릭하면 나머지가 자동으로 닫힘<br>
-              힌트: 클릭 시 먼저 <strong>모든 .faq-item에서 active를 제거</strong>한 뒤, 현재 것만 toggle
+              HTML에 <code>&lt;div class="faq-item"&gt;</code>을 복사해서 질문과 답변을 추가하세요.<br>
+              JS 코드는 수정할 필요 없이 자동으로 작동합니다!
             </div>
           </div>
-          <div class="code-block" style="margin-top:0.3rem;">questions.<span class="fn">forEach</span>(<span class="kw">function</span>(q) {
-  q.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, <span class="kw">function</span>() {
-    <span class="kw">let</span> item = q.<span class="prop">parentElement</span>;
-
-    <span class="cmt">// 👇 빈칸을 채워보세요!</span>
-    <span class="cmt">// 1. 모든 faq-item에서 active 제거</span>
-    document.<span class="fn">querySelectorAll</span>(<span class="str">"______"</span>)
-      .<span class="fn">forEach</span>(<span class="kw">function</span>(el) {
-        el.<span class="prop">classList</span>.<span class="fn">remove</span>(<span class="str">"______"</span>);
-      });
-
-    <span class="cmt">// 2. 현재 것만 토글</span>
-    item.<span class="prop">classList</span>.<span class="fn">toggle</span>(<span class="str">"active"</span>);
-  });
-});</div>
-          <div class="highlight-box" style="font-size:0.82rem;">
-            정답: <code>".faq-item"</code>과 <code>"active"</code> — 전체를 닫고, 현재만 열기!
+          <div class="highlight-box">
+            <code>querySelectorAll</code> 덕분에 HTML만 추가하면 <strong>JS 코드 수정 없이</strong> 자동으로 이벤트가 등록됩니다
           </div>
         </div>
       </div>
@@ -1027,41 +988,21 @@ questions.<span class="fn">forEach</span>(<span class="kw">function</span>(q) {
             <div class="section-badge">STEP 5 · 키보드 단축키</div>
             <h2><span class="section-icon" aria-hidden="true">✦</span> 키보드 단축키 실습</h2>
           </div>
-          <div class="two-col">
-            <div>
-              <div class="col-label"><strong style="font-size:0.88rem;">예제 1: Escape 키로 알림 닫기</strong></div>
-              <div class="code-block code-block--sm">document.<span class="fn">addEventListener</span>(<span class="str">"keydown"</span>,
-  <span class="kw">function</span>(event) {
-
-  <span class="kw">if</span> (event.<span class="prop">key</span> === <span class="str">"Escape"</span>) {
-    <span class="kw">let</span> alertBox = document
-      .<span class="fn">getElementById</span>(<span class="str">"alert-box"</span>);
-    alertBox.<span class="prop">style</span>.<span class="prop">display</span> = <span class="str">"none"</span>;
-  }
-});</div>
-              <div class="result-preview" style="margin-top:0.3rem;">
-                <div class="rp-label">ESC 누르면</div>
-                <div class="rp-output">알림 박스가 사라집니다</div>
-              </div>
-            </div>
-            <div>
-              <div class="col-label"><strong style="font-size:0.88rem;">예제 2: 방향키로 배경색 변경</strong></div>
-              <div class="code-block code-block--sm">document.<span class="fn">addEventListener</span>(<span class="str">"keydown"</span>,
-  <span class="kw">function</span>(event) {
+          <div class="col-label"><strong style="font-size:0.88rem;">예제: 방향키로 배경색 변경</strong></div>
+          <div class="code-block">document.<span class="fn">addEventListener</span>(<span class="str">"keydown"</span>, <span class="kw">function</span>(event) {
 
   <span class="kw">if</span> (event.<span class="prop">key</span> === <span class="str">"ArrowUp"</span>) {
-    document.<span class="prop">body</span>.<span class="prop">style</span>
-      .<span class="prop">backgroundColor</span> = <span class="str">"#4ECDC4"</span>;
+    document.<span class="prop">body</span>.<span class="prop">style</span>.<span class="prop">backgroundColor</span> = <span class="str">"#4ECDC4"</span>;
   } <span class="kw">else if</span> (event.<span class="prop">key</span> === <span class="str">"ArrowDown"</span>) {
-    document.<span class="prop">body</span>.<span class="prop">style</span>
-      .<span class="prop">backgroundColor</span> = <span class="str">"#FF6B6B"</span>;
+    document.<span class="prop">body</span>.<span class="prop">style</span>.<span class="prop">backgroundColor</span> = <span class="str">"#FF6B6B"</span>;
   }
 });</div>
-              <div class="result-preview" style="margin-top:0.3rem;">
-                <div class="rp-label">방향키 결과</div>
-                <div class="rp-output">↑ = <span style="color:#4ECDC4;">민트</span> &nbsp; ↓ = <span style="color:#FF6B6B;">코랄</span></div>
-              </div>
-            </div>
+          <div class="result-preview" style="margin-top:0.4rem;">
+            <div class="rp-label">방향키 결과</div>
+            <div class="rp-output">↑ = <span style="color:#4ECDC4;">민트</span> &nbsp; ↓ = <span style="color:#FF6B6B;">코랄</span></div>
+          </div>
+          <div class="highlight-box" style="font-size:0.82rem;">
+            <code>document</code>에 이벤트를 등록하면 페이지 어디서든 키보드 입력을 감지합니다
           </div>
         </div>
       </div>
@@ -1080,25 +1021,17 @@ questions.<span class="fn">forEach</span>(<span class="kw">function</span>(q) {
             <h2><span class="section-icon" aria-hidden="true">◉</span> 챌린지 — 키보드 단축키 확장</h2>
           </div>
           <div class="challenge-box">
-            <div class="chal-label">CHALLENGE A</div>
+            <div class="chal-label">CHALLENGE</div>
             <div class="chal-title">"d" 키를 누르면 다크 모드 토글</div>
             <div class="chal-desc">
               STEP 2에서 만든 다크 모드를 키보드로도 조작할 수 있게 만드세요<br>
               힌트: <code>event.key === "d"</code> 조건 + <code>classList.toggle("dark-mode")</code>
             </div>
           </div>
-          <div class="challenge-box">
-            <div class="chal-label">CHALLENGE B</div>
-            <div class="chal-title">"1", "2", "3" 숫자키로 테마 색상 전환</div>
-            <div class="chal-desc">
-              1 = <span style="color:#4ECDC4;">민트</span>, 2 = <span style="color:#A78BFA;">보라</span>, 3 = <span style="color:#FF6B6B;">코랄</span><br>
-              힌트: <code>event.key === "1"</code>로 숫자 키도 감지 가능
-            </div>
-          </div>
-          <div class="code-block" style="margin-top:0.3rem;"><span class="cmt">// Challenge A 힌트</span>
+          <div class="code-block" style="margin-top:0.3rem;"><span class="cmt">// 빈칸을 채워보세요!</span>
 document.<span class="fn">addEventListener</span>(<span class="str">"keydown"</span>, <span class="kw">function</span>(event) {
-  <span class="kw">if</span> (event.<span class="prop">key</span> === <span class="str">"d"</span>) {
-    document.<span class="prop">body</span>.<span class="prop">classList</span>.<span class="fn">toggle</span>(<span class="str">"dark-mode"</span>);
+  <span class="kw">if</span> (event.<span class="prop">key</span> === <span class="str">"______"</span>) {
+    document.<span class="prop">body</span>.<span class="prop">classList</span>.<span class="fn">toggle</span>(<span class="str">"______"</span>);
   }
 });</div>
         </div>
@@ -1146,46 +1079,48 @@ document.<span class="fn">addEventListener</span>(<span class="str">"keydown"</s
         <div class="browser-content" tabindex="-1">
           <div class="section-header">
             <div class="section-badge">종합 실습</div>
-            <h2><span class="section-icon" aria-hidden="true">◉</span> 인터랙티브 프로필 카드 만들기</h2>
-            <p class="section-subtitle">오늘 배운 기능 3가지 이상을 조합한 미니 프로젝트</p>
+            <h2><span class="section-icon" aria-hidden="true">◉</span> 다크 모드 + 글자 수 카운터 조합</h2>
+            <p class="section-subtitle">오늘 배운 기능 2가지를 하나의 페이지에 적용합니다</p>
           </div>
           <div class="two-col--6040" style="display:grid;grid-template-columns:6fr 4fr;gap:0.8rem;">
             <div>
-              <div class="code-block code-block--xs"><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"profile-card"</span><span class="tag">&gt;</span>
-  <span class="tag">&lt;h2&gt;</span>나의 프로필<span class="tag">&lt;/h2&gt;</span>
+              <div class="code-block code-block--xs"><span class="tag">&lt;body&gt;</span>
+  <span class="tag">&lt;h1&gt;</span>나의 프로필<span class="tag">&lt;/h1&gt;</span>
   <span class="tag">&lt;button</span> <span class="attr">id</span>=<span class="str">"darkBtn"</span><span class="tag">&gt;</span>🌙 다크 모드<span class="tag">&lt;/button&gt;</span>
-  <span class="cmt">&lt;!-- FAQ 아코디언 --&gt;</span>
-  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"faq-item"</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"faq-question"</span><span class="tag">&gt;</span>취미<span class="tag">&lt;/div&gt;</span>
-    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"faq-answer"</span><span class="tag">&gt;</span>코딩, 음악 감상<span class="tag">&lt;/div&gt;</span>
-  <span class="tag">&lt;/div&gt;</span>
-  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"faq-item"</span><span class="tag">&gt;</span>
-    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"faq-question"</span><span class="tag">&gt;</span>좋아하는 과목<span class="tag">&lt;/div&gt;</span>
-    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"faq-answer"</span><span class="tag">&gt;</span>정보, 수학<span class="tag">&lt;/div&gt;</span>
-  <span class="tag">&lt;/div&gt;</span>
-  <span class="cmt">&lt;!-- 한줄 소개 + 글자 수 --&gt;</span>
-  <span class="tag">&lt;textarea</span> <span class="attr">id</span>=<span class="str">"bio"</span> <span class="attr">maxlength</span>=<span class="str">"50"</span><span class="tag">&gt;&lt;/textarea&gt;</span>
+  <span class="tag">&lt;textarea</span> <span class="attr">id</span>=<span class="str">"bio"</span> <span class="attr">maxlength</span>=<span class="str">"50"</span>
+    <span class="attr">placeholder</span>=<span class="str">"한줄 소개..."</span><span class="tag">&gt;&lt;/textarea&gt;</span>
   <span class="tag">&lt;p</span> <span class="attr">id</span>=<span class="str">"bioCount"</span><span class="tag">&gt;</span>0 / 50<span class="tag">&lt;/p&gt;</span>
-<span class="tag">&lt;/div&gt;</span>
-<span class="cmt">&lt;!-- JS: 다크 모드 + 아코디언 + 글자 수 + "D" 키 단축키 --&gt;</span></div>
+
+  <span class="tag">&lt;script&gt;</span>
+  <span class="cmt">// 1. 다크 모드</span>
+  <span class="kw">let</span> darkBtn = document.<span class="fn">getElementById</span>(<span class="str">"darkBtn"</span>);
+  darkBtn.<span class="fn">addEventListener</span>(<span class="str">"click"</span>, <span class="kw">function</span>() {
+    document.<span class="prop">body</span>.<span class="prop">classList</span>.<span class="fn">toggle</span>(<span class="str">"dark-mode"</span>);
+  });
+
+  <span class="cmt">// 2. 글자 수 카운터</span>
+  <span class="kw">let</span> bio = document.<span class="fn">getElementById</span>(<span class="str">"bio"</span>);
+  <span class="kw">let</span> count = document.<span class="fn">getElementById</span>(<span class="str">"bioCount"</span>);
+  bio.<span class="fn">addEventListener</span>(<span class="str">"input"</span>, <span class="kw">function</span>() {
+    count.<span class="prop">textContent</span> = bio.<span class="prop">value</span>.<span class="prop">length</span> + <span class="str">" / 50"</span>;
+  });
+  <span class="tag">&lt;/script&gt;</span>
+<span class="tag">&lt;/body&gt;</span></div>
             </div>
             <div>
               <div class="col-label"><strong style="font-size:0.88rem;">완성 미리보기</strong></div>
               <div class="demo-preview">
                 <p style="font-size:0.95rem;font-weight:700;margin-bottom:0.4rem;">나의 프로필</p>
                 <div class="demo-btn" style="background:var(--style-accent3);color:var(--style-primary);margin-bottom:0.4rem;">🌙 다크 모드</div>
-                <div class="faq-demo-item">
-                  <div class="faq-demo-q">▶ 취미</div>
-                </div>
-                <div class="faq-demo-item">
-                  <div class="faq-demo-q">▼ 좋아하는 과목</div>
-                  <div class="faq-demo-a">정보, 수학</div>
-                </div>
-                <div class="demo-textarea" style="height:2rem;margin-top:0.4rem;font-size:0.72rem;">코딩을 좋아하는 고1입니다</div>
+                <div class="demo-textarea" style="height:2.5rem;margin-top:0.4rem;font-size:0.72rem;">코딩을 좋아하는 고1입니다</div>
                 <div class="demo-counter" style="color:var(--style-accent3);">15 / 50</div>
               </div>
               <div class="highlight-box" style="font-size:0.8rem;margin-top:0.35rem;">
-                <strong>사용 기능:</strong> 다크 모드 + 아코디언 + 글자 수 + D키 단축키
+                <strong>핵심:</strong> 같은 페이지에 <code>click</code>과 <code>input</code> 이벤트를 함께 사용!
+              </div>
+              <div class="bento-cell bento-cell--light" style="margin-top:0.35rem;">
+                <h3 style="font-size:0.88rem;">이 코드를 복사해서</h3>
+                <p style="font-size:0.82rem;">본인 웹페이지에 붙여넣으면 바로 작동합니다</p>
               </div>
             </div>
           </div>
