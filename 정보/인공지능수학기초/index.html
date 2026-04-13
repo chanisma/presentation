@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>if(!location.pathname.endsWith('/')&&!location.pathname.endsWith('.html')){var b=document.createElement('base');b.href=location.pathname+'/';document.head.appendChild(b);}</script>
+  <title>인공지능 수학 기초</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* ===== 1. Reset & CSS Variables ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --style-bg: #1A1208;
+      --style-primary: #C9A84C;
+      --style-accent: #8A7340;
+      --style-text: #D4BF9A;
+      --style-text-secondary: #9A8563;
+      --style-border: #3D2E10;
+      --style-card-bg: rgba(61, 46, 16, 0.35);
+      --style-card-border: rgba(201, 168, 76, 0.2);
+      --style-highlight-bg: rgba(201, 168, 76, 0.1);
+    }
+
+    /* ===== 2. Base Typography ===== */
+    html, body {
+      font-size: clamp(16px, 1.5vw, 28px);
+      font-family: 'EB Garamond', 'Noto Sans KR', Georgia, serif;
+      background: var(--style-bg);
+      color: var(--style-text);
+      overflow: hidden;
+      height: 100%;
+      line-height: 1.7;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', 'Noto Sans KR', Georgia, serif;
+      color: var(--style-primary);
+      line-height: 1.3;
+    }
+    h1 { font-size: 2.4rem; font-weight: 700; font-style: italic; }
+    h2 { font-size: 1.5rem; font-weight: 700; }
+    h3 { font-size: 1.15rem; font-weight: 600; }
+    p { font-size: 1rem; }
+
+    /* ===== A11y ===== */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+    .skip-link {
+      position: absolute; top: -40px; left: 0;
+      background: var(--style-primary); color: var(--style-bg);
+      padding: 8px 16px; z-index: 9999; font-size: 14px;
+      border-radius: 0 0 4px 0; transition: top 0.2s;
+    }
+    .skip-link:focus { top: 0; }
+    :focus-visible { outline: 3px solid var(--style-primary); outline-offset: 2px; border-radius: 4px; }
+    :focus:not(:focus-visible) { outline: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ===== 3. Progress Bar ===== */
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px;
+      background: linear-gradient(90deg, var(--style-accent), var(--style-primary));
+      width: 0; z-index: 1000;
+      will-change: width; transform: translateZ(0);
+      transition: width 0.3s ease;
+    }
+
+    /* ===== 4. Slide Container ===== */
+    .presentation {
+      height: calc(100vh - 42px);
+      position: relative; overflow: hidden;
+    }
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0.8rem 1.2rem;
+      opacity: 0; pointer-events: none;
+      transform: translateZ(0); backface-visibility: hidden;
+    }
+    .slide.active {
+      opacity: 1; pointer-events: auto;
+      animation: slideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes popUp {
+      from { opacity: 0; transform: translateY(20px) scale(0.95); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ===== 5. Browser Card Chrome — minimal style ===== */
+    .browser-card {
+      width: 100%; max-width: 1200px;
+      max-height: calc(100vh - 4.8rem);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+      background: transparent;
+      border: 1px solid var(--style-card-border);
+      border-radius: 0.6rem;
+      position: relative;
+    }
+    .browser-card::before {
+      content: '';
+      position: absolute; inset: 6px;
+      border: 1px solid rgba(201, 168, 76, 0.1);
+      border-radius: 0.4rem;
+      pointer-events: none;
+    }
+    .browser-topbar {
+      display: flex; align-items: center; justify-content: center;
+      padding: 0.45rem 1rem;
+      border-bottom: 1px solid var(--style-card-border);
+      background: rgba(26, 18, 8, 0.6);
+    }
+    .topbar-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.82rem; letter-spacing: 0.15em;
+      color: var(--style-accent); text-transform: uppercase;
+      margin: 0 auto;
+    }
+    .browser-content {
+      flex: 1; overflow-y: auto;
+      padding: 1rem 2rem 0.8rem;
+    }
+
+    /* cover/end frameless */
+    .browser-card--frameless {
+      border: none; background: transparent;
+    }
+    .browser-card--frameless::before { display: none; }
+    .browser-card--frameless .browser-topbar { display: none; }
+
+    /* ===== Gold decorative rule ===== */
+    .gold-rule {
+      width: 4rem; height: 1px; margin: 0.5rem auto;
+      background: linear-gradient(90deg, transparent, var(--style-primary), transparent);
+    }
+
+    /* ===== 6. Section Header ===== */
+    .section-header { margin-bottom: 0.6rem; }
+    .section-header h2 {
+      font-style: italic;
+      letter-spacing: 0.03em;
+    }
+    .section-icon {
+      display: inline; font-size: 1.2em;
+      margin-right: 0.4em; vertical-align: -0.1em;
+      font-style: normal;
+    }
+    .section-subtitle {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.82rem; color: var(--style-accent);
+      letter-spacing: 0.08em; margin-top: 0.2rem;
+    }
+
+    /* ===== 7. Highlight Box ===== */
+    .highlight-box {
+      background: var(--style-highlight-bg);
+      border-left: 3px solid var(--style-primary);
+      padding: 0.6rem 1rem; border-radius: 0 0.3rem 0.3rem 0;
+      margin: 0.5rem 0; font-size: 0.95rem;
+    }
+
+    /* ===== 8. Card Grid ===== */
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+
+    .card {
+      background: var(--style-card-bg);
+      border: 1px solid var(--style-card-border);
+      border-radius: 0.4rem;
+      padding: 0.8rem 1rem;
+      contain: layout style;
+    }
+    .slide.active .card { animation: popUp 0.5s ease-out both; }
+    .slide.active .card:nth-child(2) { animation-delay: 0.08s; }
+    .slide.active .card:nth-child(3) { animation-delay: 0.16s; }
+    .slide.active .card:nth-child(4) { animation-delay: 0.24s; }
+    .slide.active .card:nth-child(5) { animation-delay: 0.32s; }
+    .slide.active .card:nth-child(6) { animation-delay: 0.40s; }
+
+    .card-icon {
+      font-size: 1.4rem; display: block; margin-bottom: 0.3rem;
+    }
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      margin-bottom: 0.2rem; color: var(--style-primary);
+    }
+    .card-desc {
+      font-size: 0.88rem; color: var(--style-text);
+      line-height: 1.5;
+    }
+    /* Border-left variant (emoji budget exceeded) */
+    .card--border-accent { border-left: 3px solid var(--style-primary); }
+    .card--border-accent-2 { border-left: 3px solid var(--style-accent); }
+
+    /* ===== 9. Activity List ===== */
+    .activity-list { list-style: none; }
+    .activity-item {
+      display: flex; gap: 0.7rem; align-items: flex-start;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .activity-title { font-weight: 700; color: var(--style-primary); margin-bottom: 0.15rem; }
+    .activity-desc { font-size: 0.88rem; color: var(--style-text); line-height: 1.5; }
+
+    /* ===== 10. Two Column ===== */
+    .two-col {
+      display: flex; gap: 1rem; align-items: flex-start;
+    }
+    .col-left, .col-right { flex: 1; }
+    .col-divider {
+      width: 1px; align-self: stretch;
+      background: linear-gradient(180deg, transparent, var(--style-primary), transparent);
+    }
+    .col-title {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; margin-bottom: 0.4rem;
+      font-size: 1.1rem;
+    }
+    .col-list {
+      list-style: none; padding: 0;
+    }
+    .col-list li {
+      padding: 0.25rem 0; font-size: 0.88rem;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.08);
+      padding-left: 1rem; position: relative;
+    }
+    .col-list li::before {
+      content: '✦'; position: absolute; left: 0;
+      color: var(--style-accent); font-size: 0.7rem;
+      top: 0.35rem;
+    }
+
+    /* ===== 11. Stat Highlight ===== */
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem; margin-bottom: 0.6rem;
+    }
+    .stat-item {
+      text-align: center;
+      background: var(--style-card-bg);
+      border: 1px solid var(--style-card-border);
+      border-radius: 0.4rem;
+      padding: 0.7rem 0.5rem;
+      contain: layout style;
+    }
+    .slide.active .stat-item { animation: popUp 0.5s ease-out both; }
+    .slide.active .stat-item:nth-child(2) { animation-delay: 0.1s; }
+    .slide.active .stat-item:nth-child(3) { animation-delay: 0.2s; }
+
+    .stat-number {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; font-weight: 700;
+      color: var(--style-primary);
+      line-height: 1.2;
+    }
+    .stat-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.82rem; color: var(--style-accent);
+      letter-spacing: 0.05em;
+    }
+
+    /* ===== 12. Comparison Table ===== */
+    .table-wrapper { overflow-x: auto; }
+    .comparison-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .comparison-table th, .comparison-table td {
+      padding: 0.45rem 0.6rem; text-align: left;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+    }
+    .comparison-table thead th {
+      background: rgba(201, 168, 76, 0.15);
+      color: var(--style-primary);
+      font-family: 'Playfair Display', serif;
+      font-weight: 700; font-size: 0.9rem;
+    }
+    .comparison-table tbody tr:nth-child(even) {
+      background: rgba(201, 168, 76, 0.05);
+    }
+    .comparison-table tbody th {
+      color: var(--style-primary); font-weight: 600;
+    }
+
+    /* ===== 13. Task List ===== */
+    .task-list { list-style: none; }
+    .task-item {
+      display: flex; gap: 0.7rem; align-items: flex-start;
+      padding: 0.5rem 0;
+      border-left: 3px solid var(--style-accent);
+      padding-left: 0.8rem; margin-bottom: 0.4rem;
+    }
+    .task-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.88rem; color: var(--style-accent);
+      font-weight: 700; flex-shrink: 0; min-width: 1.8rem;
+    }
+    .task-title { font-weight: 700; color: var(--style-primary); margin-bottom: 0.1rem; }
+    .task-desc { font-size: 0.88rem; line-height: 1.5; }
+
+    /* ===== 14. TOC ===== */
+    .toc-list { list-style: none; counter-reset: toc; }
+    .toc-item {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.5rem 0.8rem; cursor: pointer;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+      transition: background 0.2s, padding-left 0.2s;
+      border-radius: 0.3rem;
+    }
+    .toc-item:hover {
+      background: var(--style-highlight-bg);
+      padding-left: 1.2rem;
+    }
+    .toc-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.88rem; color: var(--style-accent);
+      font-weight: 700; min-width: 2rem;
+    }
+    .toc-text {
+      flex: 1; font-size: 1rem;
+      font-family: 'Playfair Display', serif;
+    }
+    .toc-arrow {
+      color: var(--style-accent); font-size: 0.88rem;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .toc-item:hover .toc-arrow { opacity: 1; }
+
+    /* ===== 15. Cover ===== */
+    .cover-slide {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 2rem;
+      min-height: 70vh;
+    }
+    .cover-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.82rem; letter-spacing: 0.15em;
+      color: var(--style-accent);
+      border: 1px solid var(--style-accent);
+      padding: 0.2rem 0.8rem; border-radius: 2rem;
+      text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .cover-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem; font-weight: 700;
+      font-style: italic; color: var(--style-primary);
+      letter-spacing: 0.04em; margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+    .cover-subtitle {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.1rem; color: var(--style-text);
+      font-style: italic; margin-bottom: 0.8rem;
+    }
+    .cover-divider {
+      width: 5rem; height: 1px; margin: 0 auto 0.8rem;
+      background: linear-gradient(90deg, transparent, var(--style-primary), transparent);
+    }
+    .cover-meta {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.82rem; color: var(--style-accent);
+      letter-spacing: 0.1em;
+      display: flex; gap: 0.5rem; align-items: center;
+    }
+    .cover-ornament {
+      font-size: 1.4rem; color: var(--style-accent);
+      opacity: 0.4; margin-bottom: 0.5rem;
+    }
+
+    /* ===== 16. End Slide ===== */
+    .end-slide {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 2rem;
+    }
+    .end-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; font-style: italic;
+      color: var(--style-primary); margin-bottom: 0.5rem;
+    }
+    .end-subtitle {
+      font-size: 0.95rem; color: var(--style-text);
+      margin-bottom: 0.8rem;
+    }
+    .end-summary {
+      text-align: left; max-width: 32rem;
+      margin: 0 auto;
+    }
+    .summary-title {
+      font-size: 1rem; margin-bottom: 0.4rem;
+      font-style: italic;
+    }
+    .summary-list {
+      list-style: none; padding: 0;
+    }
+    .summary-list li {
+      padding: 0.2rem 0; font-size: 0.88rem;
+      padding-left: 1.2rem; position: relative;
+    }
+    .summary-list li::before {
+      content: '✦'; position: absolute; left: 0;
+      color: var(--style-primary);
+    }
+
+    /* ===== Badge ===== */
+    .badge {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.82rem; font-weight: 700;
+      padding: 0.15rem 0.5rem; border-radius: 2rem;
+      letter-spacing: 0.05em;
+    }
+    .badge-gold {
+      background: rgba(201, 168, 76, 0.2);
+      color: var(--style-primary);
+      border: 1px solid rgba(201, 168, 76, 0.3);
+    }
+    .badge-accent {
+      background: rgba(138, 115, 64, 0.2);
+      color: var(--style-accent);
+      border: 1px solid rgba(138, 115, 64, 0.3);
+    }
+
+    /* ===== Formula display ===== */
+    .formula-box {
+      background: rgba(201, 168, 76, 0.08);
+      border: 1px solid var(--style-card-border);
+      border-radius: 0.3rem;
+      padding: 0.5rem 0.8rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.95rem;
+      color: var(--style-primary);
+      text-align: center;
+      margin: 0.4rem 0;
+      letter-spacing: 0.03em;
+    }
+
+    /* ===== Nav Bar ===== */
+    .nav-bar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.5rem; padding: 0.35rem 1.5rem;
+      background: rgba(26, 18, 8, 0.95);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--style-border);
+      z-index: 999; font-size: 14px;
+    }
+    .nav-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 1.8rem; height: 1.8rem;
+      border: 1.5px solid var(--style-accent);
+      border-radius: 50%; background: transparent;
+      cursor: pointer; font-size: 0; color: var(--style-accent);
+      transition: all 0.2s; padding: 0; line-height: 1;
+    }
+    .nav-btn svg { width: 0.55rem; height: 0.55rem; fill: currentColor; display: block; }
+    .nav-btn:hover:not(:disabled) {
+      border-color: var(--style-primary);
+      background: var(--style-primary);
+      color: var(--style-bg);
+    }
+    .nav-btn:hover:not(:disabled) svg { fill: var(--style-bg); }
+    .nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+    .nav-counter {
+      font-size: 13px; font-weight: 700;
+      color: var(--style-accent);
+      min-width: 3rem; text-align: center;
+      display: flex; align-items: center; gap: 0.15rem; line-height: 1;
+    }
+    .slide-input {
+      width: 1.4rem; text-align: center; border: none;
+      border-bottom: 1.5px solid transparent;
+      background: transparent; font-size: 13px; font-weight: 700;
+      color: var(--style-accent); font-family: 'Space Mono', monospace;
+      padding: 0; outline: none; cursor: pointer; line-height: 1;
+    }
+    .slide-input:hover { border-bottom-color: var(--style-primary); }
+    .slide-input:focus {
+      border-bottom-color: var(--style-primary);
+      background: rgba(201, 168, 76, 0.1);
+      border-radius: 4px;
+    }
+
+    /* ===== Fullscreen button ===== */
+    #fsBtn { margin-left: 0.3rem; }
+    #fsCompress { display: none; }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 1024px) {
+      html, body { font-size: clamp(15px, 2vw, 22px); }
+      .browser-card { border-radius: 0.5rem; }
+      .slide { padding: 0.6rem 0.8rem; }
+    }
+    @media (max-width: 768px) {
+      html, body { font-size: clamp(14px, 3vw, 20px); }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .two-col { flex-direction: column; }
+      .col-divider { width: 100%; height: 1px; align-self: auto; }
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.3rem; }
+      .cover-title { font-size: 2rem; }
+      .browser-content { padding: 0.8rem 1rem; }
+    }
+    @media (max-width: 480px) {
+      html, body { font-size: clamp(14px, 3.5vw, 18px); }
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .nav-btn { width: 1.5rem; height: 1.5rem; }
+      .nav-bar { padding: 0.25rem 0.75rem; }
+      h1 { font-size: 1.7rem; }
+      h2 { font-size: 1.2rem; }
+      .browser-content { padding: 0.6rem 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#presentation" class="skip-link">본문으로 바로가기</a>
+
+  <div class="progress-bar" id="progressBar" role="progressbar"
+       aria-valuenow="1" aria-valuemin="1" aria-valuemax="12"
+       aria-label="프레젠테이션 진행률"></div>
+
+  <div class="presentation" id="presentation" role="main">
+
+    <!-- ============ SLIDE 1: Cover ============ -->
+    <div class="slide active" data-slide="0" role="region" aria-label="슬라이드 1: 표지">
+      <div class="browser-card browser-card--frameless">
+        <div class="browser-content cover-slide">
+          <div class="cover-ornament" aria-hidden="true">❧</div>
+          <div class="cover-badge">2026학년도 · 정보</div>
+          <h1 class="cover-title">인공지능 수학 기초</h1>
+          <p class="cover-subtitle">AI를 이해하는 데 꼭 필요한 수학의 핵심 개념들</p>
+          <div class="cover-divider" aria-hidden="true"></div>
+          <div class="cover-meta">
+            <span>전주기전여자고등학교</span>
+            <span aria-hidden="true">·</span>
+            <span><time datetime="2026-04">2026년 4월</time></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SLIDE 2: TOC ============ -->
+    <div class="slide" data-slide="1" role="region" aria-label="슬라이드 2: 목차">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <span class="topbar-title">Mathematica Intelligentiae</span>
+        </div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">◆</span> 목차</h2>
+            <div class="gold-rule" aria-hidden="true"></div>
+          </div>
+          <nav aria-label="슬라이드 목차">
+            <ol class="toc-list">
+              <li class="toc-item" role="button" tabindex="0" aria-label="3번 슬라이드로 이동: AI에 수학이 필요한 이유">
+                <span class="toc-num" aria-hidden="true">01</span>
+                <span class="toc-text">AI에 수학이 필요한 이유</span>
+                <span class="toc-arrow" aria-hidden="true">→</span>
+              </li>
+              <li class="toc-item" role="button" tabindex="0" aria-label="4번 슬라이드로 이동: 함수 — AI의 기본 언어">
+                <span class="toc-num" aria-hidden="true">02</span>
+                <span class="toc-text">함수 — AI의 기본 언어</span>
+                <span class="toc-arrow" aria-hidden="true">→</span>
+              </li>
+              <li class="toc-item" role="button" tabindex="0" aria-label="5번 슬라이드로 이동: 행렬과 벡터">
+                <span class="toc-num" aria-hidden="true">03</span>
+                <span class="toc-text">행렬과 벡터 — 데이터의 표현</span>
+                <span class="toc-arrow" aria-hidden="true">→</span>
+              </li>
+              <li class="toc-item" role="button" tabindex="0" aria-label="6번 슬라이드로 이동: 확률과 통계">
+                <span class="toc-num" aria-hidden="true">04</span>
+                <span class="toc-text">확률과 통계 — 불확실성 다루기</span>
+                <span class="toc-arrow" aria-hidden="true">→</span>
+              </li>
+              <li class="toc-item" role="button" tabindex="0" aria-label="7번 슬라이드로 이동: 미분과 경사하강법">
+                <span class="toc-num" aria-hidden="true">05</span>
+                <span class="toc-text">미분 — AI가 학습하는 원리</span>
+                <span class="toc-arrow" aria-hidden="true">→</span>
+              </li>
+              <li class="toc-item" role="button" tabindex="0" aria-label="8번 슬라이드로 이동: 손실함수와 최적화">
+                <span class="toc-num" aria-hidden="true">06</span>
+                <span class="toc-text">손실함수와 최적화</span>
+                <span class="toc-arrow" aria-hidden="true">→</span>
+              </li>
+              <li class="toc-item" role="button" tabindex="0" aria-label="9번 슬라이드로 이동: AI 분야별 핵심 수학">
+                <span class="toc-num" aria-hidden="true">07</span>
+                <span class="toc-text">AI 분야별 핵심 수학</span>
+                <span class="toc-arrow" aria-hidden="true">→</span>
+              </li>
+              <li class="toc-item" role="button" tabindex="0" aria-label="10번 슬라이드로 이동: 실생활 속 AI 수학">
+                <span class="toc-num" aria-hidden="true">08</span>
+                <span class="toc-text">실생활 속 AI 수학 사례</span>
+                <span class="toc-arrow" aria-hidden="true">→</span>
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SLIDE 3: 왜 수학이 필요한가 ============ -->
+    <div class="slide" data-slide="2" role="region" aria-label="슬라이드 3: AI에 수학이 필요한 이유">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <span class="topbar-title">Fundamentum</span>
+        </div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> AI에 수학이 필요한 이유</h2>
+            <p class="section-subtitle">Mathematics as the Language of Intelligence</p>
+          </div>
+          <div class="highlight-box" role="note">
+            <p>인공지능은 본질적으로 <strong>수학적 모델</strong>입니다. 데이터를 숫자로 표현하고, 패턴을 수식으로 찾고, 최적의 답을 계산으로 구합니다.</p>
+          </div>
+          <div class="grid-2 card-grid" role="list" style="margin-top: 0.5rem;">
+            <div class="card" role="listitem">
+              <h3 class="card-title">데이터 → 숫자</h3>
+              <p class="card-desc">이미지는 픽셀 값의 행렬, 텍스트는 벡터로 변환됩니다. 모든 데이터는 수학적 형태로 바뀌어야 AI가 처리할 수 있습니다.</p>
+            </div>
+            <div class="card" role="listitem">
+              <h3 class="card-title">패턴 → 수식</h3>
+              <p class="card-desc">AI는 데이터 속 규칙을 함수(f(x))로 표현합니다. "고양이 사진을 인식한다"는 것은 수학 함수를 찾는 과정입니다.</p>
+            </div>
+            <div class="card card--border-accent" role="listitem">
+              <h3 class="card-title">학습 → 최적화</h3>
+              <p class="card-desc">AI의 학습은 손실함수를 최소화하는 미분 과정입니다. 경사하강법으로 최적의 가중치를 찾아갑니다.</p>
+            </div>
+            <div class="card card--border-accent-2" role="listitem">
+              <h3 class="card-title">판단 → 확률</h3>
+              <p class="card-desc">"이 사진이 고양이일 확률 97%"처럼, AI의 모든 판단은 확률과 통계에 기반합니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SLIDE 4: 함수 ============ -->
+    <div class="slide" data-slide="3" role="region" aria-label="슬라이드 4: 함수 — AI의 기본 언어">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <span class="topbar-title">Functio</span>
+        </div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> 함수 — AI의 기본 언어</h2>
+            <p class="section-subtitle">Input → Process → Output</p>
+          </div>
+          <div class="highlight-box" role="note">
+            <p>AI 모델은 거대한 <strong>함수</strong>입니다. 입력(x)을 받아 출력(y)을 내놓는 규칙, 즉 y = f(x)를 데이터에서 스스로 찾아냅니다.</p>
+          </div>
+          <div class="grid-3 card-grid" role="list" style="margin-top: 0.5rem;">
+            <div class="card" role="listitem">
+              <h3 class="card-title">선형 함수</h3>
+              <div class="formula-box">y = wx + b</div>
+              <p class="card-desc">가장 기본적인 신경망 연산. 가중치(w)와 편향(b)으로 입력을 변환합니다.</p>
+            </div>
+            <div class="card" role="listitem">
+              <h3 class="card-title">시그모이드 함수</h3>
+              <div class="formula-box">σ(x) = 1 / (1 + e⁻ˣ)</div>
+              <p class="card-desc">출력을 0~1 사이로 압축하여 "확률"로 해석합니다. 이진 분류에 핵심적입니다.</p>
+            </div>
+            <div class="card" role="listitem">
+              <h3 class="card-title">ReLU 함수</h3>
+              <div class="formula-box">f(x) = max(0, x)</div>
+              <p class="card-desc">음수는 0, 양수는 그대로 통과. 딥러닝에서 가장 많이 쓰이는 활성화 함수입니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SLIDE 5: 행렬과 벡터 ============ -->
+    <div class="slide" data-slide="4" role="region" aria-label="슬라이드 5: 행렬과 벡터">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <span class="topbar-title">Matrix et Vector</span>
+        </div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> 행렬과 벡터 — 데이터의 표현</h2>
+            <p class="section-subtitle">Linear Algebra for AI</p>
+          </div>
+          <div class="two-col">
+            <div class="col-left">
+              <h3 class="col-title">벡터 (Vector)</h3>
+              <ul class="col-list" role="list">
+                <li role="listitem">숫자들의 1차원 나열 — 방향과 크기를 가진 화살표</li>
+                <li role="listitem">단어를 벡터로: "왕" = [0.2, 0.8, 0.1, ...]</li>
+                <li role="listitem">유사한 의미 → 벡터가 가까이 위치</li>
+                <li role="listitem">벡터 연산: 왕 - 남자 + 여자 ≈ 여왕</li>
+              </ul>
+            </div>
+            <div class="col-divider" aria-hidden="true"></div>
+            <div class="col-right">
+              <h3 class="col-title">행렬 (Matrix)</h3>
+              <ul class="col-list" role="list">
+                <li role="listitem">숫자들의 2차원 배열 — 표(table) 형태</li>
+                <li role="listitem">28×28 손글씨 이미지 = 784개 숫자 행렬</li>
+                <li role="listitem">신경망의 가중치도 행렬로 저장</li>
+                <li role="listitem">행렬 곱셈 = 신경망의 핵심 연산</li>
+              </ul>
+            </div>
+          </div>
+          <div class="highlight-box" role="note" style="margin-top: 0.5rem;">
+            <p>GPU가 AI에 강한 이유: <strong>행렬 곱셈을 동시에 수천 개씩 병렬 처리</strong>할 수 있기 때문입니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SLIDE 6: 확률과 통계 ============ -->
+    <div class="slide" data-slide="5" role="region" aria-label="슬라이드 6: 확률과 통계">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <span class="topbar-title">Probabilitas</span>
+        </div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> 확률과 통계 — 불확실성 다루기</h2>
+            <p class="section-subtitle">Probability & Statistics</p>
+          </div>
+          <div class="grid-2 card-grid" role="list">
+            <div class="card" role="listitem">
+              <h3 class="card-title">조건부 확률</h3>
+              <div class="formula-box">P(A|B) = P(A∩B) / P(B)</div>
+              <p class="card-desc">스팸 메일 필터링의 핵심. "이 단어가 있을 때 스팸일 확률"을 계산하는 베이즈 정리의 기초입니다.</p>
+            </div>
+            <div class="card" role="listitem">
+              <h3 class="card-title">정규분포</h3>
+              <div class="formula-box">N(μ, σ²)</div>
+              <p class="card-desc">자연 현상의 대부분은 정규분포를 따릅니다. AI가 "정상"과 "이상"을 구분하는 기준이 됩니다.</p>
+            </div>
+            <div class="card card--border-accent" role="listitem">
+              <h3 class="card-title">Softmax 함수</h3>
+              <div class="formula-box">P(i) = eˣⁱ / Σeˣʲ</div>
+              <p class="card-desc">신경망 출력을 확률 분포로 변환합니다. 10개 숫자 인식 시 각 숫자일 확률의 합은 항상 1입니다.</p>
+            </div>
+            <div class="card card--border-accent-2" role="listitem">
+              <h3 class="card-title">최대우도추정</h3>
+              <div class="formula-box">θ* = argmax L(θ|data)</div>
+              <p class="card-desc">관측된 데이터를 가장 잘 설명하는 모델 파라미터를 찾는 통계적 방법입니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SLIDE 7: 미분과 경사하강법 ============ -->
+    <div class="slide" data-slide="6" role="region" aria-label="슬라이드 7: 미분 — AI가 학습하는 원리">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <span class="topbar-title">Calculus</span>
+        </div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> 미분 — AI가 학습하는 원리</h2>
+            <p class="section-subtitle">Gradient Descent</p>
+          </div>
+          <div class="highlight-box" role="note">
+            <p>미분은 "변화율"을 구하는 도구입니다. AI는 미분으로 <strong>"어떤 방향으로 가중치를 바꿔야 오차가 줄어드는지"</strong>를 알아냅니다.</p>
+          </div>
+          <ul class="activity-list" role="list" style="margin-top: 0.4rem;">
+            <li class="activity-item" role="listitem">
+              <span class="activity-icon" aria-hidden="true">※</span>
+              <div class="activity-body">
+                <h3 class="activity-title">기울기(Gradient)란?</h3>
+                <p class="activity-desc">함수의 각 변수에 대한 편미분 값의 모음. 다차원 공간에서 "가장 가파르게 올라가는 방향"을 가리킵니다.</p>
+              </div>
+            </li>
+            <li class="activity-item" role="listitem">
+              <span class="activity-icon" aria-hidden="true">※</span>
+              <div class="activity-body">
+                <h3 class="activity-title">경사하강법의 비유</h3>
+                <p class="activity-desc">안개 낀 산에서 가장 낮은 곳을 찾는 것과 같습니다. 발밑의 경사(기울기)를 느끼고, 가장 가파르게 내려가는 방향으로 한 걸음씩 이동합니다.</p>
+              </div>
+            </li>
+            <li class="activity-item" role="listitem">
+              <span class="activity-icon" aria-hidden="true">※</span>
+              <div class="activity-body">
+                <h3 class="activity-title">가중치 업데이트 공식</h3>
+                <div class="formula-box">w ← w − η · ∂L/∂w</div>
+                <p class="activity-desc">학습률(η) × 기울기만큼 가중치를 반대 방향으로 조정합니다. 이 과정을 수만 번 반복하면 AI가 "학습"됩니다.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SLIDE 8: 손실함수와 최적화 ============ -->
+    <div class="slide" data-slide="7" role="region" aria-label="슬라이드 8: 손실함수와 최적화">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <span class="topbar-title">Optimum</span>
+        </div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> 손실함수와 최적화</h2>
+            <p class="section-subtitle">Loss Function & Optimization</p>
+          </div>
+          <div class="stat-grid" role="list">
+            <div class="stat-item" role="listitem">
+              <span class="stat-number" aria-label="MSE">MSE</span>
+              <span class="stat-label">평균제곱오차</span>
+            </div>
+            <div class="stat-item" role="listitem">
+              <span class="stat-number" aria-label="CE">CE</span>
+              <span class="stat-label">교차엔트로피</span>
+            </div>
+            <div class="stat-item" role="listitem">
+              <span class="stat-number" aria-label="η">η</span>
+              <span class="stat-label">학습률</span>
+            </div>
+          </div>
+          <div class="grid-2 card-grid" role="list">
+            <div class="card" role="listitem">
+              <h3 class="card-title">손실함수란?</h3>
+              <p class="card-desc">AI의 예측값과 정답 사이의 <strong>오차를 측정하는 함수</strong>입니다. 회귀 문제에는 MSE, 분류 문제에는 교차엔트로피를 사용합니다.</p>
+            </div>
+            <div class="card" role="listitem">
+              <h3 class="card-title">학습률의 역할</h3>
+              <p class="card-desc">한 걸음의 보폭을 결정합니다. <strong>너무 크면</strong> 최적점을 지나치고, <strong>너무 작으면</strong> 학습이 매우 느려집니다.</p>
+            </div>
+          </div>
+          <div class="highlight-box" role="note" style="margin-top: 0.4rem;">
+            <p>AI 학습의 목표: 손실함수의 값을 <strong>최소</strong>로 만드는 가중치 조합을 찾는 것. 이것이 "최적화"입니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SLIDE 9: AI 분야별 핵심 수학 ============ -->
+    <div class="slide" data-slide="8" role="region" aria-label="슬라이드 9: AI 분야별 핵심 수학">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <span class="topbar-title">Disciplinae</span>
+        </div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> AI 분야별 핵심 수학</h2>
+            <p class="section-subtitle">Mathematics across AI Domains</p>
+          </div>
+          <div class="table-wrapper" role="region" aria-label="AI 분야별 수학 비교 표" tabindex="0">
+            <table class="comparison-table">
+              <caption class="sr-only">AI 분야와 핵심 수학 영역 비교표</caption>
+              <thead>
+                <tr>
+                  <th scope="col">AI 분야</th>
+                  <th scope="col">핵심 수학</th>
+                  <th scope="col">대표 응용</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">컴퓨터 비전</th>
+                  <td>선형대수, 합성곱(행렬 연산)</td>
+                  <td>이미지 분류, 객체 인식</td>
+                </tr>
+                <tr>
+                  <th scope="row">자연어 처리</th>
+                  <td>벡터 공간, 확률, 어텐션(행렬 곱)</td>
+                  <td>번역, 챗봇, GPT</td>
+                </tr>
+                <tr>
+                  <th scope="row">추천 시스템</th>
+                  <td>행렬 분해, 유사도(코사인)</td>
+                  <td>넷플릭스, 유튜브 추천</td>
+                </tr>
+                <tr>
+                  <th scope="row">강화 학습</th>
+                  <td>확률, 기댓값, 동적 프로그래밍</td>
+                  <td>게임 AI, 로봇 제어</td>
+                </tr>
+                <tr>
+                  <th scope="row">생성 AI</th>
+                  <td>확률분포, 정보이론, 미분방정식</td>
+                  <td>이미지 생성, 음악 작곡</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SLIDE 10: 실생활 속 AI 수학 ============ -->
+    <div class="slide" data-slide="9" role="region" aria-label="슬라이드 10: 실생활 속 AI 수학 사례">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <span class="topbar-title">Exempla</span>
+        </div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> 실생활 속 AI 수학 사례</h2>
+            <p class="section-subtitle">Real-world Applications</p>
+          </div>
+          <div class="grid-3 card-grid" role="list">
+            <div class="card" role="listitem">
+              <h3 class="card-title">얼굴 인식</h3>
+              <p class="card-desc">얼굴의 특징점을 <strong>128차원 벡터</strong>로 변환하여 벡터 간 거리를 계산합니다. 거리가 가까우면 같은 사람으로 판단합니다.</p>
+            </div>
+            <div class="card" role="listitem">
+              <h3 class="card-title">음성 비서</h3>
+              <p class="card-desc">음파를 <strong>주파수 행렬(스펙트로그램)</strong>로 변환한 뒤, 확률 모델로 가장 가능성 높은 단어 조합을 찾아냅니다.</p>
+            </div>
+            <div class="card" role="listitem">
+              <h3 class="card-title">자율주행</h3>
+              <p class="card-desc">카메라 영상에 <strong>합성곱 연산</strong>을 적용해 차선·보행자를 인식하고, 확률적 예측으로 안전한 경로를 계산합니다.</p>
+            </div>
+          </div>
+          <div class="highlight-box" role="note" style="margin-top: 0.5rem;">
+            <p>우리가 매일 사용하는 검색엔진, SNS 피드, 번역기, 카메라 필터 모두 <strong>선형대수 + 확률 + 미분</strong>의 조합으로 작동합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SLIDE 11: 학습 로드맵 ============ -->
+    <div class="slide" data-slide="10" role="region" aria-label="슬라이드 11: 학습 로드맵">
+      <div class="browser-card">
+        <div class="browser-topbar" aria-hidden="true">
+          <span class="topbar-title">Iter Studendi</span>
+        </div>
+        <div class="browser-content">
+          <div class="section-header">
+            <h2><span class="section-icon" aria-hidden="true">✦</span> AI 수학 학습 로드맵</h2>
+            <p class="section-subtitle">Your Learning Path</p>
+          </div>
+          <ol class="task-list" role="list">
+            <li class="task-item" role="listitem">
+              <span class="task-num" aria-hidden="true">01</span>
+              <div class="task-body">
+                <h3 class="task-title">함수와 그래프 익숙해지기</h3>
+                <p class="task-desc">1차 함수, 2차 함수의 그래프를 그리고 입출력 관계를 이해합니다. Desmos 등 도구를 활용해 시각적으로 탐구해 보세요.</p>
+              </div>
+            </li>
+            <li class="task-item" role="listitem">
+              <span class="task-num" aria-hidden="true">02</span>
+              <div class="task-body">
+                <h3 class="task-title">벡터와 행렬 연산 이해하기</h3>
+                <p class="task-desc">벡터의 덧셈, 내적, 행렬 곱셈의 의미를 파악합니다. Python NumPy로 직접 계산해 보면 더 빨리 익힐 수 있습니다.</p>
+              </div>
+            </li>
+            <li class="task-item" role="listitem">
+              <span class="task-num" aria-hidden="true">03</span>
+              <div class="task-body">
+                <h3 class="task-title">확률의 기본 개념 정리하기</h3>
+                <p class="task-desc">조건부 확률, 베이즈 정리, 기댓값을 실생활 예시로 이해합니다. 주사위, 동전 문제부터 시작하세요.</p>
+              </div>
+            </li>
+            <li class="task-item" role="listitem">
+              <span class="task-num" aria-hidden="true">04</span>
+              <div class="task-body">
+                <h3 class="task-title">미분과 경사하강법 체험하기</h3>
+                <p class="task-desc">간단한 2차 함수에서 경사하강법을 직접 구현해 봅니다. 학습률을 바꿔가며 결과의 차이를 관찰하세요.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ SLIDE 12: End ============ -->
+    <div class="slide" data-slide="11" role="region" aria-label="슬라이드 12: 마무리">
+      <div class="browser-card browser-card--frameless">
+        <div class="browser-content end-slide">
+          <div class="cover-ornament" aria-hidden="true">❧</div>
+          <h2 class="end-title">감사합니다</h2>
+          <p class="end-subtitle">수학은 AI를 이해하는 가장 확실한 열쇠입니다.</p>
+          <div class="gold-rule" aria-hidden="true"></div>
+          <div class="highlight-box end-summary" role="complementary" aria-label="핵심 요약">
+            <h3 class="summary-title">오늘의 핵심</h3>
+            <ul class="summary-list" role="list">
+              <li role="listitem"><strong>함수</strong>는 AI 모델의 기본 구조이다</li>
+              <li role="listitem"><strong>행렬과 벡터</strong>로 데이터를 수학적으로 표현한다</li>
+              <li role="listitem"><strong>확률</strong>로 불확실한 세계를 판단한다</li>
+              <li role="listitem"><strong>미분</strong>으로 AI는 스스로 학습한다</li>
+              <li role="listitem"><strong>손실함수 최적화</strong>가 학습의 핵심 목표이다</li>
+            </ul>
+          </div>
+          <div class="cover-meta" style="margin-top: 0.8rem;">
+            <span>전주기전여자고등학교 정보</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="slideAnnounce" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+
+  <nav class="nav-bar" aria-label="슬라이드 네비게이션">
+    <button class="nav-btn" id="prevBtn" disabled aria-label="이전 슬라이드">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+      </svg>
+    </button>
+    <span class="nav-counter" aria-label="슬라이드 위치">
+      <input type="text" class="slide-input" id="slideInput" value="1"
+             aria-label="슬라이드 번호 입력" inputmode="numeric" pattern="[0-9]*">
+      / <span id="totalSlides" aria-hidden="true">12</span>
+    </span>
+    <button class="nav-btn" id="nextBtn" aria-label="다음 슬라이드">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+      </svg>
+    </button>
+    <button class="nav-btn" id="fsBtn" aria-label="전체화면 전환">
+      <svg id="fsExpand" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+      </svg>
+      <svg id="fsCompress" viewBox="0 0 24 24" aria-hidden="true" focusable="false" style="display:none">
+        <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
+      </svg>
+    </button>
+  </nav>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    let currentSlide = 0;
+    const progressBar = document.getElementById('progressBar');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const slideInput = document.getElementById('slideInput');
+
+    function announceSlide(c, t) {
+      const el = document.getElementById('slideAnnounce');
+      if (el) el.textContent = '슬라이드 ' + (c + 1) + ' / ' + t;
+    }
+
+    function updateNav() {
+      const pct = ((currentSlide + 1) / totalSlides) * 100;
+      progressBar.style.width = pct + '%';
+      progressBar.setAttribute('aria-valuenow', currentSlide + 1);
+      slideInput.value = currentSlide + 1;
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === totalSlides - 1;
+    }
+
+    function goToSlide(index) {
+      if (index < 0 || index >= totalSlides) return;
+      const current = slides[currentSlide];
+      const next = slides[index];
+      current.classList.add('will-animate');
+      next.classList.add('will-animate');
+      current.classList.remove('active');
+      currentSlide = index;
+      next.classList.add('active');
+      updateNav();
+      announceSlide(currentSlide, totalSlides);
+      setTimeout(function() {
+        current.classList.remove('will-animate');
+        next.classList.remove('will-animate');
+      }, 400);
+      var content = next.querySelector('.browser-content');
+      if (content) content.focus();
+    }
+
+    function nextSlide() { goToSlide(currentSlide + 1); }
+    function prevSlide() { goToSlide(currentSlide - 1); }
+
+    // Keyboard
+    document.addEventListener('keydown', function(e) {
+      if (e.target === slideInput) return;
+      if (['ArrowRight','ArrowDown',' ','PageDown'].indexOf(e.key) !== -1) {
+        e.preventDefault(); nextSlide();
+      } else if (['ArrowLeft','ArrowUp','PageUp'].indexOf(e.key) !== -1) {
+        e.preventDefault(); prevSlide();
+      } else if (e.key === 'Home') { e.preventDefault(); goToSlide(0); }
+      else if (e.key === 'End') { e.preventDefault(); goToSlide(totalSlides - 1); }
+    });
+
+    // Wheel
+    var wheelLocked = false;
+    document.addEventListener('wheel', function(e) {
+      e.preventDefault();
+      if (wheelLocked) return;
+      wheelLocked = true;
+      if (e.deltaY > 0) nextSlide();
+      else if (e.deltaY < 0) prevSlide();
+      setTimeout(function() { wheelLocked = false; }, 600);
+    }, { passive: false });
+
+    // Touch swipe
+    var touchStartX = 0, touchStartY = 0;
+    document.addEventListener('touchstart', function(e) {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+    document.addEventListener('touchend', function(e) {
+      var dx = e.changedTouches[0].screenX - touchStartX;
+      var dy = e.changedTouches[0].screenY - touchStartY;
+      if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+      if (dx < 0) nextSlide(); else prevSlide();
+    }, { passive: true });
+
+    // Slide input
+    slideInput.addEventListener('focus', function() { this.select(); });
+    slideInput.addEventListener('keydown', function(e) {
+      e.stopPropagation();
+      if (e.key === 'Enter') {
+        var n = parseInt(this.value);
+        if (n >= 1 && n <= totalSlides) goToSlide(n - 1);
+        else this.value = currentSlide + 1;
+        this.blur();
+      } else if (e.key === 'Escape') {
+        this.value = currentSlide + 1;
+        this.blur();
+      }
+    });
+    slideInput.addEventListener('blur', function() {
+      var n = parseInt(this.value);
+      if (n >= 1 && n <= totalSlides) goToSlide(n - 1);
+      else this.value = currentSlide + 1;
+    });
+
+    // Nav button click handlers
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+
+    // TOC click handlers
+    document.querySelectorAll('.toc-item').forEach(function(item, i) {
+      var targetSlide = i + 2; // slides 2~9 map to toc items 0~7
+      item.addEventListener('click', function() { goToSlide(targetSlide); });
+      item.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goToSlide(targetSlide); }
+      });
+    });
+
+    // Fullscreen
+    var fsBtn = document.getElementById('fsBtn');
+    var fsExpand = document.getElementById('fsExpand');
+    var fsCompress = document.getElementById('fsCompress');
+    fsBtn.addEventListener('click', function() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(function(){});
+      } else {
+        document.exitFullscreen();
+      }
+    });
+    document.addEventListener('fullscreenchange', function() {
+      if (document.fullscreenElement) {
+        fsExpand.style.display = 'none';
+        fsCompress.style.display = 'block';
+      } else {
+        fsExpand.style.display = 'block';
+        fsCompress.style.display = 'none';
+      }
+    });
+
+    // Init
+    updateNav();
+    announceSlide(0, totalSlides);
+  </script>
+</body>
+</html>
