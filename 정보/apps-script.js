@@ -8,6 +8,7 @@
  *   - 'writing-prompt' (기본) → 자기평가문활동지 시트
  *   - 'notebooklm'            → 에이전틱AI활동지 시트
  *   - 'deeplearning'          → 딥러닝기초활동지 시트 (이미지 3장 → Drive 저장)
+ *   - 'tm_project'            → 이미지분류프로젝트활동지 시트 (이미지 2장 → Drive 폴더 저장)
  *
  * [새 활동지 추가 방법]
  *   1. 활동지 HTML의 getFormData()에 source: '식별자' 추가
@@ -69,6 +70,57 @@ function doPost(e) {
       // 이미지가 있으면 행 높이 키우기
       if (imgUrl1 || imgUrl2 || imgUrl3) {
         sheet3.setRowHeight(sheet3.getLastRow(), 150);
+      }
+
+    } else if (data.source === 'tm_project') {
+      // ── 이미지 분류 인공지능 프로젝트 활동지 (이미지 2장 → Drive 폴더 저장) ──
+      var sheet4 = ss.getSheetByName('이미지분류프로젝트활동지') || ss.insertSheet('이미지분류프로젝트활동지');
+      if (sheet4.getLastRow() === 0) {
+        sheet4.appendRow([
+          '제출시각', '이름', '반/번호',
+          '프로젝트 주제', '주제 선정 배경',
+          '분류 대상', '고려 요소',
+          '데이터 이미지1', '데이터 이미지2',
+          '테스트 결과(JSON)', '정확도', '테스트 분석',
+          '배운 점', '성능 개선 방안', '활용 아이디어'
+        ]);
+        var h4 = sheet4.getRange(1, 1, 1, 15);
+        h4.setBackground('#4F46E5');
+        h4.setFontColor('#FFFFFF');
+        h4.setFontWeight('bold');
+        sheet4.setFrozenRows(1);
+      }
+
+      // 이미지 → Drive "2026-1 이미지 분류 프로젝트" 폴더에 저장
+      var imgUrl1 = '', imgUrl2 = '';
+      var images = data.images || [];
+      var namePrefix = (data.studentName || 'unknown') + '_' + (data.classInfo || '').replace(/\s/g, '');
+      try { if (images[0]) imgUrl1 = saveImageToFolder(images[0], namePrefix + '_학습데이터', '2026-1 이미지 분류 프로젝트'); } catch(e1) { imgUrl1 = '이미지저장실패'; }
+      try { if (images[1]) imgUrl2 = saveImageToFolder(images[1], namePrefix + '_테스트데이터', '2026-1 이미지 분류 프로젝트'); } catch(e2) { imgUrl2 = '이미지저장실패'; }
+
+      var factors = [data.factor1, data.factor2, data.factor3, data.factor4].filter(Boolean).join(', ');
+
+      sheet4.appendRow([
+        new Date().toLocaleString('ko-KR'),
+        data.studentName  || '',
+        data.classInfo    || '',
+        data.topic        || '',
+        data.topicReason  || '',
+        data.categories   || '',
+        factors,
+        imgUrl1 && imgUrl1 !== '이미지저장실패' ? '=IMAGE("' + imgUrl1 + '")' : imgUrl1,
+        imgUrl2 && imgUrl2 !== '이미지저장실패' ? '=IMAGE("' + imgUrl2 + '")' : imgUrl2,
+        JSON.stringify(data.testResults || []),
+        data.accuracy     || '',
+        data.analysis     || '',
+        data.reflection   || '',
+        data.improvement  || '',
+        data.extension    || ''
+      ]);
+
+      // 이미지가 있으면 행 높이 키우기
+      if (imgUrl1 || imgUrl2) {
+        sheet4.setRowHeight(sheet4.getLastRow(), 150);
       }
 
     } else if (data.source === 'notebooklm') {
@@ -202,6 +254,33 @@ function saveImageToDrive(base64String, prefix) {
   );
 
   var file = DriveApp.createFile(blob);
+  file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  return file.getUrl();
+}
+
+/**
+ * base64 이미지를 Google Drive 특정 폴더에 저장하고 공유 URL 반환
+ * @param {string} base64String - "data:image/jpeg;base64,..." 형태
+ * @param {string} prefix - 파일명 앞에 붙일 구분자
+ * @param {string} folderName - Drive 폴더명 (없으면 자동 생성)
+ */
+function saveImageToFolder(base64String, prefix, folderName) {
+  var match = base64String.match(/^data:([^;]+);base64,(.+)$/);
+  if (!match) return '';
+
+  var mimeType = match[1];
+  var ext = mimeType.split('/')[1] === 'jpeg' ? 'jpg' : mimeType.split('/')[1];
+  var blob = Utilities.newBlob(
+    Utilities.base64Decode(match[2]),
+    mimeType,
+    prefix + '_' + new Date().getTime() + '.' + ext
+  );
+
+  var folder;
+  var folders = DriveApp.getFoldersByName(folderName);
+  folder = folders.hasNext() ? folders.next() : DriveApp.createFolder(folderName);
+
+  var file = folder.createFile(blob);
   file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
   return file.getUrl();
 }

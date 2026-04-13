@@ -660,6 +660,18 @@
             { "label": "지도학습", "color": "orange" }
           ],
           "gradient": "linear-gradient(90deg, #1E2033, #2DD4A8)"
+        },
+        {
+          "title": "이미지 분류 인공지능 프로젝트 활동지",
+          "path": "정보/이미지분류-인공지능-프로젝트/활동지.html",
+          "emoji": "📋",
+          "description": "Teachable Machine으로 이미지 분류 AI를 만들고 테스트 결과를 기록하는 프로젝트 활동지. 동적 테스트 표, 정확도 자동 계산, Google Sheets 제출을 지원합니다.",
+          "tags": [
+            { "label": "활동지", "color": "green" },
+            { "label": "이미지 분류", "color": "purple" },
+            { "label": "프로젝트", "color": "orange" }
+          ],
+          "gradient": "linear-gradient(90deg, #4F46E5, #06B6D4)"
         }
       ]
     },
