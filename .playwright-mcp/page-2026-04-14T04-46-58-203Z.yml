@@ -1,0 +1,105 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - heading "해봄 X 디지털 활용 AI 동아리" [level=1] [ref=e4]
+      - generic [ref=e5]: 주제 희망 조사
+    - button "설정" [ref=e6] [cursor=pointer]
+  - generic [ref=e8]:
+    - heading "다음 동아리 주제 희망 조사" [level=2] [ref=e9]
+    - paragraph [ref=e10]: 참여 희망하신 선생님들께 안내 드립니다. 아래 세 가지 주제 중 희망하시는 순서대로 적어주시고, 이 외에도 해보고 싶으신 주제가 있다면 자유롭게 알려주세요.
+  - main [ref=e11]:
+    - generic [ref=e12]:
+      - generic [ref=e13]:
+        - generic [ref=e14]: "1"
+        - generic [ref=e15]: 기본 정보
+        - generic [ref=e16]: 응답자 정보
+      - generic [ref=e18]:
+        - generic [ref=e19]:
+          - generic [ref=e20]: 이름 *
+          - textbox "이름 *" [ref=e21]:
+            - /placeholder: 이름을 입력해 주세요
+        - generic [ref=e22]:
+          - generic [ref=e23]: 부서(교과)
+          - textbox "부서(교과)" [ref=e24]:
+            - /placeholder: "예: 정보, 수학, 영어 등"
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - generic [ref=e27]: "2"
+        - generic [ref=e28]: 주제 안내
+        - generic [ref=e29]: 각 주제에 대한 상세 설명입니다
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - heading "주제 1. 수업 발표 자료 제작과 연계된 활동지 제작" [level=4] [ref=e32]
+          - paragraph [ref=e33]: 리로스쿨, 구글 폼, 구글 독스, 캔바 등 다양한 매체들이 있지만 나만의 활동지를 만들고 싶으실 수 있습니다.
+          - paragraph [ref=e34]: 활동지를 웹 페이지로 제작하고, 제출한 내용을 자동으로 구글 시트에 저장할 수 있습니다.
+          - paragraph [ref=e35]: 한 학기 동안 진행한 여러 활동을 하나의 구글 시트에도 저장할 수 있습니다. (이렇게 저장된 데이터는 추후 생기부 작성, 평가, 내용 분석 등에 매우 용이)
+          - paragraph [ref=e36]: 이미지와 같은 파일도 입력 받아서 구글 시트에 자동으로 보이도록 할 수 있습니다.
+          - generic [ref=e37]: 저는 원래 클래스룸을 활용해서 활동지를 받았었는데 구글 폼으로 받으면 뭔가 디자인이나 설명 같은 걸 넣는게 아쉽고, 구글 독스로 하자니 나중에 엑셀 형태로 데이터를 저장하는게 아쉽고, 리로스쿨로 하자니 입력 구조가 너무 빈약한 것이 아쉬웠는데 직접 활동지를 제작해서 사용하니 많이 편해졌습니다.
+        - generic [ref=e38]:
+          - heading "주제 2. 학교 데이터를 활용한 학생 상담 자료 생성 (분석)" [level=4] [ref=e39]
+          - paragraph [ref=e40]: 학교에는 매우 다양한 정보가 존재합니다. 생활기록부, 성적, 자율학습 출석 기록, 방과후 수강 기록, 모의고사 성적, 모의고사 문항 정보 등.
+          - paragraph [ref=e41]: 현재 이러한 정보를 제대로 활용할 수 있게끔 정리하고 있습니다. (위에 내용은 이미 어느 정도 정리되었습니다.)
+          - paragraph [ref=e42]: 이러한 데이터와 클로드코드를 연결해서 활용하면 매우 다채롭고 복합적인 분석이 가능해집니다.
+          - paragraph [ref=e43]: 분석 뿐만 아니라 매우 다양한 활용도 가능합니다. 간단하게는 정보를 기반한 간단한 질문을 할 수도 있고, 복잡하게는 지식 그래프를 생성하는 등의 작업도 가능합니다.
+          - generic [ref=e44]: 학교에 데이터는 항상 많았습니다. 다만 활용을 100% 하기 어려운 환경이었고, 활용을 하기 위해 노력을 투자할 시간도 없었습니다. 잘 구축된 정보 기반에 인공지능을 활용하면 이러한 것들을 손 쉽게 할 수 있게 됩니다. 경험해 보시고, 이런 분석은 너무 좋은 것 같다 싶은 것들은 함께 공유하면 좋을 것 같습니다.
+        - generic [ref=e45]:
+          - heading "주제 3. 클로드코드를 활용한 웹앱 제작 (기초)" [level=4] [ref=e46]
+          - paragraph [ref=e47]: 웹앱은 인터넷으로 돌아가는 프로그램을 의미합니다.
+          - paragraph [ref=e48]: 교육용, 업무용 등 다양한 용도로 제작이 가능합니다.
+          - paragraph [ref=e49]: 내가 하고자 하는 수업에 딱 맞는 프로그램을 만드는 것도 가능합니다.
+          - paragraph [ref=e50]: 아주 복잡한거나 기능이 엄청 많은게 아니라면 하루만에도 충분히 만들 수 있습니다.
+    - generic [ref=e51]:
+      - generic [ref=e52]:
+        - generic [ref=e53]: "3"
+        - generic [ref=e54]: 희망 순위 선택
+        - generic [ref=e55]: 1순위부터 3순위까지 선택 *
+      - generic [ref=e56]:
+        - paragraph [ref=e57]: 위 세 가지 주제 중 희망하시는 순서대로 선택해 주세요.
+        - generic [ref=e58]:
+          - generic [ref=e59]:
+            - generic [ref=e60]: 1순위 (가장 희망)
+            - combobox [ref=e61]:
+              - option "선택해 주세요" [selected]
+              - 'option "주제1: 활동지 제작"'
+              - 'option "주제2: 학교 데이터 분석"'
+              - 'option "주제3: 웹앱 제작"'
+          - generic [ref=e62]:
+            - generic [ref=e63]: 2순위
+            - combobox [ref=e64]:
+              - option "선택해 주세요" [selected]
+              - 'option "주제1: 활동지 제작"'
+              - 'option "주제2: 학교 데이터 분석"'
+              - 'option "주제3: 웹앱 제작"'
+          - generic [ref=e65]:
+            - generic [ref=e66]: 3순위
+            - combobox [ref=e67]:
+              - option "선택해 주세요" [selected]
+              - 'option "주제1: 활동지 제작"'
+              - 'option "주제2: 학교 데이터 분석"'
+              - 'option "주제3: 웹앱 제작"'
+    - generic [ref=e68]:
+      - generic [ref=e69]:
+        - generic [ref=e70]: "4"
+        - generic [ref=e71]: 추가 희망 주제
+        - generic [ref=e72]: 선택 사항
+      - generic [ref=e74]:
+        - generic [ref=e75]: 위 세 가지 외에 해보고 싶으신 주제가 있다면 자유롭게 적어주세요
+        - textbox "위 세 가지 외에 해보고 싶으신 주제가 있다면 자유롭게 적어주세요" [ref=e76]:
+          - /placeholder: "예: AI를 활용한 시험 문제 자동 생성, 챗봇 만들기, 데이터 시각화 등"
+    - generic [ref=e77]:
+      - generic [ref=e78]:
+        - generic [ref=e79]: "5"
+        - generic [ref=e80]: 기타 의견
+        - generic [ref=e81]: 선택 사항
+      - generic [ref=e83]:
+        - generic [ref=e84]: 동아리 운영에 대한 의견이나 건의사항이 있다면 적어주세요
+        - textbox "동아리 운영에 대한 의견이나 건의사항이 있다면 적어주세요" [ref=e85]:
+          - /placeholder: 자유롭게 작성해 주세요
+  - generic [ref=e86]:
+    - button "제출하기" [ref=e88] [cursor=pointer]:
+      - img [ref=e89]
+      - generic [ref=e91]: 제출하기
+    - generic [ref=e92]:
+      - generic [ref=e93]: "임시저장: 대기 중"
+      - button "임시저장" [ref=e94] [cursor=pointer]
+      - button "초기화" [ref=e95] [cursor=pointer]
