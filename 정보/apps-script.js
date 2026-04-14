@@ -26,6 +26,21 @@
  *    (모든 활동지가 동일한 URL을 사용)
  */
 
+/**
+ * [최초 1회] Apps Script 편집기에서 이 함수를 실행(▶)하여
+ * Google Drive 접근 권한을 승인하세요.
+ * 승인 후에는 이 함수를 삭제해도 됩니다.
+ */
+function authorizeDrive() {
+  // 임시 파일 생성 → 삭제 (drive 쓰기 권한 트리거)
+  var tempFile = DriveApp.createFile('auth_test.txt', 'temp', 'text/plain');
+  tempFile.setTrashed(true);
+  // 폴더 생성 → 삭제 (createFolder 권한 트리거)
+  var tempFolder = DriveApp.createFolder('_auth_test_삭제해도됨');
+  tempFolder.setTrashed(true);
+  Logger.log('Drive 전체 권한 승인 완료! (파일 생성/폴더 생성/공유 설정 모두 가능)');
+}
+
 function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
@@ -95,8 +110,8 @@ function doPost(e) {
       var imgUrl1 = '', imgUrl2 = '';
       var images = data.images || [];
       var namePrefix = (data.studentName || 'unknown') + '_' + (data.classInfo || '').replace(/\s/g, '');
-      try { if (images[0]) imgUrl1 = saveImageToFolder(images[0], namePrefix + '_학습데이터', '2026-1 이미지 분류 프로젝트'); } catch(e1) { imgUrl1 = '이미지저장실패'; }
-      try { if (images[1]) imgUrl2 = saveImageToFolder(images[1], namePrefix + '_테스트데이터', '2026-1 이미지 분류 프로젝트'); } catch(e2) { imgUrl2 = '이미지저장실패'; }
+      try { if (images[0]) imgUrl1 = saveImageToFolder(images[0], namePrefix + '_학습데이터', '2026-1 이미지 분류 프로젝트'); } catch(e1) { imgUrl1 = '오류: ' + e1.message; }
+      try { if (images[1]) imgUrl2 = saveImageToFolder(images[1], namePrefix + '_테스트데이터', '2026-1 이미지 분류 프로젝트'); } catch(e2) { imgUrl2 = '오류: ' + e2.message; }
 
       var factors = [data.factor1, data.factor2, data.factor3, data.factor4].filter(Boolean).join(', ');
 
@@ -255,7 +270,7 @@ function saveImageToDrive(base64String, prefix) {
 
   var file = DriveApp.createFile(blob);
   file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-  return file.getUrl();
+  return 'https://lh3.googleusercontent.com/d/' + file.getId();
 }
 
 /**
@@ -282,5 +297,5 @@ function saveImageToFolder(base64String, prefix, folderName) {
 
   var file = folder.createFile(blob);
   file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-  return file.getUrl();
+  return 'https://lh3.googleusercontent.com/d/' + file.getId();
 }

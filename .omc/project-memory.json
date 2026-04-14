@@ -127,15 +127,15 @@
   },
   "hotPaths": [
     {
-      "path": "pages.json",
-      "accessCount": 8,
-      "lastAccessed": 1776118286231,
+      "path": "정보\\apps-script.js",
+      "accessCount": 18,
+      "lastAccessed": 1776121515021,
       "type": "file"
     },
     {
-      "path": "정보\\apps-script.js",
-      "accessCount": 5,
-      "lastAccessed": 1776118507585,
+      "path": "pages.json",
+      "accessCount": 8,
+      "lastAccessed": 1776118286231,
       "type": "file"
     },
     {
@@ -164,8 +164,8 @@
     },
     {
       "path": "",
-      "accessCount": 1,
-      "lastAccessed": 1776117289915,
+      "accessCount": 2,
+      "lastAccessed": 1776119358889,
       "type": "directory"
     },
     {

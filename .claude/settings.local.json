@@ -154,7 +154,8 @@
       "Bash(clasp clone:*)",
       "Bash(clasp deployments:*)",
       "Bash(clasp push:*)",
-      "Bash(clasp deploy:*)"
+      "Bash(clasp deploy:*)",
+      "Bash(npx clasp:*)"
     ]
   }
 }
