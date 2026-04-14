@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1775993767960,
+  "lastScanned": 1776086959686,
   "projectRoot": "E:\\presentation",
   "techStack": {
     "languages": [
@@ -55,14 +55,14 @@
       "path": "AI전문적학습동아리",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1775993767869,
+      "lastAccessed": 1776086959571,
       "keyFiles": []
     },
     "test": {
       "path": "test",
       "purpose": "Test files",
       "fileCount": 34,
-      "lastAccessed": 1775993767890,
+      "lastAccessed": 1776086959602,
       "keyFiles": [
         "bash.exe.stackdump",
         "cycle4-image-report.json",
@@ -75,7 +75,7 @@
       "path": "unpacked-llm",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1775993767891,
+      "lastAccessed": 1776086959602,
       "keyFiles": [
         "[Content_Types].xml"
       ]
@@ -84,7 +84,7 @@
       "path": "_pptx_analysis",
       "purpose": null,
       "fileCount": 46,
-      "lastAccessed": 1775993767892,
+      "lastAccessed": 1776086959603,
       "keyFiles": [
         "capture-slides.js",
         "preview-slide01.png",
@@ -97,14 +97,14 @@
       "path": "인공지능과피지컬컴퓨팅",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1775993767900,
+      "lastAccessed": 1776086959604,
       "keyFiles": []
     },
     "정보": {
       "path": "정보",
       "purpose": null,
       "fileCount": 4,
-      "lastAccessed": 1775993767904,
+      "lastAccessed": 1776086959604,
       "keyFiles": [
         "apps-script.js",
         "appsscript.json"
@@ -114,77 +114,65 @@
       "path": "정보화부",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1775993767908,
+      "lastAccessed": 1776086959605,
       "keyFiles": []
     },
     "프로그래밍": {
       "path": "프로그래밍",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1775993767915,
+      "lastAccessed": 1776086959606,
       "keyFiles": []
     }
   },
   "hotPaths": [
     {
-      "path": "프로그래밍\\12차시-JavaScript실전-addEventListener\\index.html",
-      "accessCount": 10,
-      "lastAccessed": 1775997458271,
-      "type": "file"
-    },
-    {
       "path": "pages.json",
       "accessCount": 8,
-      "lastAccessed": 1775997905865,
+      "lastAccessed": 1776118286231,
       "type": "file"
     },
     {
       "path": "정보\\apps-script.js",
-      "accessCount": 7,
-      "lastAccessed": 1776001344542,
-      "type": "file"
-    },
-    {
-      "path": "프로그래밍\\11차시-JavaScript기초2\\index.html",
-      "accessCount": 4,
-      "lastAccessed": 1775994847419,
-      "type": "file"
-    },
-    {
-      "path": ".claude\\commands\\references\\html-template.md",
-      "accessCount": 3,
-      "lastAccessed": 1775997550081,
+      "accessCount": 5,
+      "lastAccessed": 1776118507585,
       "type": "file"
     },
     {
       "path": "정보\\딥러닝기초\\활동지.html",
       "accessCount": 3,
-      "lastAccessed": 1776000137667,
+      "lastAccessed": 1776117316837,
       "type": "file"
     },
     {
-      "path": "프로그래밍\\10차시-JavaScript기초1\\index.html",
+      "path": "정보\\이미지분류-인공지능-프로젝트\\활동지.html",
+      "accessCount": 3,
+      "lastAccessed": 1776118316811,
+      "type": "directory"
+    },
+    {
+      "path": "정보\\글쓰기-프롬프트-설계\\활동지.html",
       "accessCount": 2,
-      "lastAccessed": 1775993860775,
+      "lastAccessed": 1776117309197,
       "type": "file"
     },
     {
-      "path": "정보\\딥러닝기초\\index.html",
-      "accessCount": 1,
-      "lastAccessed": 1775997881601,
+      "path": "인공지능과피지컬컴퓨팅\\Teachable-Machine\\활동지.html",
+      "accessCount": 2,
+      "lastAccessed": 1776118201798,
       "type": "file"
     },
     {
       "path": "",
       "accessCount": 1,
-      "lastAccessed": 1775999060806,
+      "lastAccessed": 1776117289915,
       "type": "directory"
     },
     {
-      "path": "정보",
+      "path": "정보\\에이전틱AI-NotebookLM\\활동지.html",
       "accessCount": 1,
-      "lastAccessed": 1776000104059,
-      "type": "directory"
+      "lastAccessed": 1776117317641,
+      "type": "file"
     }
   ],
   "userDirectives": []
