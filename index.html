@@ -83,6 +83,46 @@ html, body {
   color: var(--blue-dark);
 }
 
+.subject-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin: 0 0 2rem;
+}
+
+.subject-tab {
+  border: 1px solid var(--gray-200);
+  background: var(--white);
+  color: var(--gray-800);
+  border-radius: 999px;
+  padding: 0.6rem 1rem;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.subject-tab:hover {
+  border-color: var(--blue);
+  color: var(--blue-dark);
+  transform: translateY(-1px);
+}
+
+.subject-tab.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: var(--white);
+  box-shadow: 0 6px 18px rgba(33,150,243,0.18);
+}
+
+.subject-tab:focus-visible,
+.card:focus-visible {
+  outline: 3px solid rgba(33,150,243,0.28);
+  outline-offset: 3px;
+}
+
 /* Subject section */
 .subject-section {
   margin-bottom: 2rem;
@@ -213,6 +253,7 @@ html, body {
 <div class="container">
 
   <div class="header" id="header"></div>
+  <div class="subject-tabs" id="subjectTabs" aria-label="과목 필터"></div>
   <div id="content"></div>
   <div class="footer" id="footer"></div>
 
@@ -235,6 +276,35 @@ function renderHeader(data) {
       <span class="stat">${data.year}</span>
     </div>
   `;
+}
+
+function slugifySubject(name) {
+  return name
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\u3131-\uD79D-]/g, '');
+}
+
+function renderTabs(subjects, activeSubject) {
+  const tabs = [
+    { key: 'all', label: '전체', count: subjects.length },
+    ...subjects.map(subject => ({
+      key: subject.name,
+      label: subject.name,
+      count: subject.pages.length,
+    })),
+  ];
+
+  return tabs.map(tab => `
+    <button
+      type="button"
+      class="subject-tab${tab.key === activeSubject ? ' active' : ''}"
+      data-subject="${tab.key}"
+      aria-pressed="${tab.key === activeSubject ? 'true' : 'false'}"
+    >
+      ${tab.label} (${tab.count})
+    </button>
+  `).join('');
 }
 
 function renderCard(page) {
@@ -262,9 +332,10 @@ function renderSubject(subject) {
   const iconBg = COLOR_MAP[subject.color]?.bg || 'var(--gray-100)';
   const cards = subject.pages.map(renderCard).join('');
   const count = subject.pages.length;
+  const subjectId = slugifySubject(subject.name);
 
   return `
-    <div class="subject-section">
+    <div class="subject-section" id="subject-${subjectId}">
       <div class="subject-header">
         <div class="subject-icon" style="background:${iconBg}">${subject.icon}</div>
         <h2>${subject.name}</h2>
@@ -275,15 +346,44 @@ function renderSubject(subject) {
   `;
 }
 
+function renderContent(subjects, activeSubject) {
+  const filteredSubjects = activeSubject === 'all'
+    ? subjects
+    : subjects.filter(subject => subject.name === activeSubject);
+
+  return filteredSubjects.map(renderSubject).join('');
+}
+
+function bindTabs(data, activeSubject, renderPage) {
+  const tabsEl = document.getElementById('subjectTabs');
+  tabsEl.innerHTML = renderTabs(data.subjects, activeSubject);
+
+  tabsEl.querySelectorAll('.subject-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const nextSubject = tab.dataset.subject || 'all';
+      if (nextSubject !== activeSubject) {
+        renderPage(nextSubject);
+      }
+    });
+  });
+}
+
 async function init() {
   try {
     const res = await fetch('pages.json');
     const data = await res.json();
+    const contentEl = document.getElementById('content');
+    const footerEl = document.getElementById('footer');
+
+    const renderPage = (activeSubject = 'all') => {
+      bindTabs(data, activeSubject, renderPage);
+      contentEl.innerHTML = renderContent(data.subjects, activeSubject);
+      footerEl.textContent = `${data.school} \u00B7 ${data.year} 수업 자료`;
+    };
 
     document.getElementById('header').innerHTML = renderHeader(data);
-    document.getElementById('content').innerHTML = data.subjects.map(renderSubject).join('');
-    document.getElementById('footer').textContent = `${data.school} \u00B7 ${data.year} 수업 자료`;
     document.title = data.title;
+    renderPage();
   } catch (e) {
     document.getElementById('content').innerHTML =
       '<p style="text-align:center;color:#757575;padding:3rem;">pages.json을 불러올 수 없습니다.</p>';
