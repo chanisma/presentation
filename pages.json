@@ -486,6 +486,27 @@
           "gradient": "linear-gradient(90deg, #6200ea, #7c4dff)"
         },
         {
+          "title": "클로드 데스크톱 Code 모드 세팅 가이드",
+          "path": "AI전문적학습동아리/클로드데스크톱-Code모드-세팅/index.html",
+          "emoji": "💻",
+          "description": "새로 업데이트된 Claude Desktop의 Code 기능으로 개발 환경을 구축하는 방법을 안내합니다. Chat vs Code 비교, 프로젝트 폴더 연결, 스킬 활용법을 포함합니다.",
+          "tags": [
+            {
+              "label": "Code 모드",
+              "color": "blue"
+            },
+            {
+              "label": "Claude Desktop",
+              "color": "purple"
+            },
+            {
+              "label": "세팅 가이드",
+              "color": "green"
+            }
+          ],
+          "gradient": "linear-gradient(90deg, #4ECDC4, #1A1A2E)"
+        },
+        {
           "title": "Claude Code & Presentation Builder 환경 설치 가이드",
           "path": "AI전문적학습동아리/클로드코드-환경설치/index.html",
           "emoji": "🛠️",
