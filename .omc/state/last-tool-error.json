@@ -1,7 +1,0 @@
-{
-  "tool_name": "mcp__claude-in-chrome__javascript_tool",
-  "tool_input_preview": "{\"action\":\"javascript_exec\",\"tabId\":1878971779,\"text\":\"\\n// Trigger input event to activate debounce\\ndocument.getElementById('categories').dispatchEvent(new Event('input'));\\n// Wait for debounce (60...",
-  "error": "JavaScript execution error: SyntaxError: await is only valid in async functions and the top level bodies of modules\n    at <anonymous>:5:13\n    at <anonymous>:9:11",
-  "timestamp": "2026-04-13T22:06:45.855Z",
-  "retry_count": 1
-}

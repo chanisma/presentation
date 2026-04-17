@@ -1,9 +1,0 @@
-{"t":0,"agent":"system","event":"keyword_detected","keyword":"team"}
-{"t":0,"agent":"system","event":"mode_change","mode_from":"none","mode_to":"team"}
-{"t":0,"agent":"system","event":"keyword_detected","keyword":"team"}
-{"t":0,"agent":"system","event":"mode_change","mode_from":"none","mode_to":"team"}
-{"t":0,"agent":"system","event":"keyword_detected","keyword":"team"}
-{"t":0,"agent":"system","event":"mode_change","mode_from":"none","mode_to":"team"}
-{"t":0,"agent":"a2af689","agent_type":"unknown","event":"agent_stop","success":true}
-{"t":0,"agent":"a4c4cf4","agent_type":"unknown","event":"agent_stop","success":true}
-{"t":0,"agent":"a87dda8","agent_type":"unknown","event":"agent_stop","success":true}
