@@ -153,6 +153,59 @@
       line-height: 1.8;
     }
 
+    /* Hero 핵심 키워드 */
+    .hero-keywords {
+      margin: 40px auto 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      max-width: 780px;
+    }
+
+    .kw {
+      display: inline-flex;
+      align-items: center;
+      padding: 9px 16px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: -0.005em;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .kw:hover {
+      border-color: var(--accent-border);
+      color: var(--accent);
+      transform: translateY(-1px);
+      background: rgba(94, 234, 212, 0.06);
+    }
+
+    .kw-primary {
+      color: var(--accent);
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      font-weight: 600;
+      font-size: 0.94rem;
+      padding: 10px 18px;
+    }
+
+    .kw-primary:hover {
+      background: rgba(94, 234, 212, 0.22);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    @media (max-width: 640px) {
+      .hero-keywords { gap: 8px; margin-top: 32px; }
+      .kw { font-size: 0.82rem; padding: 7px 13px; }
+      .kw-primary { font-size: 0.86rem; padding: 8px 14px; }
+    }
+
     .scroll-indicator {
       position: absolute;
       bottom: 36px;
@@ -183,11 +236,61 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 20px;
-      margin-bottom: 32px;
+    }
+
+    .link-grid.single-col {
+      grid-template-columns: 1fr;
     }
 
     @media (max-width: 720px) {
       .link-grid { grid-template-columns: 1fr; }
+    }
+
+    /* 갈래(그룹) 컨테이너 */
+    .case-group {
+      margin-bottom: 44px;
+    }
+    .case-group:last-of-type { margin-bottom: 20px; }
+
+    .case-group-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .case-group-num {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    .case-group-title {
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 6px;
+      color: #fff;
+      letter-spacing: -0.005em;
+    }
+
+    .case-group-desc {
+      font-size: 0.94rem;
+      color: var(--text-muted);
+      line-height: 1.55;
     }
 
     .link-card {
@@ -483,6 +586,259 @@
       html { scroll-behavior: auto; }
     }
 
+    /* ===== 기술 스택 플로우 (어떻게 만드는가) ===== */
+    /* 섹션: 어떻게 만드는가 */
+    .stack-flow {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+    }
+
+    .stack-node {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 28px 24px;
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 24px;
+      align-items: center;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stack-node::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--accent);
+      opacity: 0.5;
+      transition: var(--transition);
+    }
+
+    .stack-node:hover {
+      border-color: var(--accent-border);
+      background: var(--card-hover);
+      transform: translateX(2px);
+    }
+
+    .stack-node:hover::before { opacity: 1; width: 4px; }
+
+    .stack-node-final::before {
+      background: linear-gradient(180deg, var(--accent), rgba(94, 234, 212, 0.3));
+      opacity: 1;
+      width: 4px;
+    }
+
+    .stack-step {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border-right: 1px solid var(--border);
+      padding-right: 24px;
+    }
+
+    .stack-num {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--accent);
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      line-height: 1;
+    }
+
+    .stack-role {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .stack-body {
+      padding-left: 4px;
+    }
+
+    .stack-brand {
+      font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 8px;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+
+    .stack-desc {
+      font-size: 0.97rem;
+      line-height: 1.65;
+      color: var(--text);
+    }
+
+    .stack-desc strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* 확장 능력 예시 목록 (노드 02 내부) */
+    .ext-examples {
+      margin-top: 18px;
+      padding: 18px 20px 16px;
+      background: rgba(94, 234, 212, 0.04);
+      border: 1px solid var(--accent-border);
+      border-radius: 12px;
+    }
+
+    .ext-examples-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .ext-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .ext-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 0;
+      margin: 0;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .ext-list li::before { display: none; }
+
+    .ext-chip {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 130px;
+      padding: 6px 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      border-radius: 8px;
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      text-align: center;
+    }
+
+    .ext-chip-custom {
+      color: #fff;
+      background: linear-gradient(135deg, rgba(94, 234, 212, 0.22), rgba(94, 234, 212, 0.08));
+      border-color: var(--accent);
+      font-family: inherit;
+    }
+
+    .ext-desc {
+      flex: 1;
+      font-size: 0.92rem;
+      color: var(--text);
+      padding-top: 5px;
+    }
+
+    .ext-note {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--accent-border);
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .ext-note strong { color: var(--accent); font-weight: 600; }
+
+    @media (max-width: 640px) {
+      .ext-list li { flex-direction: column; gap: 4px; }
+      .ext-chip { min-width: 0; align-self: flex-start; }
+      .ext-desc { padding-top: 0; }
+    }
+
+    /* 연결 화살표 */
+    .stack-arrow {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 14px 0;
+      gap: 6px;
+    }
+
+    .stack-arrow .arrow-line {
+      width: 1px;
+      height: 20px;
+      background: linear-gradient(180deg, var(--accent-border), transparent);
+    }
+
+    .stack-arrow .arrow-line:last-child {
+      background: linear-gradient(180deg, var(--accent-border), var(--accent));
+      height: 24px;
+      position: relative;
+    }
+
+    .stack-arrow .arrow-line:last-child::after {
+      content: "";
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+      width: 8px;
+      height: 8px;
+      border-right: 2px solid var(--accent);
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .stack-arrow .arrow-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 4px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+    }
+
+    /* 모바일 대응 */
+    @media (max-width: 640px) {
+      .stack-node {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        padding: 22px 22px 20px;
+      }
+      .stack-step {
+        flex-direction: row;
+        align-items: center;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding-right: 0;
+        padding-bottom: 12px;
+        gap: 14px;
+      }
+      .stack-num { font-size: 1.6rem; }
+      .stack-arrow { padding: 10px 0; }
+    }
+
     /* ===== 교차 매트릭스 (교육청 S/W × 학교 S/W) ===== */
     /* 섹션: 교차 매트릭스 */
     .matrix-wrapper {
@@ -536,10 +892,18 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-      padding: 16px 6px;
+      padding: 16px 4px;
       min-height: 100%;
+      line-height: 1.3;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+    }
+
+    .axis-vertical span {
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      white-space: nowrap;
+      letter-spacing: 0.15em;
     }
 
     .matrix-grid {
@@ -802,6 +1166,17 @@
         이미 시작되었고, 이 전환은 방향성의 문제이지 가능성의 문제가 아닙니다.
         오늘의 논의는 이 변화를 현장과 교육청이 어떻게 함께 수용할 것인가에 대한 제안입니다.
       </p>
+
+      <div class="hero-keywords" aria-label="오늘 회의의 핵심 키워드">
+        <span class="kw kw-primary">교사 개발자</span>
+        <span class="kw kw-primary">역할 재분배</span>
+        <span class="kw kw-primary">Claude Code</span>
+        <span class="kw">현장 주도</span>
+        <span class="kw">보조자로서의 교육청</span>
+        <span class="kw">수요 기반 개발</span>
+        <span class="kw">지속 가능성</span>
+        <span class="kw">대립이 아닌 협업</span>
+      </div>
     </div>
     <div class="scroll-indicator" aria-hidden="true">
       <span>scroll</span>
@@ -816,83 +1191,298 @@
         <span class="eyebrow">01 &nbsp;&middot;&nbsp; 현장의 실제</span>
         <h2 class="section-title">이미 일어나고 있는 변화 — 교사 개발 사례</h2>
         <p class="section-lead">
-          아래는 회의 중 직접 시연할 네 개의 사이트입니다. 각 카드를 클릭하면 새 창으로 열립니다.
-          실제로 접속하여 기능을 확인해 주시길 권합니다.
+          아래 사례들은 모두 한 명의 교사가 직접 기획·개발·운영 중인 도구입니다.
+          목적에 따라 세 가지 갈래로 나누어 정리했습니다.
+          각 카드를 클릭하면 새 창으로 열립니다.
         </p>
       </div>
 
-      <div class="link-grid">
-        <!-- 카드 1 -->
-        <a class="link-card reveal"
-           href="https://spacekijun.lovable.app"
-           target="_blank"
-           rel="noopener noreferrer"
-           aria-label="spacekijun.lovable.app 새 창으로 열기">
-          <span class="ext-icon" aria-hidden="true">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M7 17L17 7" />
-              <path d="M8 7h9v9" />
-            </svg>
-          </span>
-          <div class="label">Case 01</div>
-          <div class="url">spacekijun.lovable.app</div>
-        </a>
+      <!-- 갈래 1: 범용 도구 -->
+      <div class="case-group reveal">
+        <div class="case-group-head">
+          <span class="case-group-num">A</span>
+          <div>
+            <h3 class="case-group-title">범용 도구</h3>
+            <p class="case-group-desc">특정 학교 업무에 국한되지 않는, 교사·학생 누구나 쓸 수 있는 열린 도구.</p>
+          </div>
+        </div>
+        <div class="link-grid single-col">
+          <a class="link-card"
+             href="https://spacekijun.lovable.app"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="spacekijun.lovable.app 새 창으로 열기">
+            <span class="ext-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7" />
+                <path d="M8 7h9v9" />
+              </svg>
+            </span>
+            <div class="label">Space Kijun</div>
+            <div class="url">spacekijun.lovable.app</div>
+          </a>
+        </div>
+      </div>
 
-        <!-- 카드 2 -->
-        <a class="link-card reveal"
-           href="https://kijunseaton.netlify.app"
-           target="_blank"
-           rel="noopener noreferrer"
-           aria-label="kijunseaton.netlify.app 새 창으로 열기">
-          <span class="ext-icon" aria-hidden="true">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M7 17L17 7" />
-              <path d="M8 7h9v9" />
-            </svg>
-          </span>
-          <div class="label">Case 02</div>
-          <div class="url">kijunseaton.netlify.app</div>
-        </a>
+      <!-- 갈래 2: 학교 업무 보조 -->
+      <div class="case-group reveal">
+        <div class="case-group-head">
+          <span class="case-group-num">B</span>
+          <div>
+            <h3 class="case-group-title">학교 업무 보조</h3>
+            <p class="case-group-desc">반복적이고 부담이 큰 학교 행정·기자재 관리 업무를 경감하기 위한 도구.</p>
+          </div>
+        </div>
+        <div class="link-grid">
+          <a class="link-card"
+             href="https://kijunseaton.netlify.app"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="kijunseaton.netlify.app 새 창으로 열기">
+            <span class="ext-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7" />
+                <path d="M8 7h9v9" />
+              </svg>
+            </span>
+            <div class="label">Kijun Seaton</div>
+            <div class="url">kijunseaton.netlify.app</div>
+          </a>
 
-        <!-- 카드 3 -->
-        <a class="link-card reveal"
-           href="https://kijundevice.netlify.app"
-           target="_blank"
-           rel="noopener noreferrer"
-           aria-label="kijundevice.netlify.app 새 창으로 열기">
-          <span class="ext-icon" aria-hidden="true">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M7 17L17 7" />
-              <path d="M8 7h9v9" />
-            </svg>
-          </span>
-          <div class="label">Case 03</div>
-          <div class="url">kijundevice.netlify.app</div>
-        </a>
+          <a class="link-card"
+             href="https://kijundevice.netlify.app"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="kijundevice.netlify.app 새 창으로 열기">
+            <span class="ext-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7" />
+                <path d="M8 7h9v9" />
+              </svg>
+            </span>
+            <div class="label">Kijun Device</div>
+            <div class="url">kijundevice.netlify.app</div>
+          </a>
 
-        <!-- 카드 4 -->
-        <a class="link-card reveal"
-           href="https://kijundevice.netlify.app/admin"
-           target="_blank"
-           rel="noopener noreferrer"
-           aria-label="kijundevice.netlify.app/admin 새 창으로 열기">
-          <span class="ext-icon" aria-hidden="true">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M7 17L17 7" />
-              <path d="M8 7h9v9" />
-            </svg>
-          </span>
-          <div class="label">Case 04 · Admin</div>
-          <div class="url">kijundevice.netlify.app/admin</div>
-        </a>
+          <a class="link-card"
+             href="https://kijundevice.netlify.app/admin"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="kijundevice.netlify.app/admin 새 창으로 열기">
+            <span class="ext-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7" />
+                <path d="M8 7h9v9" />
+              </svg>
+            </span>
+            <div class="label">Kijun Device · Admin</div>
+            <div class="url">kijundevice.netlify.app/admin</div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 갈래 3: 교육 결과 분석 -->
+      <div class="case-group reveal">
+        <div class="case-group-head">
+          <span class="case-group-num">C</span>
+          <div>
+            <h3 class="case-group-title">교육 결과 분석</h3>
+            <p class="case-group-desc">평가 결과와 학생 데이터를 시각화하여 수업 개선과 진로 지도에 활용하는 도구.</p>
+          </div>
+        </div>
+        <div class="link-grid">
+          <a class="link-card"
+             href="demos/kg-24-10109-visual-ryu-jarim.html"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="학생 개별 분석 (류자림) 새 창으로 열기">
+            <span class="ext-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7" />
+                <path d="M8 7h9v9" />
+              </svg>
+            </span>
+            <div class="label">학생 개별 분석</div>
+            <div class="url">kg-24-10109-visual · 류자림.html</div>
+          </a>
+
+          <a class="link-card"
+             href="demos/2026-3학년-3월-모의고사-분석.html"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="2026년 3학년 3월 모의고사 분석 새 창으로 열기">
+            <span class="ext-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7" />
+                <path d="M8 7h9v9" />
+              </svg>
+            </span>
+            <div class="label">학년 단위 분석</div>
+            <div class="url">2026년 3학년 3월 모의고사 분석.html</div>
+          </a>
+        </div>
       </div>
 
       <p class="cards-note reveal">
-        이들은 모두 한 명의 교사가 직접 기획·개발·배포하여 실제로 운영 중인 도구들입니다.
+        세 갈래의 공통점 — <strong style="color: var(--accent);">수업 현장의 구체적 필요</strong>에서 출발했고,
+        개발자이자 사용자가 동일 인물이며, 이미 운영되고 있다는 것입니다.
+      </p>
+    </div>
+  </section>
+
+  <!-- 섹션: 어떻게 만드는가 (기술 스택 플로우) -->
+  <section id="howto">
+    <div class="container">
+      <div class="reveal">
+        <span class="eyebrow">02 &nbsp;&middot;&nbsp; 어떻게 만드는가</span>
+        <h2 class="section-title">교사 1인이 도구를 만들어 배포하기까지</h2>
+        <p class="section-lead">
+          앞서 보여드린 사례들은 모두 <strong style="color: var(--accent);">비슷한 다섯 단계</strong>를 따라 만들어집니다.
+          각 단계는 별도의 전문 도구가 맡아주며, 교사는 "무엇이 필요한가"를 말하는 역할에 집중합니다.
+        </p>
+      </div>
+
+      <ol class="stack-flow reveal">
+        <!-- ① -->
+        <li class="stack-node">
+          <div class="stack-step">
+            <span class="stack-num">01</span>
+            <span class="stack-role">개발 파트너</span>
+          </div>
+          <div class="stack-body">
+            <h3 class="stack-brand">Claude Code</h3>
+            <p class="stack-desc">
+              기획·코드 작성·데이터 분석까지 <strong>대화형으로 함께 수행</strong>하는 AI 개발 파트너.
+              교사가 수업 맥락을 설명하면, 필요한 도구의 초안을 곧바로 만들어냅니다.
+            </p>
+          </div>
+        </li>
+
+        <!-- 연결 -->
+        <li class="stack-arrow" aria-hidden="true">
+          <span class="arrow-line"></span>
+          <span class="arrow-label">연결 · 호출</span>
+          <span class="arrow-line"></span>
+        </li>
+
+        <!-- ② -->
+        <li class="stack-node">
+          <div class="stack-step">
+            <span class="stack-num">02</span>
+            <span class="stack-role">확장 능력</span>
+          </div>
+          <div class="stack-body">
+            <h3 class="stack-brand">API · MCP · Skill</h3>
+            <p class="stack-desc">
+              Claude Code가 <strong>외부 정보와 전문 기능을 가져올 수 있게 해주는 연결 고리</strong>.
+              최신 자료를 찾고, 문서를 읽고, 특정 업무 패턴을 숙련된 방식으로 수행합니다.
+            </p>
+
+            <div class="ext-examples">
+              <div class="ext-examples-label">실제 활용 예</div>
+              <ul class="ext-list">
+                <li>
+                  <span class="ext-chip">Graphify</span>
+                  <span class="ext-desc">문서·자료를 지식 그래프로 구조화해 관계를 한눈에 파악</span>
+                </li>
+                <li>
+                  <span class="ext-chip">Supabase MCP</span>
+                  <span class="ext-desc">데이터베이스와 직접 대화하며 조회·분석을 즉시 수행</span>
+                </li>
+                <li>
+                  <span class="ext-chip">XLSX</span>
+                  <span class="ext-desc">엑셀 파일의 학생 성적·출결·설문 데이터를 직접 읽고 가공</span>
+                </li>
+                <li>
+                  <span class="ext-chip">PPTX</span>
+                  <span class="ext-desc">수업 자료·발표 슬라이드 제작과 일괄 편집 자동화</span>
+                </li>
+                <li>
+                  <span class="ext-chip ext-chip-custom">자체 제작 Skill</span>
+                  <span class="ext-desc">학교 특유의 반복 업무를 교사가 직접 '내 스킬'로 만들어 재사용</span>
+                </li>
+              </ul>
+              <p class="ext-note">
+                필요에 따라 <strong>도구 자체를 늘릴 수 있다는 점</strong>이 핵심입니다.
+                현장의 업무가 바뀌면, 확장 능력도 함께 바뀝니다.
+              </p>
+            </div>
+          </div>
+        </li>
+
+        <li class="stack-arrow" aria-hidden="true">
+          <span class="arrow-line"></span>
+          <span class="arrow-label">데이터 저장 · 인증</span>
+          <span class="arrow-line"></span>
+        </li>
+
+        <!-- ③ -->
+        <li class="stack-node">
+          <div class="stack-step">
+            <span class="stack-num">03</span>
+            <span class="stack-role">백엔드 기반</span>
+          </div>
+          <div class="stack-body">
+            <h3 class="stack-brand">Supabase</h3>
+            <p class="stack-desc">
+              데이터를 안전하게 <strong>저장·조회·보호</strong>하는 기반 서비스.
+              로그인·권한 관리·보안 기본기를 제공해, 교사가 데이터 설계의 전문 영역을 떠안지 않아도 됩니다.
+            </p>
+          </div>
+        </li>
+
+        <li class="stack-arrow" aria-hidden="true">
+          <span class="arrow-line"></span>
+          <span class="arrow-label">코드 보관 · 이력 관리</span>
+          <span class="arrow-line"></span>
+        </li>
+
+        <!-- ④ -->
+        <li class="stack-node">
+          <div class="stack-step">
+            <span class="stack-num">04</span>
+            <span class="stack-role">버전 관리</span>
+          </div>
+          <div class="stack-body">
+            <h3 class="stack-brand">GitHub</h3>
+            <p class="stack-desc">
+              <strong>언제·무엇을·왜 바꿨는지</strong>의 공식 기록 저장소.
+              지속적인 유지보수의 근거가 되고, 차후 지원 사업의 객관적 지표(커밋 이력)로도 활용됩니다.
+            </p>
+          </div>
+        </li>
+
+        <li class="stack-arrow" aria-hidden="true">
+          <span class="arrow-line"></span>
+          <span class="arrow-label">세상에 공개</span>
+          <span class="arrow-line"></span>
+        </li>
+
+        <!-- ⑤ -->
+        <li class="stack-node stack-node-final">
+          <div class="stack-step">
+            <span class="stack-num">05</span>
+            <span class="stack-role">배포 · 공개</span>
+          </div>
+          <div class="stack-body">
+            <h3 class="stack-brand">Netlify · Lovable</h3>
+            <p class="stack-desc">
+              만든 도구를 <strong>인터넷 주소 하나로 누구나 접속할 수 있게</strong> 해주는 배포 플랫폼.
+              설치 없이 링크만 공유하면 학생·동료 교사가 즉시 사용할 수 있습니다.
+            </p>
+          </div>
+        </li>
+      </ol>
+
+      <p class="cards-note reveal">
+        교사는 <strong style="color: var(--accent);">수업의 필요</strong>를 말하고,
+        이 다섯 단계가 나머지를 받아냅니다. 이것이 지금 한 명의 교사가 할 수 있게 된 일입니다.
       </p>
     </div>
   </section>
@@ -901,7 +1491,7 @@
   <section id="matrix">
     <div class="container">
       <div class="reveal">
-        <span class="eyebrow">02 &nbsp;&middot;&nbsp; 교차 매트릭스</span>
+        <span class="eyebrow">03 &nbsp;&middot;&nbsp; 교차 매트릭스</span>
         <h2 class="section-title">서로의 강점과 약점이 만나는 지점</h2>
         <p class="section-lead">
           교육청과 학교(교사)는 서로 다른 것을 잘합니다. 네 가지 조합은 각각 다른 전략을 가리킵니다.
@@ -1011,7 +1601,7 @@
   <section id="proposals">
     <div class="container">
       <div class="reveal">
-        <span class="eyebrow">03 &nbsp;&middot;&nbsp; 제안</span>
+        <span class="eyebrow">04 &nbsp;&middot;&nbsp; 제안</span>
         <h2 class="section-title">교육청에 드리는 세 가지 제안</h2>
         <p class="proposal-intro">
           다음은 비판이 아니라, 현장이 바라보는 역할 재분배에 대한 제안입니다.
@@ -1150,7 +1740,7 @@
   <section id="only-office">
     <div class="container">
       <div class="reveal">
-        <span class="eyebrow">04 &nbsp;&middot;&nbsp; 교육청의 고유 영역</span>
+        <span class="eyebrow">05 &nbsp;&middot;&nbsp; 교육청의 고유 영역</span>
         <h2 class="section-title">교육청만이 할 수 있는 일</h2>
         <p class="section-lead">
           "교사 개발을 보조·보완한다"는 말은 교육청의 역할 축소가 아닙니다.
@@ -1247,7 +1837,7 @@
   <!-- 섹션: 마무리 -->
   <section class="closing" id="closing">
     <div class="container reveal">
-      <span class="eyebrow">05 &nbsp;&middot;&nbsp; 마무리</span>
+      <span class="eyebrow">06 &nbsp;&middot;&nbsp; 마무리</span>
       <p class="closing-quote">
         "교육청과 교육 현장의 교사가 함께 전북도 교육을 전방위적으로
         개선할 수 있는 방안을 논의하는 자리가 되길 바랍니다."

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>류자림 (3-1-6) 텍스트 지식그래프</title>
+<script src="https://unpkg.com/cytoscape@3.30.4/dist/cytoscape.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', -apple-system, sans-serif; background: #0f172a; color: #e2e8f0; display: flex; height: 100vh; overflow: hidden; }
+  #cy { flex: 1; background: #0f172a; }
+
+  /* Controls */
+  #controls { position: absolute; top: 16px; left: 16px; z-index: 10; display: flex; gap: 8px; flex-wrap: wrap; max-width: 600px; }
+  #controls button { padding: 6px 14px; border: 1px solid #334155; border-radius: 6px; background: #1e293b; color: #e2e8f0; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+  #controls button:hover { background: #334155; border-color: #60a5fa; }
+  #controls button.active { background: #3b82f6; border-color: #3b82f6; color: white; }
+
+  /* Title */
+  #title-bar { position: absolute; top: 16px; left: 50%; transform: translateX(-50%); z-index: 10; text-align: center; pointer-events: none; }
+  #title-bar h1 { font-size: 20px; font-weight: 700; color: #f8fafc; }
+  #title-bar p { font-size: 12px; color: #64748b; margin-top: 2px; }
+
+  /* Filter Panel */
+  #filter-panel { position: absolute; top: 70px; left: 16px; z-index: 10; background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px; width: 260px; }
+  #filter-panel h4 { font-size: 13px; color: #94a3b8; margin-bottom: 10px; }
+  .filter-group { margin-bottom: 12px; }
+  .filter-group label { font-size: 12px; color: #94a3b8; display: block; margin-bottom: 4px; }
+  .filter-check { display: flex; align-items: center; gap: 6px; padding: 3px 0; font-size: 12px; cursor: pointer; }
+  .filter-check input { accent-color: #3b82f6; }
+  .filter-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+  #confidence-slider { width: 100%; accent-color: #3b82f6; }
+  #confidence-value { font-size: 12px; color: #60a5fa; font-weight: 600; }
+
+  /* Detail Panel */
+  #detail-panel { position: absolute; top: 16px; right: 16px; width: 340px; background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; z-index: 10; display: none; max-height: calc(100vh - 32px); overflow-y: auto; }
+  #detail-panel h3 { font-size: 16px; margin-bottom: 12px; color: #60a5fa; }
+  .detail-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #334155; font-size: 13px; }
+  .detail-label { color: #94a3b8; min-width: 80px; }
+  .detail-value { color: #e2e8f0; font-weight: 500; text-align: right; max-width: 200px; word-break: keep-all; }
+  .evidence-box { margin-top: 8px; padding: 10px; background: #0f172a; border-radius: 8px; font-size: 12px; color: #cbd5e1; line-height: 1.6; max-height: 200px; overflow-y: auto; }
+  .close-btn { position: absolute; top: 12px; right: 12px; background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 18px; }
+  .close-btn:hover { color: #e2e8f0; }
+
+  /* Legend */
+  #legend { position: absolute; bottom: 16px; left: 16px; background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px; z-index: 10; }
+  #legend h4 { font-size: 13px; color: #94a3b8; margin-bottom: 8px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; padding: 3px 0; font-size: 12px; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+
+  /* Stats */
+  #stats-bar { position: absolute; bottom: 16px; right: 16px; background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 16px; z-index: 10; font-size: 12px; }
+  .stat-row { display: flex; justify-content: space-between; gap: 16px; padding: 2px 0; }
+  .stat-label { color: #94a3b8; }
+  .stat-value { color: #60a5fa; font-weight: 600; }
+</style>
+</head>
+<body>
+<div id="cy"></div>
+
+<div id="title-bar">
+  <h1>류자림 (3-1-6) 텍스트 지식그래프</h1>
+  <p>Text-based Knowledge Graph Extraction</p>
+</div>
+
+<div id="controls">
+  <button onclick="cy.fit(undefined, 50)" title="전체보기">전체보기</button>
+  <button onclick="cy.zoom(cy.zoom() * 1.3); cy.center()">+</button>
+  <button onclick="cy.zoom(cy.zoom() / 1.3); cy.center()">-</button>
+  <button onclick="runLayout('cose')" class="active" id="btn-cose">연결 기반</button>
+  <button onclick="runLayout('concentric')" id="btn-concentric">동심원</button>
+  <button onclick="runLayout('circle')" id="btn-circle">원형</button>
+  <button onclick="runLayout('grade')" id="btn-grade" style="border-color:#f59e0b">학년별</button>
+  <button onclick="toggleFilter()" id="btn-filter">필터</button>
+</div>
+
+<div id="filter-panel" style="display:none;">
+  <h4>필터</h4>
+  <div class="filter-group">
+    <label>엔티티 유형</label>
+    <div id="type-filters"></div>
+  </div>
+  <div class="filter-group">
+    <label>신뢰도 기준: <span id="confidence-value">0.70</span></label>
+    <input type="range" id="confidence-slider" min="50" max="100" value="70" oninput="updateConfidence(this.value)">
+  </div>
+  <div class="filter-group">
+    <label>관계 유형 필터</label>
+    <div id="predicate-filters"></div>
+  </div>
+</div>
+
+<div id="detail-panel">
+  <button class="close-btn" onclick="closeDetail()">&times;</button>
+  <h3 id="detail-title"></h3>
+  <div id="detail-content"></div>
+</div>
+
+<div id="legend">
+  <h4>엔티티 유형</h4>
+  <div id="legend-items"></div>
+</div>
+
+<div id="stats-bar">
+  <div class="stat-row"><span class="stat-label">노드</span><span class="stat-value" id="stat-nodes">0</span></div>
+  <div class="stat-row"><span class="stat-label">관계</span><span class="stat-value" id="stat-edges">0</span></div>
+  <div class="stat-row"><span class="stat-label">표시중</span><span class="stat-value" id="stat-visible">0</span></div>
+</div>
+
+<script>
+// === COLOR / SHAPE / EDGE CONFIG ===
+var typeColors = {
+  Student: '#3B82F6', Competency: '#8B5CF6', Activity: '#06B6D4', Attitude: '#10B981',
+  Interest: '#F59E0B', Concept: '#EAB308', Book: '#EC4899', Achievement: '#EF4444',
+  Person: '#F97316', Role: '#A855F7', Thread: '#FF6B6B'
+};
+var typeLabels = {
+  Student: '학생', Competency: '역량', Activity: '활동',
+  Attitude: '태도', Interest: '관심분야', Concept: '교과개념',
+  Book: '도서', Achievement: '성취', Person: '인물', Role: '역할', Thread: '탐구 스레드'
+};
+var typeShapes = {
+  Student: 'ellipse', Competency: 'diamond', Activity: 'hexagon', Attitude: 'round-rectangle',
+  Interest: 'star', Concept: 'diamond', Book: 'rectangle', Achievement: 'octagon',
+  Person: 'ellipse', Role: 'round-rectangle', Thread: 'round-rectangle'
+};
+var predColors = {
+  DEMONSTRATED: '#8B5CF6', PERFORMED: '#06B6D4', SHOWED_ATTITUDE: '#10B981',
+  INTERESTED_IN: '#F59E0B', ENGAGED_WITH: '#EAB308', READ: '#EC4899',
+  ACHIEVED: '#EF4444', HELD_ROLE: '#A855F7', RELATED_TO: '#9CA3AF',
+  APPLIED_IN: '#64748b', EVIDENCED_BY: '#475569', DEVELOPS_INTO: '#334155',
+  MOTIVATED_BY: '#F472B6', SUPPORTS: '#22D3EE', INSPIRED_BY: '#FB923C', DEEPENED_FROM: '#FF6B6B', PART_OF: '#FF6B6B'
+};
+var predStyles = {
+  DEMONSTRATED: 'solid', PERFORMED: 'solid', SHOWED_ATTITUDE: 'dashed',
+  INTERESTED_IN: 'dotted', ENGAGED_WITH: 'solid', READ: 'dotted',
+  ACHIEVED: 'solid', HELD_ROLE: 'solid', RELATED_TO: 'dashed',
+  APPLIED_IN: 'dashed', EVIDENCED_BY: 'dashed', DEVELOPS_INTO: 'dotted',
+  MOTIVATED_BY: 'solid', SUPPORTS: 'solid', INSPIRED_BY: 'dotted', DEEPENED_FROM: 'solid', PART_OF: 'dashed'
+};
+var predWidths = {
+  DEMONSTRATED: 2, PERFORMED: 2, SHOWED_ATTITUDE: 1.5,
+  INTERESTED_IN: 1.5, ENGAGED_WITH: 2, READ: 1.5,
+  ACHIEVED: 3, HELD_ROLE: 2, RELATED_TO: 1,
+  APPLIED_IN: 1, EVIDENCED_BY: 1, DEVELOPS_INTO: 1,
+  MOTIVATED_BY: 2, SUPPORTS: 1.5, INSPIRED_BY: 1.5, DEEPENED_FROM: 3, PART_OF: 1
+};
+
+// === GRAPH DATA (replaced at generation time) ===
+var graphData = {"nodes":[{"data":{"id":"student","label":"류자림\n(3-1-6)","type":"Student","sourceCount":0,"gradeRing":0}},{"data":{"id":"e1","label":"탐구력","type":"Competency","confidence":0.95,"sourceCount":6,"sources":"[{\"category\":\"자율활동\",\"grade\":1},{\"category\":\"동아리활동\",\"grade\":1},{\"category\":\"진로활동\",\"grade\":1},{\"category\":\"regular\",\"subject\":\"통합과학\",\"grade\":1},{\"category\":\"동아리활동\",\"grade\":2}]","evidence":"사고력과 탐구력이 돋보임","gradeRing":1}},{"data":{"id":"e2","label":"비판적 사고력","type":"Competency","confidence":0.92,"sourceCount":4,"sources":"[{\"category\":\"regular\",\"subject\":\"한국사\",\"grade\":1},{\"category\":\"regular\",\"subject\":\"통합사회\",\"grade\":1},{\"category\":\"regular\",\"subject\":\"언어와 매체\",\"grade\":2},{\"category\":\"regular\",\"subject\":\"국어\",\"grade\":1}]","evidence":"논리적으로 비판함","gradeRing":1}},{"data":{"id":"e3","label":"논리적 사고력","type":"Competency","confidence":0.92,"sourceCount":3,"sources":"[{\"category\":\"regular\",\"subject\":\"국어\",\"grade\":1},{\"category\":\"regular\",\"subject\":\"확률과 통계\",\"grade\":2},{\"category\":\"career\",\"subject\":\"기하\",\"grade\":2}]","evidence":"논리적 사고력과 비판적 분석력","gradeRing":1}},{"data":{"id":"e4","label":"자기주도 학습 능력","type":"Competency","confidence":0.92,"sourceCount":3,"sources":"[{\"category\":\"행동특성및종합의견\",\"grade\":1},{\"category\":\"regular\",\"subject\":\"확률과 통계\",\"grade\":2},{\"category\":\"regular\",\"subject\":\"화학Ⅰ\",\"grade\":2}]","evidence":"자신만의 언어로 개념 표현","gradeRing":1}},{"data":{"id":"e5","label":"융합적 사고력","type":"Competency","confidence":0.9,"sourceCount":3,"sources":"[{\"category\":\"regular\",\"subject\":\"한국사\",\"grade\":1},{\"category\":\"career\",\"subject\":\"기하\",\"grade\":2},{\"category\":\"career\",\"subject\":\"음악 연주\",\"grade\":1}]","evidence":"의료적 관점과 역사적 기록 결합","gradeRing":1}},{"data":{"id":"e6","label":"문제 해결 능력","type":"Competency","confidence":0.88,"sourceCount":2,"sources":"[{\"category\":\"진로활동\",\"grade\":2},{\"category\":\"regular\",\"subject\":\"종교학\",\"grade\":2}]","evidence":"설계를 수정함","gradeRing":2}},{"data":{"id":"e7","label":"의사소통 능력","type":"Competency","confidence":0.88,"sourceCount":2,"sources":"[{\"category\":\"진로활동\",\"grade\":1},{\"category\":\"regular\",\"subject\":\"영어Ⅱ\",\"grade\":2}]","evidence":"친구들 앞에서 발표","gradeRing":1}},{"data":{"id":"e8","label":"협업 능력","type":"Competency","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"진로활동\",\"grade\":2}]","evidence":"협업 중심의 리더십","gradeRing":2}},{"data":{"id":"e9","label":"데이터 분석 역량","type":"Competency","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"확률과 통계\",\"grade\":2}]","evidence":"상관계수를 산출함","gradeRing":2}},{"data":{"id":"e10","label":"리더십","type":"Competency","confidence":0.88,"sourceCount":3,"sources":"[{\"category\":\"동아리활동\",\"grade\":2},{\"category\":\"regular\",\"subject\":\"통합사회\",\"grade\":1},{\"category\":\"regular\",\"subject\":\"확률과 통계\",\"grade\":2}]","evidence":"프로젝트 리더로서","gradeRing":1}},{"data":{"id":"e11","label":"윤리적 판단 역량","type":"Competency","confidence":0.85,"sourceCount":3,"sources":"[{\"category\":\"regular\",\"subject\":\"통합사회\",\"grade\":1},{\"category\":\"regular\",\"subject\":\"한국사\",\"grade\":1},{\"category\":\"regular\",\"subject\":\"2학년 1반\",\"grade\":2}]","evidence":"생명 윤리에 대한 심화 탐구","gradeRing":1}},{"data":{"id":"e12","label":"자폐 스펙트럼 장애 포스터 작성","type":"Activity","confidence":0.9,"sourceCount":1,"sources":"[{\"category\":\"자율활동\",\"grade\":1}]","evidence":"ADHD와의 혼동 구분 제시","gradeRing":1}},{"data":{"id":"e13","label":"아밀레이스 활성 실험","type":"Activity","confidence":0.9,"sourceCount":1,"sources":"[{\"category\":\"자율활동\",\"grade\":1}]","evidence":"효소 변성의 가역성 발견","gradeRing":1}},{"data":{"id":"e14","label":"의료 인공지능 GPT4 실험","type":"Activity","confidence":0.92,"sourceCount":1,"sources":"[{\"category\":\"진로활동\",\"grade\":1}]","evidence":"패혈증 환자 예시로 AI 가능성/한계 확인","gradeRing":1}},{"data":{"id":"e15","label":"Wysa 인지행동치료 AI 체험","type":"Activity","confidence":0.88,"sourceCount":1,"sources":"[{\"category\":\"진로활동\",\"grade\":1}]","evidence":"정신건강 AI 챗봇 직접 사용","gradeRing":1}},{"data":{"id":"e16","label":"유용 미생물 발효 실험","type":"Activity","confidence":0.88,"sourceCount":1,"sources":"[{\"category\":\"동아리활동\",\"grade\":1}]","evidence":"유산균 항균 활성 원리 탐구","gradeRing":1}},{"data":{"id":"e17","label":"친환경 손 소독제 만들기 부스","type":"Activity","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"동아리활동\",\"grade\":1}]","evidence":"과학적 탐구를 실용적 아이디어로 발전","gradeRing":1}},{"data":{"id":"e18","label":"멸치해부실험 (미세플라스틱)","type":"Activity","confidence":0.88,"sourceCount":1,"sources":"[{\"category\":\"동아리활동\",\"grade\":1}]","evidence":"오염 물질의 생물 농축과정 이해","gradeRing":1}},{"data":{"id":"e19","label":"ADHD 약물 오남용 과학 축전","type":"Activity","confidence":0.9,"sourceCount":1,"sources":"[{\"category\":\"자율활동\",\"grade\":2}]","evidence":"메틸페니데이트 도파민 재흡수 억제 설명","gradeRing":2}},{"data":{"id":"e20","label":"자폐-면역 가설 문헌 조사","type":"Activity","confidence":0.9,"sourceCount":1,"sources":"[{\"category\":\"자율활동\",\"grade\":2}]","evidence":"조절 T세포와 자폐 연관 가설","gradeRing":2}},{"data":{"id":"e21","label":"약물전달시스템 실험 (알긴산 비드)","type":"Activity","confidence":0.9,"sourceCount":1,"sources":"[{\"category\":\"진로활동\",\"grade\":2}]","evidence":"삼투펌프 기반 제어방출 제형 분석","gradeRing":2}},{"data":{"id":"e22","label":"아두이노 뉴런 신호전달 모델","type":"Activity","confidence":0.92,"sourceCount":1,"sources":"[{\"category\":\"진로활동\",\"grade\":2}]","evidence":"실무율 개념 반영 설계 수정","gradeRing":2}},{"data":{"id":"e23","label":"계란 템페라 물감 부스 운영","type":"Activity","confidence":0.82,"sourceCount":1,"sources":"[{\"category\":\"동아리활동\",\"grade\":2}]","evidence":"단백질 변성 원리 공유","gradeRing":2}},{"data":{"id":"e24","label":"알츠하이머 약물 비교 분석","type":"Activity","confidence":0.88,"sourceCount":1,"sources":"[{\"category\":\"동아리활동\",\"grade\":2}]","evidence":"레카네맙과 도나네맙 비교","gradeRing":2}},{"data":{"id":"e25","label":"항생제 감수성 실험·그람염색","type":"Activity","confidence":0.9,"sourceCount":1,"sources":"[{\"category\":\"동아리활동\",\"grade\":2}]","evidence":"항균 작용 원리 탐구 가설 검증","gradeRing":2}},{"data":{"id":"e26","label":"세로토닌·SSRI 탐구 발표","type":"Activity","confidence":0.9,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"화학Ⅰ\",\"grade\":2}]","evidence":"세로토닌 생합성 경로 및 항우울제 기전","gradeRing":2}},{"data":{"id":"e27","label":"수면-집중력 상관분석 탐구","type":"Activity","confidence":0.88,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"확률과 통계\",\"grade\":2}]","evidence":"상관계수 직접 산출 가설 검증","gradeRing":2}},{"data":{"id":"e28","label":"키메라 배아 연구 토론","type":"Activity","confidence":0.88,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"통합사회\",\"grade\":1}]","evidence":"생명윤리 토론 리더","gradeRing":1}},{"data":{"id":"e29","label":"사형제 토론","type":"Activity","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"국어\",\"grade\":1}]","evidence":"인권과 형벌 체계 논의","gradeRing":1}},{"data":{"id":"e30","label":"후성유전학 탐구","type":"Activity","confidence":0.88,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"2학년 1반\",\"grade\":2}]","evidence":"DNA 메틸화 기전 정리","gradeRing":2}},{"data":{"id":"e31","label":"연구윤리 기준 비교 분석","type":"Activity","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"2학년 1반\",\"grade\":2}]","evidence":"뉘른베르크 강령 헬싱키 선언 벨몬트","gradeRing":2}},{"data":{"id":"e32","label":"치매 노인 지도 앱 설계·구현","type":"Activity","confidence":0.92,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"종교학\",\"grade\":2}]","evidence":"GPS 원리 기반 바이브 코딩 구현","gradeRing":2}},{"data":{"id":"e33","label":"장내세균-자폐 영어 논문 분석","type":"Activity","confidence":0.88,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"영어Ⅱ\",\"grade\":2}]","evidence":"장내세균 제거 자폐 쥐 모델 원문 정리","gradeRing":2}},{"data":{"id":"e34","label":"일제 과학자 우생학 비판","type":"Activity","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"한국사\",\"grade\":1}]","evidence":"인종 해부학 혈액형 연구 비판","gradeRing":1}},{"data":{"id":"e35","label":"조선 왕 정신질환 탐구","type":"Activity","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"한국사\",\"grade\":1}]","evidence":"심화증 심병을 신체화 증상으로 추론","gradeRing":1}},{"data":{"id":"e36","label":"존엄사 매체비평","type":"Activity","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"언어와 매체\",\"grade\":2}]","evidence":"의료윤리적 소통의 중요성 성찰","gradeRing":2}},{"data":{"id":"e37","label":"심전도 정사영·내적 탐구","type":"Activity","confidence":0.9,"sourceCount":1,"sources":"[{\"category\":\"career\",\"subject\":\"기하\",\"grade\":2}]","evidence":"심장 벡터와 유도 축의 내적","gradeRing":2}},{"data":{"id":"e38","label":"꼼꼼함","type":"Attitude","confidence":0.9,"sourceCount":1,"sources":"[{\"category\":\"행동특성및종합의견\",\"grade\":1}]","evidence":"매우 꼼꼼하고 생각이 깊으며","gradeRing":1}},{"data":{"id":"e39","label":"끈기","type":"Attitude","confidence":0.9,"sourceCount":2,"sources":"[{\"category\":\"행동특성및종합의견\",\"grade\":1},{\"category\":\"행동특성및종합의견\",\"grade\":2}]","evidence":"끈기 있게 하며 절제하는 능력","gradeRing":1}},{"data":{"id":"e40","label":"성실함","type":"Attitude","confidence":0.9,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"한국사\",\"grade\":1}]","evidence":"성실하고 긍정적인 태도","gradeRing":1}},{"data":{"id":"e41","label":"배려/봉사정신","type":"Attitude","confidence":0.9,"sourceCount":2,"sources":"[{\"category\":\"행동특성및종합의견\",\"grade\":1},{\"category\":\"행동특성및종합의견\",\"grade\":2}]","evidence":"친구의 고민을 잘 들어주고 위로","gradeRing":1}},{"data":{"id":"e42","label":"호기심","type":"Attitude","confidence":0.88,"sourceCount":1,"sources":"[{\"category\":\"동아리활동\",\"grade\":1}]","evidence":"지적 호기심이 왕성함","gradeRing":1}},{"data":{"id":"e43","label":"주도적","type":"Attitude","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"동아리활동\",\"grade\":2}]","evidence":"프로젝트 리더로서","gradeRing":2}},{"data":{"id":"e44","label":"의학/의료","type":"Interest","confidence":0.95,"sourceCount":5,"sources":"[{\"category\":\"진로활동\",\"grade\":1},{\"category\":\"동아리활동\",\"grade\":1},{\"category\":\"행동특성및종합의견\",\"grade\":1},{\"category\":\"진로활동\",\"grade\":2},{\"category\":\"동아리활동\",\"grade\":2}]","evidence":"의학 분야 관심","gradeRing":1}},{"data":{"id":"e45","label":"의료 인공지능","type":"Interest","confidence":0.92,"sourceCount":3,"sources":"[{\"category\":\"진로활동\",\"grade\":1},{\"category\":\"행동특성및종합의견\",\"grade\":1},{\"category\":\"행동특성및종합의견\",\"grade\":2}]","evidence":"의료 인공지능에 대해 관심","gradeRing":1}},{"data":{"id":"e46","label":"정신건강/신경과학","type":"Interest","confidence":0.88,"sourceCount":3,"sources":"[{\"category\":\"진로활동\",\"grade\":1},{\"category\":\"regular\",\"subject\":\"화학Ⅰ\",\"grade\":2},{\"category\":\"regular\",\"subject\":\"한국사\",\"grade\":1}]","evidence":"정신 건강 분야에서의 AI 활용","gradeRing":1}},{"data":{"id":"e47","label":"생명윤리","type":"Interest","confidence":0.82,"sourceCount":2,"sources":"[{\"category\":\"regular\",\"subject\":\"통합사회\",\"grade\":1},{\"category\":\"regular\",\"subject\":\"2학년 1반\",\"grade\":2}]","evidence":"키메라 배아 연구 윤리","gradeRing":1}},{"data":{"id":"e48","label":"환경/생태","type":"Interest","confidence":0.78,"sourceCount":1,"sources":"[{\"category\":\"동아리활동\",\"grade\":1}]","evidence":"기술의 친환경적 발전 중요성","gradeRing":1}},{"data":{"id":"e49","label":"면역학","type":"Interest","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"자율활동\",\"grade\":2}]","evidence":"조절 T세포와 자폐 연관","gradeRing":2}},{"data":{"id":"e50","label":"장-뇌 축 (Gut-Brain Axis)","type":"Concept","confidence":0.92,"sourceCount":3,"sources":"[{\"category\":\"자율활동\",\"grade\":1},{\"category\":\"자율활동\",\"grade\":2},{\"category\":\"regular\",\"subject\":\"영어Ⅱ\",\"grade\":2}]","evidence":"장내 미생물 불균형과 신경염증","gradeRing":1}},{"data":{"id":"e51","label":"아밀레이스·효소 변성","type":"Concept","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"자율활동\",\"grade\":1}]","evidence":"효소 변성의 가역성","gradeRing":1}},{"data":{"id":"e52","label":"메틸페니데이트·도파민 재흡수","type":"Concept","confidence":0.88,"sourceCount":2,"sources":"[{\"category\":\"자율활동\",\"grade\":2},{\"category\":\"진로활동\",\"grade\":2}]","evidence":"도파민 재흡수 억제 보상회로 강화","gradeRing":2}},{"data":{"id":"e53","label":"세로토닌·SSRI 기전","type":"Concept","confidence":0.9,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"화학Ⅰ\",\"grade\":2}]","evidence":"세로토닌 수송체 차단 기전","gradeRing":2}},{"data":{"id":"e54","label":"약물전달시스템 (삼투펌프)","type":"Concept","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"진로활동\",\"grade\":2}]","evidence":"삼투펌프 기반 제어방출","gradeRing":2}},{"data":{"id":"e55","label":"실무율 (All-or-None)","type":"Concept","confidence":0.82,"sourceCount":1,"sources":"[{\"category\":\"진로활동\",\"grade\":2}]","evidence":"전도 속도 오류를 실무율로 수정","gradeRing":2}},{"data":{"id":"e56","label":"아밀로이드 베타·비가역적 변성","type":"Concept","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"동아리활동\",\"grade\":2}]","evidence":"알츠하이머 아밀로이드 베타","gradeRing":2}},{"data":{"id":"e57","label":"그람염색·항생제 감수성","type":"Concept","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"동아리활동\",\"grade\":2}]","evidence":"세포벽 구조로 가설 검증","gradeRing":2}},{"data":{"id":"e58","label":"후성유전학 (DNA 메틸화)","type":"Concept","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"2학년 1반\",\"grade\":2}]","evidence":"환경이 유전자 발현에 영향","gradeRing":2}},{"data":{"id":"e59","label":"벨몬트 3원칙","type":"Concept","confidence":0.82,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"2학년 1반\",\"grade\":2}]","evidence":"뉘른베르크 헬싱키 벨몬트 비교","gradeRing":2}},{"data":{"id":"e60","label":"정사영·내적 (심전도 적용)","type":"Concept","confidence":0.88,"sourceCount":1,"sources":"[{\"category\":\"career\",\"subject\":\"기하\",\"grade\":2}]","evidence":"심장 벡터의 유도 축 내적","gradeRing":2}},{"data":{"id":"e61","label":"조절 T세포·FOXP3","type":"Concept","confidence":0.82,"sourceCount":1,"sources":"[{\"category\":\"자율활동\",\"grade\":2}]","evidence":"조절 T세포 기능 저하와 자폐","gradeRing":2}},{"data":{"id":"e62","label":"상관분석·상관계수","type":"Concept","confidence":0.82,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"확률과 통계\",\"grade\":2}]","evidence":"상관계수 공식 직접 유도","gradeRing":2}},{"data":{"id":"e63","label":"메멘토 모리·카르페 디엠","type":"Concept","confidence":0.78,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"국어\",\"grade\":1}]","evidence":"죽음 성찰을 현재 삶으로 확장","gradeRing":1}},{"data":{"id":"e64","label":"AI 메디컬 레볼루션","type":"Book","confidence":0.95,"sourceCount":1,"sources":"[{\"category\":\"진로활동\",\"grade\":1}]","evidence":"의료 AI 가능성과 한계","gradeRing":1}},{"data":{"id":"e65","label":"오늘도 플라스틱을 먹었습니다","type":"Book","confidence":0.88,"sourceCount":1,"sources":"[{\"category\":\"동아리활동\",\"grade\":1}]","evidence":"미세플라스틱 인체 영향","gradeRing":1}},{"data":{"id":"e66","label":"중독의 신경과학","type":"Book","confidence":0.88,"sourceCount":1,"sources":"[{\"category\":\"자율활동\",\"grade\":2}]","evidence":"메틸페니데이트 도파민 재흡수","gradeRing":2}},{"data":{"id":"e67","label":"이토록 재밌는 면역 이야기","type":"Book","confidence":0.88,"sourceCount":1,"sources":"[{\"category\":\"자율활동\",\"grade\":2}]","evidence":"조절 T세포 기능 저하와 자폐","gradeRing":2}},{"data":{"id":"e68","label":"닥터 노먼 베쑨","type":"Book","confidence":0.88,"sourceCount":1,"sources":"[{\"category\":\"진로활동\",\"grade\":2}]","evidence":"의술의 진정한 목적과 사회적 책임","gradeRing":2}},{"data":{"id":"e69","label":"알츠하이머 정복","type":"Book","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"동아리활동\",\"grade\":2}]","evidence":"아밀로이드 베타 비가역성","gradeRing":2}},{"data":{"id":"e70","label":"브레인 케미스트리","type":"Book","confidence":0.88,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"화학Ⅰ\",\"grade\":2}]","evidence":"세로토닌 생합성 경로","gradeRing":2}},{"data":{"id":"e71","label":"오래된 미래","type":"Book","confidence":0.82,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"통합사회\",\"grade\":1}]","evidence":"자연의 질서와 생명의 상호 연관성","gradeRing":1}},{"data":{"id":"e72","label":"경험은 어떻게 유전자에 새겨지는가","type":"Book","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"2학년 1반\",\"grade\":2}]","evidence":"DNA 메틸화 후성유전","gradeRing":2}},{"data":{"id":"e73","label":"수학의 이유","type":"Book","confidence":0.82,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"종교학\",\"grade\":2}]","evidence":"GPS 수학 개념 분석","gradeRing":2}},{"data":{"id":"e74","label":"이반 일리치의 죽음","type":"Book","confidence":0.78,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"국어\",\"grade\":1}]","evidence":"삶과 죽음 철학적 성찰","gradeRing":1}},{"data":{"id":"e75","label":"신부 이태석","type":"Book","confidence":0.78,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"국어\",\"grade\":1}]","evidence":"봉사를 친구가 되는 것으로 정의","gradeRing":1}},{"data":{"id":"e76","label":"노먼 베쑨","type":"Person","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"진로활동\",\"grade\":2}]","evidence":"전쟁터에서 인류애 실천","gradeRing":2}},{"data":{"id":"e77","label":"이태석 신부","type":"Person","confidence":0.78,"sourceCount":1,"sources":"[{\"category\":\"행동특성및종합의견\",\"grade\":2}]","evidence":"봉사의 참된 의미","gradeRing":2}},{"data":{"id":"e78","label":"라부아지에","type":"Person","confidence":0.75,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"2학년 1반\",\"grade\":2}]","evidence":"자연은 거대한 화학 실험실","gradeRing":2}},{"data":{"id":"e79","label":"학급 과학 칼럼 담당","type":"Role","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"자율활동\",\"grade\":1}]","evidence":"관련 심화 주제 포스터 작성","gradeRing":1}},{"data":{"id":"e80","label":"학급 실장","type":"Role","confidence":0.88,"sourceCount":1,"sources":"[{\"category\":\"자율활동\",\"grade\":2}]","evidence":"학급 실장을 맡아 책임감","gradeRing":2}},{"data":{"id":"e81","label":"프로젝트 리더","type":"Role","confidence":0.85,"sourceCount":1,"sources":"[{\"category\":\"동아리활동\",\"grade\":2}]","evidence":"프로젝트 리더로서 부스 기획","gradeRing":2}},{"data":{"id":"e82","label":"학급 정보도우미","type":"Role","confidence":0.82,"sourceCount":1,"sources":"[{\"category\":\"행동특성및종합의견\",\"grade\":1}]","evidence":"관련 심화 자료를 게시판에 게시","gradeRing":1}},{"data":{"id":"e83","label":"토론 리더","type":"Role","confidence":0.82,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"통합사회\",\"grade\":1}]","evidence":"토론 리더로서 토론 수행","gradeRing":1}},{"data":{"id":"e84","label":"상관계수 공식 직접 유도","type":"Achievement","confidence":0.82,"sourceCount":1,"sources":"[{\"category\":\"regular\",\"subject\":\"확률과 통계\",\"grade\":2}]","evidence":"상관계수 산출 공식을 스스로 유도","gradeRing":2}},{"data":{"id":"e85","label":"아두이노 뉴런 모델 설계 수정 성공","type":"Achievement","confidence":0.82,"sourceCount":1,"sources":"[{\"category\":\"진로활동\",\"grade\":2}]","evidence":"실무율 반영 설계 수정","gradeRing":2}},{"data":{"id":"e86","label":"자폐-면역 탐구","type":"Thread","confidence":0.95,"sourceCount":1,"sources":"[{\"category\":\"cross\",\"grade\":1}]","evidence":"자폐 스펙트럼에서 면역학적 치료 가능성까지","gradeRing":0}},{"data":{"id":"e87","label":"의료 AI 탐구","type":"Thread","confidence":0.92,"sourceCount":1,"sources":"[{\"category\":\"cross\",\"grade\":1}]","evidence":"의료 AI 가능성 탐색에서 직접 앱 설계까지","gradeRing":0}},{"data":{"id":"e88","label":"뇌/신경화학 탐구","type":"Thread","confidence":0.9,"sourceCount":1,"sources":"[{\"category\":\"cross\",\"grade\":1}]","evidence":"효소 실험에서 뉴런 모델 구현까지","gradeRing":0}}],"edges":[{"data":{"id":"r1","source":"student","target":"e1","label":"DEMONSTRATED","type":"DEMONSTRATED","confidence":0.9,"evidence":""}},{"data":{"id":"r2","source":"student","target":"e2","label":"DEMONSTRATED","type":"DEMONSTRATED","confidence":0.9,"evidence":""}},{"data":{"id":"r3","source":"student","target":"e3","label":"DEMONSTRATED","type":"DEMONSTRATED","confidence":0.9,"evidence":""}},{"data":{"id":"r4","source":"student","target":"e4","label":"DEMONSTRATED","type":"DEMONSTRATED","confidence":0.9,"evidence":""}},{"data":{"id":"r5","source":"student","target":"e5","label":"DEMONSTRATED","type":"DEMONSTRATED","confidence":0.9,"evidence":""}},{"data":{"id":"r6","source":"student","target":"e6","label":"DEMONSTRATED","type":"DEMONSTRATED","confidence":0.9,"evidence":""}},{"data":{"id":"r7","source":"student","target":"e7","label":"DEMONSTRATED","type":"DEMONSTRATED","confidence":0.9,"evidence":""}},{"data":{"id":"r8","source":"student","target":"e8","label":"DEMONSTRATED","type":"DEMONSTRATED","confidence":0.9,"evidence":""}},{"data":{"id":"r9","source":"student","target":"e9","label":"DEMONSTRATED","type":"DEMONSTRATED","confidence":0.9,"evidence":""}},{"data":{"id":"r10","source":"student","target":"e10","label":"DEMONSTRATED","type":"DEMONSTRATED","confidence":0.9,"evidence":""}},{"data":{"id":"r11","source":"student","target":"e11","label":"DEMONSTRATED","type":"DEMONSTRATED","confidence":0.9,"evidence":""}},{"data":{"id":"r12","source":"student","target":"e12","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r13","source":"student","target":"e13","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r14","source":"student","target":"e14","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r15","source":"student","target":"e15","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r16","source":"student","target":"e16","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r17","source":"student","target":"e18","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r18","source":"student","target":"e19","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r19","source":"student","target":"e20","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r20","source":"student","target":"e21","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r21","source":"student","target":"e22","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r22","source":"student","target":"e24","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r23","source":"student","target":"e25","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r24","source":"student","target":"e26","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r25","source":"student","target":"e27","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r26","source":"student","target":"e28","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r27","source":"student","target":"e29","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r28","source":"student","target":"e30","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r29","source":"student","target":"e32","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r30","source":"student","target":"e33","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r31","source":"student","target":"e35","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r32","source":"student","target":"e37","label":"PERFORMED","type":"PERFORMED","confidence":0.9,"evidence":""}},{"data":{"id":"r33","source":"student","target":"e38","label":"SHOWED_ATTITUDE","type":"SHOWED_ATTITUDE","confidence":0.88,"evidence":""}},{"data":{"id":"r34","source":"student","target":"e39","label":"SHOWED_ATTITUDE","type":"SHOWED_ATTITUDE","confidence":0.88,"evidence":""}},{"data":{"id":"r35","source":"student","target":"e40","label":"SHOWED_ATTITUDE","type":"SHOWED_ATTITUDE","confidence":0.88,"evidence":""}},{"data":{"id":"r36","source":"student","target":"e41","label":"SHOWED_ATTITUDE","type":"SHOWED_ATTITUDE","confidence":0.88,"evidence":""}},{"data":{"id":"r37","source":"student","target":"e42","label":"SHOWED_ATTITUDE","type":"SHOWED_ATTITUDE","confidence":0.88,"evidence":""}},{"data":{"id":"r38","source":"student","target":"e43","label":"SHOWED_ATTITUDE","type":"SHOWED_ATTITUDE","confidence":0.88,"evidence":""}},{"data":{"id":"r39","source":"student","target":"e44","label":"INTERESTED_IN","type":"INTERESTED_IN","confidence":0.85,"evidence":""}},{"data":{"id":"r40","source":"student","target":"e45","label":"INTERESTED_IN","type":"INTERESTED_IN","confidence":0.85,"evidence":""}},{"data":{"id":"r41","source":"student","target":"e46","label":"INTERESTED_IN","type":"INTERESTED_IN","confidence":0.85,"evidence":""}},{"data":{"id":"r42","source":"student","target":"e47","label":"INTERESTED_IN","type":"INTERESTED_IN","confidence":0.85,"evidence":""}},{"data":{"id":"r43","source":"student","target":"e48","label":"INTERESTED_IN","type":"INTERESTED_IN","confidence":0.85,"evidence":""}},{"data":{"id":"r44","source":"student","target":"e49","label":"INTERESTED_IN","type":"INTERESTED_IN","confidence":0.85,"evidence":""}},{"data":{"id":"r45","source":"student","target":"e50","label":"ENGAGED_WITH","type":"ENGAGED_WITH","confidence":0.85,"evidence":""}},{"data":{"id":"r46","source":"student","target":"e51","label":"ENGAGED_WITH","type":"ENGAGED_WITH","confidence":0.85,"evidence":""}},{"data":{"id":"r47","source":"student","target":"e52","label":"ENGAGED_WITH","type":"ENGAGED_WITH","confidence":0.85,"evidence":""}},{"data":{"id":"r48","source":"student","target":"e53","label":"ENGAGED_WITH","type":"ENGAGED_WITH","confidence":0.85,"evidence":""}},{"data":{"id":"r49","source":"student","target":"e54","label":"ENGAGED_WITH","type":"ENGAGED_WITH","confidence":0.85,"evidence":""}},{"data":{"id":"r50","source":"student","target":"e55","label":"ENGAGED_WITH","type":"ENGAGED_WITH","confidence":0.85,"evidence":""}},{"data":{"id":"r51","source":"student","target":"e56","label":"ENGAGED_WITH","type":"ENGAGED_WITH","confidence":0.85,"evidence":""}},{"data":{"id":"r52","source":"student","target":"e57","label":"ENGAGED_WITH","type":"ENGAGED_WITH","confidence":0.85,"evidence":""}},{"data":{"id":"r53","source":"student","target":"e58","label":"ENGAGED_WITH","type":"ENGAGED_WITH","confidence":0.85,"evidence":""}},{"data":{"id":"r54","source":"student","target":"e60","label":"ENGAGED_WITH","type":"ENGAGED_WITH","confidence":0.85,"evidence":""}},{"data":{"id":"r55","source":"student","target":"e61","label":"ENGAGED_WITH","type":"ENGAGED_WITH","confidence":0.85,"evidence":""}},{"data":{"id":"r56","source":"student","target":"e64","label":"READ","type":"READ","confidence":0.92,"evidence":""}},{"data":{"id":"r57","source":"student","target":"e65","label":"READ","type":"READ","confidence":0.92,"evidence":""}},{"data":{"id":"r58","source":"student","target":"e66","label":"READ","type":"READ","confidence":0.92,"evidence":""}},{"data":{"id":"r59","source":"student","target":"e67","label":"READ","type":"READ","confidence":0.92,"evidence":""}},{"data":{"id":"r60","source":"student","target":"e68","label":"READ","type":"READ","confidence":0.92,"evidence":""}},{"data":{"id":"r61","source":"student","target":"e69","label":"READ","type":"READ","confidence":0.92,"evidence":""}},{"data":{"id":"r62","source":"student","target":"e70","label":"READ","type":"READ","confidence":0.92,"evidence":""}},{"data":{"id":"r63","source":"student","target":"e71","label":"READ","type":"READ","confidence":0.92,"evidence":""}},{"data":{"id":"r64","source":"student","target":"e72","label":"READ","type":"READ","confidence":0.92,"evidence":""}},{"data":{"id":"r65","source":"student","target":"e73","label":"READ","type":"READ","confidence":0.92,"evidence":""}},{"data":{"id":"r66","source":"student","target":"e74","label":"READ","type":"READ","confidence":0.92,"evidence":""}},{"data":{"id":"r67","source":"student","target":"e75","label":"READ","type":"READ","confidence":0.92,"evidence":""}},{"data":{"id":"r68","source":"student","target":"e79","label":"HELD_ROLE","type":"HELD_ROLE","confidence":0.88,"evidence":""}},{"data":{"id":"r69","source":"student","target":"e80","label":"HELD_ROLE","type":"HELD_ROLE","confidence":0.88,"evidence":""}},{"data":{"id":"r70","source":"student","target":"e81","label":"HELD_ROLE","type":"HELD_ROLE","confidence":0.88,"evidence":""}},{"data":{"id":"r71","source":"student","target":"e82","label":"HELD_ROLE","type":"HELD_ROLE","confidence":0.88,"evidence":""}},{"data":{"id":"r72","source":"student","target":"e83","label":"HELD_ROLE","type":"HELD_ROLE","confidence":0.88,"evidence":""}},{"data":{"id":"r73","source":"student","target":"e84","label":"ACHIEVED","type":"ACHIEVED","confidence":0.82,"evidence":""}},{"data":{"id":"r74","source":"student","target":"e85","label":"ACHIEVED","type":"ACHIEVED","confidence":0.82,"evidence":""}},{"data":{"id":"r75","source":"e50","target":"e20","label":"APPLIED_IN","type":"APPLIED_IN","confidence":0.88,"evidence":"장-뇌 축 이론으로 자폐-면역 가설 문헌 조사"}},{"data":{"id":"r76","source":"e52","target":"e19","label":"APPLIED_IN","type":"APPLIED_IN","confidence":0.85,"evidence":"메틸페니데이트 지식으로 약물 오남용 축전 설명"}},{"data":{"id":"r77","source":"e53","target":"e26","label":"APPLIED_IN","type":"APPLIED_IN","confidence":0.9,"evidence":"SSRI 기전으로 세로토닌 탐구 발표"}},{"data":{"id":"r78","source":"e55","target":"e22","label":"APPLIED_IN","type":"APPLIED_IN","confidence":0.85,"evidence":"실무율 개념으로 아두이노 뉴런 모델 수정"}},{"data":{"id":"r79","source":"e57","target":"e25","label":"APPLIED_IN","type":"APPLIED_IN","confidence":0.88,"evidence":"그람염색으로 항생제 감수성 가설 검증"}},{"data":{"id":"r80","source":"e60","target":"e37","label":"APPLIED_IN","type":"APPLIED_IN","confidence":0.9,"evidence":"정사영·내적으로 심전도 해석"}},{"data":{"id":"r81","source":"e62","target":"e27","label":"APPLIED_IN","type":"APPLIED_IN","confidence":0.85,"evidence":"상관분석으로 수면-집중력 연구"}},{"data":{"id":"r82","source":"e14","target":"e1","label":"EVIDENCED_BY","type":"EVIDENCED_BY","confidence":0.88,"evidence":"GPT4 의료 AI 실험 → 탐구력"}},{"data":{"id":"r83","source":"e22","target":"e6","label":"EVIDENCED_BY","type":"EVIDENCED_BY","confidence":0.88,"evidence":"아두이노 뉴런 설계 수정 → 문제 해결"}},{"data":{"id":"r84","source":"e28","target":"e2","label":"EVIDENCED_BY","type":"EVIDENCED_BY","confidence":0.85,"evidence":"키메라 배아 토론 → 비판적 사고력"}},{"data":{"id":"r85","source":"e27","target":"e9","label":"EVIDENCED_BY","type":"EVIDENCED_BY","confidence":0.85,"evidence":"상관분석 탐구 → 데이터 분석 역량"}},{"data":{"id":"r86","source":"e32","target":"e6","label":"EVIDENCED_BY","type":"EVIDENCED_BY","confidence":0.88,"evidence":"치매 노인 앱 설계 → 문제 해결"}},{"data":{"id":"r87","source":"e25","target":"e1","label":"EVIDENCED_BY","type":"EVIDENCED_BY","confidence":0.85,"evidence":"항생제 감수성 실험 → 탐구력"}},{"data":{"id":"r88","source":"e64","target":"e45","label":"RELATED_TO","type":"RELATED_TO","confidence":0.92,"evidence":"AI 메디컬 레볼루션 → 의료 인공지능 관심"}},{"data":{"id":"r89","source":"e70","target":"e53","label":"RELATED_TO","type":"RELATED_TO","confidence":0.9,"evidence":"브레인 케미스트리 → 세로토닌·SSRI 개념"}},{"data":{"id":"r90","source":"e67","target":"e61","label":"RELATED_TO","type":"RELATED_TO","confidence":0.88,"evidence":"이토록 재밌는 면역 이야기 → 조절 T세포"}},{"data":{"id":"r91","source":"e69","target":"e56","label":"RELATED_TO","type":"RELATED_TO","confidence":0.85,"evidence":"알츠하이머 정복 → 아밀로이드 베타"}},{"data":{"id":"r92","source":"e66","target":"e52","label":"RELATED_TO","type":"RELATED_TO","confidence":0.85,"evidence":"중독의 신경과학 → 메틸페니데이트"}},{"data":{"id":"r93","source":"e72","target":"e58","label":"RELATED_TO","type":"RELATED_TO","confidence":0.85,"evidence":"경험은 어떻게 유전자에 새겨지는가 → 후성유전학"}},{"data":{"id":"r94","source":"e68","target":"e44","label":"RELATED_TO","type":"RELATED_TO","confidence":0.85,"evidence":"닥터 노먼 베쑨 → 의학/의료 진로 심화"}},{"data":{"id":"r95","source":"e64","target":"e45","label":"MOTIVATED_BY","type":"MOTIVATED_BY","confidence":0.9,"evidence":"AI 메디컬 레볼루션 독서가 의료 AI 관심 촉발"}},{"data":{"id":"r96","source":"e14","target":"e45","label":"MOTIVATED_BY","type":"MOTIVATED_BY","confidence":0.85,"evidence":"GPT4 의료 실험이 의료 AI 관심 심화"}},{"data":{"id":"r97","source":"e15","target":"e46","label":"MOTIVATED_BY","type":"MOTIVATED_BY","confidence":0.82,"evidence":"Wysa 체험이 정신건강 AI 관심 심화"}},{"data":{"id":"r98","source":"e68","target":"e44","label":"MOTIVATED_BY","type":"MOTIVATED_BY","confidence":0.82,"evidence":"닥터 노먼 베쑨이 의료인 사회적 책임 성찰 촉발"}},{"data":{"id":"r99","source":"e28","target":"e47","label":"MOTIVATED_BY","type":"MOTIVATED_BY","confidence":0.8,"evidence":"키메라 배아 토론이 생명윤리 관심 심화"}},{"data":{"id":"r100","source":"e71","target":"e48","label":"MOTIVATED_BY","type":"MOTIVATED_BY","confidence":0.78,"evidence":"오래된 미래가 환경/생태 관심 촉발"}},{"data":{"id":"r101","source":"e19","target":"e46","label":"SUPPORTS","type":"SUPPORTS","confidence":0.82,"evidence":"ADHD 약물 축전이 신경과학 관심 뒷받침"}},{"data":{"id":"r102","source":"e20","target":"e49","label":"SUPPORTS","type":"SUPPORTS","confidence":0.85,"evidence":"자폐-면역 가설 조사가 면역학 관심 뒷받침"}},{"data":{"id":"r103","source":"e26","target":"e46","label":"SUPPORTS","type":"SUPPORTS","confidence":0.85,"evidence":"세로토닌·SSRI 발표가 신경과학 관심 뒷받침"}},{"data":{"id":"r104","source":"e32","target":"e44","label":"SUPPORTS","type":"SUPPORTS","confidence":0.8,"evidence":"치매 노인 앱 설계가 의학 진로 뒷받침"}},{"data":{"id":"r105","source":"e37","target":"e44","label":"SUPPORTS","type":"SUPPORTS","confidence":0.82,"evidence":"심전도 정사영 탐구가 의학 진로 뒷받침"}},{"data":{"id":"r106","source":"e76","target":"e44","label":"INSPIRED_BY","type":"INSPIRED_BY","confidence":0.82,"evidence":"노먼 베쑨의 인류애가 의료인 사명감에 영향"}},{"data":{"id":"r107","source":"e77","target":"e41","label":"INSPIRED_BY","type":"INSPIRED_BY","confidence":0.78,"evidence":"이태석 신부가 봉사정신에 영향"}},{"data":{"id":"r108","source":"e45","target":"e46","label":"DEVELOPS_INTO","type":"DEVELOPS_INTO","confidence":0.8,"evidence":"의료 AI 관심 → 정신건강 AI로 구체화"}},{"data":{"id":"r109","source":"e44","target":"e49","label":"DEVELOPS_INTO","type":"DEVELOPS_INTO","confidence":0.78,"evidence":"의학 관심 → 면역학으로 심화"}},{"data":{"id":"r110","source":"e50","target":"e61","label":"DEVELOPS_INTO","type":"DEVELOPS_INTO","confidence":0.82,"evidence":"장-뇌 축 개념 → 조절 T세포 가설로 심화"}},{"data":{"id":"r111","source":"e86","target":"e41","label":"SUPPORTS","type":"SUPPORTS","confidence":0.9,"evidence":"자폐-면역 탐구가 면역학 관심 뒷받침"}},{"data":{"id":"r112","source":"e86","target":"e36","label":"SUPPORTS","type":"SUPPORTS","confidence":0.88,"evidence":"자폐-면역 탐구가 의학/의료 진로 뒷받침"}},{"data":{"id":"r113","source":"e87","target":"e37","label":"SUPPORTS","type":"SUPPORTS","confidence":0.9,"evidence":"의료 AI 탐구가 의료 인공지능 관심 뒷받침"}},{"data":{"id":"r114","source":"e88","target":"e38","label":"SUPPORTS","type":"SUPPORTS","confidence":0.85,"evidence":"뇌/신경화학 탐구가 정신건강/신경과학 관심 뒷받침"}},{"data":{"id":"r115","source":"e12","target":"e86","label":"PART_OF","type":"PART_OF","confidence":0.9,"evidence":"자폐 스펙트럼 포스터 (G1, step 1)"}},{"data":{"id":"r116","source":"e50","target":"e86","label":"PART_OF","type":"PART_OF","confidence":0.9,"evidence":"장-뇌 축 개념 (G1, step 2)"}},{"data":{"id":"r117","source":"e19","target":"e86","label":"PART_OF","type":"PART_OF","confidence":0.85,"evidence":"ADHD 약물 오남용 축전 (G2, step 3)"}},{"data":{"id":"r118","source":"e67","target":"e86","label":"PART_OF","type":"PART_OF","confidence":0.85,"evidence":"이토록 재밌는 면역 이야기 (G2, step 4)"}},{"data":{"id":"r119","source":"e20","target":"e86","label":"PART_OF","type":"PART_OF","confidence":0.9,"evidence":"자폐-면역 가설 문헌 조사 (G2, step 5)"}},{"data":{"id":"r120","source":"e33","target":"e86","label":"PART_OF","type":"PART_OF","confidence":0.88,"evidence":"장내세균-자폐 영어 논문 분석 (G2, step 6)"}},{"data":{"id":"r121","source":"e50","target":"e12","label":"DEEPENED_FROM","type":"DEEPENED_FROM","confidence":0.88,"evidence":"G1 자폐 포스터에서 장-뇌 축 개념으로 심화"}},{"data":{"id":"r122","source":"e19","target":"e50","label":"DEEPENED_FROM","type":"DEEPENED_FROM","confidence":0.82,"evidence":"장-뇌 축에서 ADHD 약물 도파민 기전으로 심화"}},{"data":{"id":"r123","source":"e67","target":"e19","label":"DEEPENED_FROM","type":"DEEPENED_FROM","confidence":0.8,"evidence":"ADHD 약물에서 면역학적 관점으로 확장"}},{"data":{"id":"r124","source":"e20","target":"e67","label":"DEEPENED_FROM","type":"DEEPENED_FROM","confidence":0.88,"evidence":"면역 독서에서 조절 T세포 가설 수립으로 심화"}},{"data":{"id":"r125","source":"e33","target":"e20","label":"DEEPENED_FROM","type":"DEEPENED_FROM","confidence":0.85,"evidence":"면역 가설에서 영어 논문 원문 분석으로 심화"}},{"data":{"id":"r126","source":"e64","target":"e87","label":"PART_OF","type":"PART_OF","confidence":0.92,"evidence":"AI 메디컬 레볼루션 (G1, step 1)"}},{"data":{"id":"r127","source":"e14","target":"e87","label":"PART_OF","type":"PART_OF","confidence":0.9,"evidence":"GPT4 패혈증 실험 (G1, step 2)"}},{"data":{"id":"r128","source":"e15","target":"e87","label":"PART_OF","type":"PART_OF","confidence":0.85,"evidence":"Wysa 인지행동치료 체험 (G1, step 3)"}},{"data":{"id":"r129","source":"e32","target":"e87","label":"PART_OF","type":"PART_OF","confidence":0.88,"evidence":"치매 노인 지도 앱 설계 (G2, step 4)"}},{"data":{"id":"r130","source":"e14","target":"e64","label":"DEEPENED_FROM","type":"DEEPENED_FROM","confidence":0.88,"evidence":"독서에서 직접 GPT4 실험으로 심화"}},{"data":{"id":"r131","source":"e15","target":"e14","label":"DEEPENED_FROM","type":"DEEPENED_FROM","confidence":0.82,"evidence":"일반 의료 AI에서 정신건강 AI로 구체화"}},{"data":{"id":"r132","source":"e32","target":"e15","label":"DEEPENED_FROM","type":"DEEPENED_FROM","confidence":0.8,"evidence":"AI 체험에서 직접 앱 설계·구현으로 심화"}},{"data":{"id":"r133","source":"e13","target":"e88","label":"PART_OF","type":"PART_OF","confidence":0.85,"evidence":"아밀레이스 활성 실험 (G1, step 1)"}},{"data":{"id":"r134","source":"e26","target":"e88","label":"PART_OF","type":"PART_OF","confidence":0.9,"evidence":"세로토닌·SSRI 탐구 발표 (G2, step 2)"}},{"data":{"id":"r135","source":"e22","target":"e88","label":"PART_OF","type":"PART_OF","confidence":0.88,"evidence":"아두이노 뉴런 신호전달 모델 (G2, step 3)"}},{"data":{"id":"r136","source":"e24","target":"e88","label":"PART_OF","type":"PART_OF","confidence":0.85,"evidence":"알츠하이머 약물 비교 분석 (G2, step 4)"}},{"data":{"id":"r137","source":"e26","target":"e13","label":"DEEPENED_FROM","type":"DEEPENED_FROM","confidence":0.78,"evidence":"효소 실험에서 신경전달물질 화학으로 심화"}},{"data":{"id":"r138","source":"e22","target":"e26","label":"DEEPENED_FROM","type":"DEEPENED_FROM","confidence":0.82,"evidence":"화학적 이해에서 전기적 모델링으로 심화"}},{"data":{"id":"r139","source":"e24","target":"e22","label":"DEEPENED_FROM","type":"DEEPENED_FROM","confidence":0.8,"evidence":"뉴런 모델에서 신경퇴행 질환 약물로 심화"}},{"data":{"id":"r140","source":"e86","target":"e49","label":"SUPPORTS","type":"SUPPORTS","confidence":0.9,"evidence":"자폐-면역 탐구가 면역학 관심 뒷받침"}},{"data":{"id":"r141","source":"e86","target":"e44","label":"SUPPORTS","type":"SUPPORTS","confidence":0.88,"evidence":"자폐-면역 탐구가 의학/의료 진로 뒷받침"}},{"data":{"id":"r142","source":"e87","target":"e45","label":"SUPPORTS","type":"SUPPORTS","confidence":0.9,"evidence":"의료 AI 탐구가 의료 인공지능 관심 뒷받침"}},{"data":{"id":"r143","source":"e88","target":"e46","label":"SUPPORTS","type":"SUPPORTS","confidence":0.85,"evidence":"뇌/신경화학 탐구가 정신건강/신경과학 관심 뒷받침"}}]};
+
+// Process nodes
+graphData.nodes.forEach(function(n) {
+  n.data.bgColor = typeColors[n.data.type] || '#64748b';
+  n.data.shapeVal = typeShapes[n.data.type] || 'ellipse';
+  n.data.nodeSize = n.data.type === 'Student' ? 80 : (n.data.type === 'Thread' ? 65 : Math.max(30, 20 + (n.data.sourceCount || 1) * 8));
+});
+// Process edges
+graphData.edges.forEach(function(e) {
+  e.data.edgeColor = predColors[e.data.type] || '#64748b';
+  e.data.lineStyle = predStyles[e.data.type] || 'solid';
+  e.data.edgeWidth = predWidths[e.data.type] || 1.5;
+});
+
+// === BUILD LEGEND (safe DOM) ===
+(function() {
+  var container = document.getElementById('legend-items');
+  Object.keys(typeColors).forEach(function(t) {
+    var item = document.createElement('div');
+    item.className = 'legend-item';
+    var dot = document.createElement('div');
+    dot.className = 'legend-dot';
+    dot.style.background = typeColors[t];
+    var label = document.createElement('span');
+    label.textContent = typeLabels[t] || t;
+    item.appendChild(dot);
+    item.appendChild(label);
+    container.appendChild(item);
+  });
+})();
+
+// === BUILD FILTER CHECKBOXES (safe DOM) ===
+(function() {
+  var typeContainer = document.getElementById('type-filters');
+  Object.keys(typeColors).forEach(function(t) {
+    if (t === 'Student') return;
+    var row = document.createElement('div');
+    row.className = 'filter-check';
+    var chk = document.createElement('input');
+    chk.type = 'checkbox';
+    chk.checked = true;
+    chk.id = 'chk-' + t;
+    chk.addEventListener('change', function() { toggleType(t); });
+    var dot = document.createElement('div');
+    dot.className = 'filter-dot';
+    dot.style.background = typeColors[t];
+    var label = document.createElement('span');
+    label.textContent = typeLabels[t] || t;
+    row.appendChild(chk);
+    row.appendChild(dot);
+    row.appendChild(label);
+    row.addEventListener('click', function(ev) { if (ev.target !== chk) { chk.checked = !chk.checked; toggleType(t); } });
+    typeContainer.appendChild(row);
+  });
+
+  var predContainer = document.getElementById('predicate-filters');
+  Object.keys(predColors).forEach(function(p) {
+    var row = document.createElement('div');
+    row.className = 'filter-check';
+    var chk = document.createElement('input');
+    chk.type = 'checkbox';
+    chk.checked = true;
+    chk.id = 'chk-' + p;
+    chk.addEventListener('change', function() { togglePredicate(p); });
+    var dot = document.createElement('div');
+    dot.className = 'filter-dot';
+    dot.style.background = predColors[p];
+    var label = document.createElement('span');
+    label.textContent = p;
+    row.appendChild(chk);
+    row.appendChild(dot);
+    row.appendChild(label);
+    row.addEventListener('click', function(ev) { if (ev.target !== chk) { chk.checked = !chk.checked; togglePredicate(p); } });
+    predContainer.appendChild(row);
+  });
+})();
+
+// === CYTOSCAPE INIT ===
+var cy = cytoscape({
+  container: document.getElementById('cy'),
+  elements: { nodes: graphData.nodes, edges: graphData.edges },
+  style: [
+    { selector: 'node', style: {
+      'label': 'data(label)', 'text-wrap': 'wrap', 'text-max-width': '100px',
+      'text-valign': 'center', 'text-halign': 'center',
+      'font-size': '10px', 'color': '#f8fafc',
+      'text-outline-color': 'data(bgColor)', 'text-outline-width': 2,
+      'width': 'data(nodeSize)', 'height': 'data(nodeSize)',
+      'border-width': 2, 'border-color': '#475569',
+      'background-color': 'data(bgColor)', 'shape': 'data(shapeVal)'
+    }},
+    { selector: 'node[type="Student"]', style: {
+      'font-size': '14px', 'font-weight': 'bold',
+      'border-width': 3, 'border-color': '#60a5fa'
+    }},
+    { selector: 'node:active', style: { 'overlay-opacity': 0.1 } },
+    { selector: 'edge', style: {
+      'width': 'data(edgeWidth)', 'curve-style': 'bezier',
+      'target-arrow-shape': 'triangle', 'target-arrow-color': 'data(edgeColor)',
+      'line-color': 'data(edgeColor)', 'line-style': 'data(lineStyle)',
+      'arrow-scale': 0.8, 'opacity': 0.6,
+      'label': 'data(label)', 'font-size': '8px', 'color': '#94a3b8',
+      'text-rotation': 'autorotate',
+      'text-background-color': '#0f172a', 'text-background-opacity': 0.8,
+      'text-background-padding': '2px'
+    }},
+    { selector: 'edge:active', style: { 'overlay-opacity': 0.05 } },
+    { selector: 'node.highlighted', style: { 'border-color': '#60a5fa', 'border-width': 4, 'z-index': 999 } },
+    { selector: 'edge.highlighted', style: { 'width': 4, 'opacity': 1, 'z-index': 999 } },
+    { selector: 'node.faded', style: { 'opacity': 0.15 } },
+    { selector: 'edge.faded', style: { 'opacity': 0.05 } },
+    { selector: 'node.filtered-out', style: { 'display': 'none' } },
+    { selector: 'edge.filtered-out', style: { 'display': 'none' } }
+  ],
+  layout: { name: 'cose', quality: 'default', nodeDimensionsIncludeLabels: true, idealEdgeLength: 120, nodeRepulsion: 8000, padding: 50 },
+  minZoom: 0.2, maxZoom: 4
+});
+
+// === LAYOUT ===
+function runLayout(name) {
+  document.querySelectorAll('#controls button[id^="btn-"]').forEach(function(b) { b.classList.remove('active'); });
+  var btn = document.getElementById('btn-' + (name === 'cose' ? 'cose' : name));
+  if (btn) btn.classList.add('active');
+  var opts;
+  if (name === 'cose') {
+    opts = { name: 'cose', quality: 'default', nodeDimensionsIncludeLabels: true, idealEdgeLength: 120, nodeRepulsion: 8000, padding: 50 };
+  } else if (name === 'concentric') {
+    opts = { name: 'concentric', concentric: function(n) { return n.data('type') === 'Student' ? 100 : 50 - (n.connectedEdges().length || 0); }, levelWidth: function() { return 2; }, padding: 50 };
+  } else if (name === 'grade') {
+    // Step 1: Force 배치 (Student 위치 파악용)
+    var forceOpts = { name: 'cose', animate: false, idealEdgeLength: function(){return 120;}, nodeRepulsion: function(){return 8000;}, padding: 50 };
+    cy.layout(forceOpts).run();
+    // Step 2: Student 노드를 화면 중앙으로 이동, 다른 노드도 같은 만큼 이동
+    var studentNode = cy.getElementById('student');
+    var sPos = studentNode.position();
+    var center = { x: cy.width() / 2, y: cy.height() / 2 };
+    var shiftX = center.x - sPos.x;
+    var shiftY = center.y - sPos.y;
+    cy.nodes().forEach(function(n) {
+      var p = n.position();
+      n.position({ x: p.x + shiftX, y: p.y + shiftY });
+    });
+    // Step 3: Student 기준으로 각도 유지, 반지름을 학년에 비례하도록 보정
+    var gradeRadius = { 0: 0, 1: 200, 2: 400, 3: 600 };
+    cy.nodes().forEach(function(n) {
+      var g = n.data('gradeRing');
+      if (g === undefined || g === 0) return; // Student는 이미 중앙
+      var pos = n.position();
+      var dx = pos.x - center.x;
+      var dy = pos.y - center.y;
+      var currentR = Math.sqrt(dx * dx + dy * dy);
+      var angle = Math.atan2(dy, dx);
+      // currentR이 0이면 (Student와 겹침) 랜덤 각도 부여
+      if (currentR < 5) { angle = Math.random() * Math.PI * 2; currentR = 50; }
+      var targetR = gradeRadius[g] || 400;
+      // 블렌딩: Force 방향 유지 + 학년 거리 적용
+      var blendedR = currentR * 0.25 + targetR * 0.75;
+      blendedR += (Math.random() - 0.5) * 50; // 겹침 방지
+      n.position({ x: center.x + Math.cos(angle) * blendedR, y: center.y + Math.sin(angle) * blendedR });
+    });
+    cy.fit(undefined, 50);
+    return;
+  } else {
+    opts = { name: 'circle', padding: 50 };
+  }
+  cy.layout(opts).run();
+}
+
+// === FILTER STATE ===
+var activeTypes = {};
+var activePredicates = {};
+Object.keys(typeColors).forEach(function(t) { activeTypes[t] = true; });
+Object.keys(predColors).forEach(function(p) { activePredicates[p] = true; });
+var minConfidence = 0.70;
+
+function toggleFilter() {
+  var panel = document.getElementById('filter-panel');
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+}
+
+function toggleType(type) {
+  var chk = document.getElementById('chk-' + type);
+  activeTypes[type] = chk.checked;
+  applyFilters();
+}
+
+function togglePredicate(pred) {
+  var chk = document.getElementById('chk-' + pred);
+  activePredicates[pred] = chk.checked;
+  applyFilters();
+}
+
+function updateConfidence(val) {
+  minConfidence = val / 100;
+  document.getElementById('confidence-value').textContent = minConfidence.toFixed(2);
+  applyFilters();
+}
+
+function applyFilters() {
+  cy.batch(function() {
+    cy.nodes().forEach(function(n) {
+      var t = n.data('type');
+      if (t === 'Student' || activeTypes[t]) {
+        n.removeClass('filtered-out');
+      } else {
+        n.addClass('filtered-out');
+      }
+    });
+    cy.edges().forEach(function(e) {
+      var pred = e.data('type');
+      var conf = e.data('confidence') || 1;
+      var srcVisible = !e.source().hasClass('filtered-out');
+      var tgtVisible = !e.target().hasClass('filtered-out');
+      if (srcVisible && tgtVisible && activePredicates[pred] && conf >= minConfidence) {
+        e.removeClass('filtered-out');
+      } else {
+        e.addClass('filtered-out');
+      }
+    });
+  });
+  updateStats();
+}
+
+function updateStats() {
+  var visibleNodes = cy.nodes().not('.filtered-out').length;
+  var visibleEdges = cy.edges().not('.filtered-out').length;
+  document.getElementById('stat-nodes').textContent = String(cy.nodes().length);
+  document.getElementById('stat-edges').textContent = String(cy.edges().length);
+  document.getElementById('stat-visible').textContent = visibleNodes + 'N / ' + visibleEdges + 'E';
+}
+
+// === DETAIL PANEL (safe DOM methods) ===
+function makeDetailRow(label, value) {
+  var row = document.createElement('div');
+  row.className = 'detail-row';
+  var spanL = document.createElement('span');
+  spanL.className = 'detail-label';
+  spanL.textContent = label;
+  var spanV = document.createElement('span');
+  spanV.className = 'detail-value';
+  spanV.textContent = String(value);
+  row.appendChild(spanL);
+  row.appendChild(spanV);
+  return row;
+}
+
+function makeEvidenceBox(title, text) {
+  var ebox = document.createElement('div');
+  ebox.className = 'evidence-box';
+  var strong = document.createElement('strong');
+  strong.textContent = title;
+  ebox.appendChild(strong);
+  ebox.appendChild(document.createElement('br'));
+  ebox.appendChild(document.createTextNode(text));
+  return ebox;
+}
+
+function closeDetail() {
+  document.getElementById('detail-panel').style.display = 'none';
+  cy.elements().removeClass('highlighted faded');
+}
+
+cy.on('tap', 'node', function(e) {
+  var d = e.target.data();
+  var panel = document.getElementById('detail-panel');
+  document.getElementById('detail-title').textContent = d.label;
+  var content = document.getElementById('detail-content');
+  content.replaceChildren();
+  content.appendChild(makeDetailRow('유형', d.type));
+  if (d.confidence) content.appendChild(makeDetailRow('신뢰도', (d.confidence * 100).toFixed(0) + '%'));
+  if (d.sourceCount) content.appendChild(makeDetailRow('출처', d.sourceCount + '개 출처'));
+  content.appendChild(makeDetailRow('연결 수', e.target.connectedEdges().not('.filtered-out').length));
+
+  if (d.evidence) {
+    content.appendChild(makeEvidenceBox('근거:', d.evidence));
+  }
+
+  if (d.sources) {
+    try {
+      var sources = typeof d.sources === 'string' ? JSON.parse(d.sources) : d.sources;
+      if (sources.length > 0) {
+        var sourceText = sources.map(function(s) {
+          return (s.subject || s.category) + ' (' + s.grade + '학년 ' + (s.semester || '') + ')';
+        }).join(', ');
+        content.appendChild(makeEvidenceBox('Sources:', sourceText));
+      }
+    } catch(ex) { /* ignore parse errors */ }
+  }
+
+  panel.style.display = 'block';
+  cy.elements().removeClass('highlighted faded');
+  e.target.addClass('highlighted');
+  e.target.connectedEdges().not('.filtered-out').addClass('highlighted');
+  e.target.neighborhood().nodes().not('.filtered-out').addClass('highlighted');
+  cy.elements().not('.filtered-out').not(e.target.neighborhood().add(e.target)).addClass('faded');
+});
+
+cy.on('tap', 'edge', function(e) {
+  var d = e.target.data();
+  var panel = document.getElementById('detail-panel');
+  document.getElementById('detail-title').textContent = d.label;
+  var content = document.getElementById('detail-content');
+  content.replaceChildren();
+  content.appendChild(makeDetailRow('관계 유형', d.type));
+  content.appendChild(makeDetailRow('출발', e.target.source().data('label')));
+  content.appendChild(makeDetailRow('도착', e.target.target().data('label')));
+  if (d.confidence) content.appendChild(makeDetailRow('신뢰도', (d.confidence * 100).toFixed(0) + '%'));
+  if (d.evidence) {
+    content.appendChild(makeEvidenceBox('근거:', d.evidence));
+  }
+  panel.style.display = 'block';
+});
+
+cy.on('tap', function(e) {
+  if (e.target === cy) closeDetail();
+});
+
+updateStats();
+</script>
+</body>
+</html>
