@@ -483,6 +483,302 @@
       html { scroll-behavior: auto; }
     }
 
+    /* ===== 교차 매트릭스 (교육청 S/W × 학교 S/W) ===== */
+    /* 섹션: 교차 매트릭스 */
+    .matrix-wrapper {
+      margin-bottom: 28px;
+    }
+
+    .matrix-axis-top {
+      display: grid;
+      grid-template-columns: 48px 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .axis-spacer { visibility: hidden; }
+
+    .axis-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 10px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .axis-label-strength {
+      color: var(--accent);
+      border-color: var(--accent-border);
+      background: var(--accent-soft);
+    }
+
+    .axis-label-weakness {
+      color: var(--text-muted);
+    }
+
+    .matrix-body {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 16px;
+    }
+
+    .matrix-axis-left {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .axis-vertical {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      padding: 16px 6px;
+      min-height: 100%;
+    }
+
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .matrix-cell {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 24px 22px;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .matrix-cell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: var(--transition);
+      pointer-events: none;
+    }
+
+    .matrix-cell:hover {
+      transform: translateY(-2px);
+      background: var(--card-hover);
+    }
+
+    /* S×S : 가장 강조 (증폭 영역) */
+    .cell-ss {
+      border-color: var(--accent-border);
+    }
+    .cell-ss::before {
+      background: linear-gradient(135deg, var(--accent-soft), transparent 70%);
+      opacity: 1;
+    }
+    .cell-ss:hover { border-color: var(--accent); }
+
+    /* S×W, W×S : 중간 (보완·위임) */
+    .cell-sw, .cell-ws {
+      border-color: var(--border-strong);
+    }
+    .cell-sw:hover, .cell-ws:hover {
+      border-color: var(--accent-border);
+    }
+
+    /* W×W : 약한 톤 (재설계) */
+    .cell-ww {
+      background: rgba(255, 255, 255, 0.015);
+      border-style: dashed;
+    }
+
+    .cell-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cell-combo {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    .cell-ww .cell-combo {
+      color: var(--text-dim);
+    }
+
+    .cell-strategy {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    .cell-title {
+      font-size: 1.02rem;
+      font-weight: 700;
+      line-height: 1.45;
+      margin-bottom: 14px;
+      color: #fff;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cell-body {
+      font-size: 0.94rem;
+      line-height: 1.7;
+      color: var(--text);
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cell-insight {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      padding-top: 14px;
+      border-top: 1px dashed var(--border);
+      margin-top: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cell-insight strong { color: var(--accent); font-weight: 600; }
+    .cell-ww .cell-insight strong { color: var(--text); }
+
+    /* 모바일: 축 레이블 숨기고 카드만 세로 1열 */
+    @media (max-width: 720px) {
+      .matrix-axis-top { display: none; }
+      .matrix-body { grid-template-columns: 1fr; }
+      .matrix-axis-left { display: none; }
+      .matrix-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .cell-title { font-size: 1rem; }
+    }
+
+    /* ===== 역할 카드 그리드 (교육청만이 할 수 있는 일) ===== */
+    /* 섹션: 교육청의 고유 영역 */
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    @media (max-width: 720px) {
+      .role-grid { grid-template-columns: 1fr; }
+    }
+
+    .role-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 30px 28px 26px;
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .role-card:hover {
+      border-color: var(--accent-border);
+      transform: translateY(-2px);
+      background: var(--card-hover);
+    }
+
+    .role-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .role-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .role-tag {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 5px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+    }
+
+    .role-title {
+      font-size: clamp(1.1rem, 2vw, 1.25rem);
+      font-weight: 700;
+      line-height: 1.4;
+      margin-bottom: 16px;
+      letter-spacing: -0.005em;
+      color: #fff;
+    }
+
+    .role-why {
+      color: var(--text);
+      font-size: 0.98rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .role-why strong { color: var(--accent); font-weight: 600; }
+
+    .role-limit {
+      margin-top: auto;
+      padding: 14px 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+    }
+
+    .role-limit .limit-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+    }
+
+    .role-limit p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
     /* ===== 포커스 접근성 ===== */
     a:focus-visible,
     button:focus-visible {
@@ -601,11 +897,121 @@
     </div>
   </section>
 
+  <!-- 섹션: 교차 매트릭스 (교육청 S/W × 학교 S/W) -->
+  <section id="matrix">
+    <div class="container">
+      <div class="reveal">
+        <span class="eyebrow">02 &nbsp;&middot;&nbsp; 교차 매트릭스</span>
+        <h2 class="section-title">서로의 강점과 약점이 만나는 지점</h2>
+        <p class="section-lead">
+          교육청과 학교(교사)는 서로 다른 것을 잘합니다. 네 가지 조합은 각각 다른 전략을 가리킵니다.
+          <strong style="color: var(--accent);">증폭 · 보완 · 위임 · 재설계</strong> —
+          어떤 일을 누구에게 맡겨야 하는가에 대한 지도입니다.
+        </p>
+      </div>
+
+      <!-- 축 레이블 -->
+      <div class="matrix-wrapper reveal">
+        <div class="matrix-axis-top">
+          <div class="axis-spacer"></div>
+          <div class="axis-label axis-label-strength">학교 강점 (S)</div>
+          <div class="axis-label axis-label-weakness">학교 약점 (W)</div>
+        </div>
+
+        <div class="matrix-body">
+          <div class="matrix-axis-left">
+            <div class="axis-label axis-label-strength axis-vertical">
+              <span>교육청 강점 (S)</span>
+            </div>
+            <div class="axis-label axis-label-weakness axis-vertical">
+              <span>교육청 약점 (W)</span>
+            </div>
+          </div>
+
+          <div class="matrix-grid">
+            <!-- ① S × S : 증폭 -->
+            <article class="matrix-cell cell-ss">
+              <div class="cell-head">
+                <span class="cell-combo">S × S</span>
+                <span class="cell-strategy">증폭 · Leverage</span>
+              </div>
+              <h3 class="cell-title">교육청의 인프라 × 교사의 현장 밀착</h3>
+              <p class="cell-body">
+                교육청의 <strong>데이터·예산·표준 제정 권한</strong>이 교사의
+                <strong>현장 직관·빠른 반복</strong>과 만나면, 현장에서 검증된 도구를
+                전북 전역으로 공식 확산시키는 파이프라인이 열립니다.
+              </p>
+              <p class="cell-insight">
+                💡 교육청이 만든 도구를 학교에 배포하는 것이 아니라,
+                <strong>교사가 만든 도구를 교육청이 키운다.</strong>
+              </p>
+            </article>
+
+            <!-- ② S × W : 보완 -->
+            <article class="matrix-cell cell-sw">
+              <div class="cell-head">
+                <span class="cell-combo">S × W</span>
+                <span class="cell-strategy">보완 · Support</span>
+              </div>
+              <h3 class="cell-title">교육청의 전문성 × 교사의 부족한 역량</h3>
+              <p class="cell-body">
+                교사 개발자가 감당하기 어려운 <strong>법·보안·개인정보·인프라 비용</strong>을
+                교육청이 전담합니다. 교사는 기능과 사용자 경험에 집중하고, 교육청은
+                안전망과 런웨이를 공급합니다.
+              </p>
+              <p class="cell-insight">
+                💡 제안 1의 "<strong>보조자로서의 교육청</strong>"이 실현되는 영역.
+              </p>
+            </article>
+
+            <!-- ③ W × S : 위임 -->
+            <article class="matrix-cell cell-ws">
+              <div class="cell-head">
+                <span class="cell-combo">W × S</span>
+                <span class="cell-strategy">위임 · Delegate</span>
+              </div>
+              <h3 class="cell-title">교육청의 한계 × 교사의 강점</h3>
+              <p class="cell-body">
+                교육청이 구조적으로 약한 <strong>수업 맥락·사용자 직관·빠른 업데이트</strong>는
+                이미 교사가 가장 잘합니다. 이 영역을 교육청이 직접 만들려 하면 비효율이
+                누적됩니다.
+              </p>
+              <p class="cell-insight">
+                💡 제안 2·3의 근거 — <strong>예산·권한·신뢰를 교사에게 위임</strong>하라.
+              </p>
+            </article>
+
+            <!-- ④ W × W : 재설계 -->
+            <article class="matrix-cell cell-ww">
+              <div class="cell-head">
+                <span class="cell-combo">W × W</span>
+                <span class="cell-strategy">재설계 · Rethink</span>
+              </div>
+              <h3 class="cell-title">양쪽 모두 약한 영역</h3>
+              <p class="cell-body">
+                대규모 ML 학습 인프라, 고급 UX 리서치, 장기 플랫폼 운영 등은
+                교육청도 학교도 내부적으로 감당하기 어려운 영역입니다. 무리하게
+                떠안으면 양쪽 모두의 시간과 예산이 낭비됩니다.
+              </p>
+              <p class="cell-insight">
+                💡 <strong>민간·대학·타 시도와의 협력</strong>, 범용 상용 서비스 채택이 합리적.
+              </p>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <p class="cards-note reveal">
+        이 매트릭스는 곧바로 다음 세 가지 제안으로 이어집니다.
+      </p>
+    </div>
+  </section>
+
   <!-- 섹션: 교육청에 드리는 세 가지 제안 -->
   <section id="proposals">
     <div class="container">
       <div class="reveal">
-        <span class="eyebrow">02 &nbsp;&middot;&nbsp; 제안</span>
+        <span class="eyebrow">03 &nbsp;&middot;&nbsp; 제안</span>
         <h2 class="section-title">교육청에 드리는 세 가지 제안</h2>
         <p class="proposal-intro">
           다음은 비판이 아니라, 현장이 바라보는 역할 재분배에 대한 제안입니다.
@@ -740,10 +1146,108 @@
     </div>
   </section>
 
+  <!-- 섹션: 교육청만이 할 수 있는 일 (역할 재분배의 구체화) -->
+  <section id="only-office">
+    <div class="container">
+      <div class="reveal">
+        <span class="eyebrow">04 &nbsp;&middot;&nbsp; 교육청의 고유 영역</span>
+        <h2 class="section-title">교육청만이 할 수 있는 일</h2>
+        <p class="section-lead">
+          "교사 개발을 보조·보완한다"는 말은 교육청의 역할 축소가 아닙니다.
+          오히려 교육청이 아니면 누구도 감당할 수 없는 고유 영역에 집중하자는 제안입니다.
+          다음 네 가지는 학교·교사 단위에서는 구조적으로 수행이 어려운 일들입니다.
+        </p>
+      </div>
+
+      <div class="role-grid">
+        <!-- 카드 1: 데이터 -->
+        <article class="role-card reveal">
+          <div class="role-head">
+            <span class="role-num">01</span>
+            <span class="role-tag">Data</span>
+          </div>
+          <h3 class="role-title">전북 전체를 망라한 데이터 분석</h3>
+          <p class="role-why">
+            <strong>왜 교육청만 가능한가</strong><br />
+            전북 모든 학교의 학업·출결·진로·만족도 데이터를 합법적으로 수집·연결할 수 있는
+            유일한 주체. 개별 학교에서는 보이지 않는 <strong>지역 간 격차, 종단 추세,
+            정책 효과</strong>가 교육청 차원의 데이터에서만 드러납니다.
+          </p>
+          <div class="role-limit">
+            <span class="limit-label">학교 단위의 한계</span>
+            <p>단일 학교 표본은 통계적 유의성 부족, 타 학교 데이터 접근 권한 없음, 익명화·연계 인프라 부재.</p>
+          </div>
+        </article>
+
+        <!-- 카드 2: 법·제도 -->
+        <article class="role-card reveal">
+          <div class="role-head">
+            <span class="role-num">02</span>
+            <span class="role-tag">Legal</span>
+          </div>
+          <h3 class="role-title">법·제도 해석과 안전망</h3>
+          <p class="role-why">
+            <strong>왜 교육청만 가능한가</strong><br />
+            개인정보보호법, 학생정보 처리, NEIS 연계 적법성, 교육 관련 법령 해석,
+            감사 대응 등은 <strong>전담 법무·감사 조직</strong>을 갖춘 교육청이 중심이
+            되어야 합니다. 교사 개발자가 가장 두려워하는 것이 바로 이 영역입니다.
+          </p>
+          <div class="role-limit">
+            <span class="limit-label">학교 단위의 한계</span>
+            <p>교사 1인이 개인정보영향평가·약관·이용동의 설계까지 감당 불가. 법률 자문 접근성도 제한적.</p>
+          </div>
+        </article>
+
+        <!-- 카드 3: 보안·인프라 -->
+        <article class="role-card reveal">
+          <div class="role-head">
+            <span class="role-num">03</span>
+            <span class="role-tag">Security</span>
+          </div>
+          <h3 class="role-title">보안·인프라 전문성 제공</h3>
+          <p class="role-why">
+            <strong>왜 교육청만 가능한가</strong><br />
+            취약점 진단, 침해사고 대응, 공동 인증(SSO), 백업·재해복구, 대규모 트래픽 대응 등은
+            <strong>전문 보안 엔지니어와 공용 인프라</strong>가 필요한 일입니다. 교사 개개인이
+            각자 재발명하는 것은 비효율적이며 위험합니다.
+          </p>
+          <div class="role-limit">
+            <span class="limit-label">학교 단위의 한계</span>
+            <p>보안 전문 인력 부재, 침해 대응 경험 전무, 공용 인증·공용 DB 구축 권한 없음.</p>
+          </div>
+        </article>
+
+        <!-- 카드 4: 표준·네트워킹 -->
+        <article class="role-card reveal">
+          <div class="role-head">
+            <span class="role-num">04</span>
+            <span class="role-tag">Hub</span>
+          </div>
+          <h3 class="role-title">표준·허브·확산의 중심</h3>
+          <p class="role-why">
+            <strong>왜 교육청만 가능한가</strong><br />
+            시·도 간 연계, 우수 사례의 발굴과 공식 확산, <strong>교사 개발자 네트워킹</strong>,
+            공통 API·데이터 스키마 제정, 예산·인프라의 공동 구매 협상 등은 교육청의 조정 권한이
+            없으면 불가능합니다.
+          </p>
+          <div class="role-limit">
+            <span class="limit-label">학교 단위의 한계</span>
+            <p>타 학교 사례 발굴 창구 없음, 표준 제정 권한 없음, 공동 구매·계약 주체 자격 없음.</p>
+          </div>
+        </article>
+      </div>
+
+      <p class="cards-note reveal">
+        요약하자면, 교육청은 <strong style="color: var(--accent);">개별 제품을 만드는 곳</strong>이 아니라
+        <strong style="color: var(--accent);">현장의 1,000개 시도를 안전하게 성장시키는 플랫폼</strong>이 될 때 가장 강력해집니다.
+      </p>
+    </div>
+  </section>
+
   <!-- 섹션: 마무리 -->
   <section class="closing" id="closing">
     <div class="container reveal">
-      <span class="eyebrow">03 &nbsp;&middot;&nbsp; 마무리</span>
+      <span class="eyebrow">05 &nbsp;&middot;&nbsp; 마무리</span>
       <p class="closing-quote">
         "교육청과 교육 현장의 교사가 함께 전북도 교육을 전방위적으로
         개선할 수 있는 방안을 논의하는 자리가 되길 바랍니다."
